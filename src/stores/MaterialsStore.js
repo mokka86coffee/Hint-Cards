@@ -27,7 +27,9 @@ class MaterialsStore {
     }
 
     let materials = this.materials[this.currentTheme];
-    this.currentMaterials = materials.filter(el => el.text.includes(word));
+    this.currentMaterials = materials.filter(el =>
+      RegExp(word, "i").test(el.text)
+    );
   }
 
   transformText(title) {
