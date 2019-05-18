@@ -67,7 +67,7 @@ class Card extends React.Component {
 
     const { chosenCard } = this.state;
 
-    return getMaterials.map(({ title, text, id }, idx) => {
+    return getMaterials.map(({ title, text, id, link }, idx) => {
       const style = cx(
         styles.card,
         chosenCard === idx ? styles.card__rotated : null
@@ -81,6 +81,8 @@ class Card extends React.Component {
         >
           <h2 onClick={this.closeCard}>{title}</h2>
           {text}
+          <br />
+          <a href={link}>LINK</a>
         </div>
       );
     });

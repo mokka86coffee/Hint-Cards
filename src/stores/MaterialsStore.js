@@ -16,11 +16,15 @@ class MaterialsStore {
   }
 
   findMaterials(title) {
+    this.transformText(title);
     this.currentMaterials = this.materials[title];
   }
 
   transformText(title) {
     let text = this.materials[title];
+    if (typeof text[0].text !== "string") {
+      return;
+    }
 
     const materials = text.map(el => {
       let textArr = el.text.split("|");
@@ -42,13 +46,12 @@ class MaterialsStore {
       return { ...el, text };
     });
     this.materials[title] = materials;
-    this.findMaterials(title);
   }
 
   fetchMaterials = flow(function*(title) {
     this.materials = yield fetchMaterials();
     if (title) {
-      this.transformText(title);
+      this.findMaterials(title);
     }
   });
 }

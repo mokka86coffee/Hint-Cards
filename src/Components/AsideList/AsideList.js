@@ -5,11 +5,12 @@ import cx from "classnames";
 
 class AsideList extends React.Component {
   state = {
-    materialTheme: "Git"
+    currentTheme: "Git"
   };
 
   onClick = ({ target: { innerText } }) => {
     this.props.MaterialsStore.findMaterials(innerText);
+    this.setState({ currentTheme: innerText });
   };
 
   render() {
@@ -19,18 +20,20 @@ class AsideList extends React.Component {
       return null;
     }
 
-    const { materialTheme } = this.state;
+    const { currentTheme } = this.state;
 
     return (
       <div className={styles.asideList}>
-        {getMaterialsThemes.map((theme, idx) => {
-          const style = cx();
-          return (
-            <h2 onClick={this.onClick} key={idx}>
-              {theme}
-            </h2>
-          );
-        })}
+        <div className={styles.asideList__wrap}>
+          {getMaterialsThemes.map((theme, idx) => {
+            const style = currentTheme == theme ? styles.chosen : null;
+            return (
+              <h2 className={style} onClick={this.onClick} key={idx}>
+                {theme}
+              </h2>
+            );
+          })}
+        </div>
       </div>
     );
   }
