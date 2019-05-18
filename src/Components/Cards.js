@@ -36,19 +36,20 @@ class Card extends React.Component {
   }
 
   render() {
-    const { users } = this.props.UsersStore;
     const { getMaterials } = this.props.MaterialsStore;
-    if (!users.length) {
+
+    if (!getMaterials.length) {
       return null;
     }
-    console.log(getMaterials);
-    return getMaterials.map(({ title, text }) => (
-      <div className={styles.card} key={id}>
-        <p className={styles.t}>{name}</p>
-        <span className={styles.c}>{username}</span>
-        <span className={styles.i}>{email}</span>
-      </div>
-    ));
+
+    return getMaterials.map(({ title, text, id }) => {
+      return (
+        <div className={styles.cards} key={id}>
+          <h2>{title}</h2>
+          <span>{text}</span>
+        </div>
+      );
+    });
   }
 }
 export default inject("UsersStore", "MaterialsStore")(observer(Card));
