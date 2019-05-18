@@ -19,11 +19,12 @@ import { Provider } from "mobx-react";
 
 import UsersStore from "./stores/UsersStore";
 import BirdsStore from "./stores/BirdsStore";
+import MaterialsStore from "./stores/MaterialsStore";
 
 configure({ enforceActions: "observed" });
 
 ReactDOM.render(
-  <Provider {...{ UsersStore, BirdsStore }}>
+  <Provider {...{ UsersStore, BirdsStore, MaterialsStore }}>
     <App />
   </Provider>,
   document.getElementById("root")
