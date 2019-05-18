@@ -42,7 +42,7 @@ class Card extends React.Component {
       return null;
     }
     console.log(getMaterials);
-    return getMaterials.map(({ username, email, name, id }) => (
+    return getMaterials.map(({ title, text }) => (
       <div className={styles.card} key={id}>
         <p className={styles.t}>{name}</p>
         <span className={styles.c}>{username}</span>
