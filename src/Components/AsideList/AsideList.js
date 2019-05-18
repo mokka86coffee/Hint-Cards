@@ -5,7 +5,7 @@ import cx from "classnames";
 
 class AsideList extends React.Component {
   state = {
-    currentTheme: "Git"
+    currentTheme: this.props.MaterialsStore.currentTheme
   };
 
   onClick = ({ target: { innerText } }) => {

@@ -1,8 +1,10 @@
 .asideList {
   position: relative;
-  flex: 0 0 150px;
+  flex: 0 0 170px;
+  max-width: 170px;
   height: 500px;
   padding-left: 20px;
+  box-sizing: border-box;
   overflow: hidden;
   background: #303030;
   text-shadow: 1px 1px 1px #2d9bd8;

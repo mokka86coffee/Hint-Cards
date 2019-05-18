@@ -40,6 +40,7 @@
   &__rotated {
     position: absolute;
     flex-basis: 58%;
+    max-width: 58%;
     height: 48vh;
     z-index: 3;
     transform: translateZ(0);

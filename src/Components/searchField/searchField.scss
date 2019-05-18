@@ -1,0 +1,18 @@
+.searchField {
+  width: 100%;
+  padding: 20px 0;
+  display: flex;
+  justify-content: center;
+
+  & input {
+    width: 61%;
+    padding: 10px 20px;
+    font-size: 24px;
+    font-family: "Caveat", cursive;
+    border: none;
+    box-shadow: 0 0 10px #000, inset 0 0 10px #5a5a5a;
+    color: #fff;
+    background: #000;
+    outline: none;
+  }
+}

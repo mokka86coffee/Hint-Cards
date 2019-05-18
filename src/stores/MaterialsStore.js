@@ -6,6 +6,7 @@ import uuidv4 from "uuid/v4";
 class MaterialsStore {
   materials = {};
   currentMaterials = [];
+  currentTheme = "Git";
 
   get getMaterials() {
     return this.currentMaterials;
@@ -20,6 +21,15 @@ class MaterialsStore {
     this.currentMaterials = this.materials[title];
   }
 
+  searchInMaterials(word) {
+    if (!word) {
+      return;
+    }
+
+    let materials = this.materials[this.currentTheme];
+    this.currentMaterials = materials.filter(el => el.text.includes(word));
+  }
+
   transformText(title) {
     let text = this.materials[title];
     if (typeof text[0].text !== "string") {
@@ -28,7 +38,7 @@ class MaterialsStore {
 
     const materials = text.map(el => {
       let textArr = el.text.split("|");
-      const text = (
+      const nodeText = (
         <>
           {textArr.map(el => {
             const part = el.includes("{") ? (
@@ -42,7 +52,7 @@ class MaterialsStore {
           })}
         </>
       );
-      return { ...el, text };
+      return { ...el, nodeText };
     });
     this.materials[title] = materials;
   }
@@ -58,9 +68,11 @@ class MaterialsStore {
 const store = decorate(MaterialsStore, {
   materials: observable,
   currentMaterials: observable,
+  currentTheme: observable,
   getMaterials: computed,
   getMaterialsThemes: computed,
   findMaterials: action,
+  searchInMaterials: action,
   transformText: action
 });
 

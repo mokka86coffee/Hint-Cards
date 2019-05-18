@@ -1,11 +1,14 @@
 .app {
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
   padding-left: 20px;
 }
 
 .card__wrap {
+  max-width: calc(100% - 170px);
+  box-sizing: border-box;
   display: flex;
   padding: 40px;
   perspective: 500px;

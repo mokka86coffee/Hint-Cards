@@ -29,7 +29,7 @@ import cx from "classnames";
 
 class Card extends React.Component {
   state = {
-    materialTheme: "Git",
+    materialTheme: this.props.MaterialsStore.currentTheme,
     chosenCard: null,
     translateX: null
   };
@@ -68,7 +68,7 @@ class Card extends React.Component {
 
     const { chosenCard, translateX } = this.state;
 
-    return getMaterials.map(({ title, text, id, link }, idx) => {
+    return getMaterials.map(({ title, nodeText, id, link }, idx) => {
       const className = cx(
         styles.card,
         chosenCard === idx ? styles.card__rotated : null
@@ -83,7 +83,7 @@ class Card extends React.Component {
         >
           <button onClick={this.closeCard}>x</button>
           <h2>{title}</h2>
-          {text}
+          {nodeText}
           <br />
           <a target="_blank" href={link}>
             LINK
