@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
+import styles from "./App.scss";
+
+import Cards from "./Components/Cards";
 
 class App extends Component {
   componentDidMount() {
@@ -7,25 +10,11 @@ class App extends Component {
   }
 
   render() {
-    const { getUserInfo } = this.props.UsersStore;
-    const { getBirds } = this.props.BirdsStore;
-
-    if (!getUserInfo.length) return <div>nothing to display</div>;
+    const { birds } = this.props.BirdsStore;
 
     return (
-      <div>
-        {getUserInfo.map(user => (
-          <div key={user.id}>
-            <p>Name: {user.name}</p>
-            <p>Email: {user.email}</p>
-            <hr />
-          </div>
-        ))}
-        {getBirds.map(bird => (
-          <div key={bird}>
-            <p>Bird: {bird}</p>
-          </div>
-        ))}
+      <div className={styles.card__wrap}>
+        <Cards />
       </div>
     );
   }

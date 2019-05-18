@@ -1,7 +1,13 @@
+@import url("https://fonts.googleapis.com/css?family=Baloo+Bhai&display=swap");
 body {
+  margin: 0;
+
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background: url("http://oi59.tinypic.com/11tllir.jpg") center center no-repeat
+    fixed / cover;
 }

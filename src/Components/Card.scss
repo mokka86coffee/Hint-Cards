@@ -1,0 +1,27 @@
+.card {
+  background: #3d3d3d;
+  flex: 0 0 200px;
+  height: 300px;
+  margin-right: 50px;
+  box-shadow: 0 0 10px #000;
+}
+
+@for $i from 1 through 5 {
+  h#{$i} {
+  }
+}
+
+.title {
+  // title
+  font-family: "Baloo Bhai";
+}
+
+.c {
+  // code
+  color: #fff;
+}
+
+.i {
+  // text
+  color: #fff;
+}

@@ -1,21 +1,26 @@
-import { decorate, observable, computed, flow, action } from 'mobx'
-import axios from 'axios'
+import { decorate, observable, computed, flow, action } from "mobx";
+import axios from "axios";
 
-const store = decorate(class {
-    users = []
+const store = decorate(
+  class {
+    users = [];
 
-    get getUserInfo(){
-        return this.users
+    get getUserInfo() {
+      console.log(this.users);
+      return this.users;
     }
 
-    fetchUsers = flow(function* (arg){
-        const fetched = yield axios('https://jsonplaceholder.typicode.com/users') 
-        this.users = fetched.data 
-    })
-},{
+    fetchUsers = flow(function*(arg) {
+      const fetched = yield axios("https://jsonplaceholder.typicode.com/users");
+      console.log(fetched.data);
+      this.users = fetched.data;
+    });
+  },
+  {
     users: observable,
     getUserInfo: computed,
     fetchUsers: action
-});
+  }
+);
 
-export default new store()
+export default new store();
