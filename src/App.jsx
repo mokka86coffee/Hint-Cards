@@ -3,6 +3,7 @@ import { observer, inject } from "mobx-react";
 import styles from "./App.scss";
 
 import Cards from "./Components/Cards/Cards";
+import AsideList from "./Components/AsideList/AsideList";
 
 class App extends Component {
   componentDidMount() {
@@ -14,6 +15,7 @@ class App extends Component {
 
     return (
       <div className={styles.app}>
+        <AsideList />
         <div className={styles.card__wrap}>
           <Cards />
         </div>

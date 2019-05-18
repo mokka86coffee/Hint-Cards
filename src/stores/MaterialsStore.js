@@ -11,6 +11,10 @@ class MaterialsStore {
     return this.currentMaterials;
   }
 
+  get getMaterialsThemes() {
+    return Object.keys(this.materials);
+  }
+
   findMaterials(title) {
     this.currentMaterials = this.materials[title];
   }
@@ -53,6 +57,7 @@ const store = decorate(MaterialsStore, {
   materials: observable,
   currentMaterials: observable,
   getMaterials: computed,
+  getMaterialsThemes: computed,
   findMaterials: action,
   transformText: action
 });

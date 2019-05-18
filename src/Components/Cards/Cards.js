@@ -30,6 +30,7 @@ import cx from "classnames";
 class Card extends React.Component {
   state = {
     materialTheme: "Git",
+    chosenCard: null,
     currentPos: {
       x: null,
       y: null
@@ -53,9 +54,15 @@ class Card extends React.Component {
       return null;
     }
 
-    return getMaterials.map(({ title, text, id }) => {
+    const { chosenCard } = this.state;
+
+    return getMaterials.map(({ title, text, id }, idx) => {
+      const style = cx(
+        styles.card,
+        chosenCard === idx ? styles.card__rotated : null
+      );
       return (
-        <div className={cx(styles.card)} key={id}>
+        <div className={style} key={id}>
           <h2>{title}</h2>
           {text}
         </div>
