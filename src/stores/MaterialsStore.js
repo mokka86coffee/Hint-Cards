@@ -23,6 +23,7 @@ class MaterialsStore {
 
   searchInMaterials(word) {
     if (!word) {
+      this.currentMaterials = this.materials[this.currentTheme];
       return;
     }
 
@@ -43,13 +44,20 @@ class MaterialsStore {
       const nodeText = (
         <>
           {textArr.map(el => {
-            const part = el.includes("{") ? (
-              <b key={uuidv4()}>{el.replace(/[\{\}]/g, " ")}</b>
-            ) : el.includes("[") ? (
-              <code key={uuidv4()}>{el.replace(/[\[\]]/g, " ")}</code>
-            ) : (
-              <span key={uuidv4()}>{el}</span>
-            );
+            let part;
+            if (el.includes("{")) {
+              part = <b key={uuidv4()}>{el.replace(/[\{\}]/g, " ")}</b>;
+            } else if (el.includes("[")) {
+              part = <code key={uuidv4()}>{el.replace(/[\[\]]/g, " ")}</code>;
+            } else if (el.includes("<br>")) {
+              part = el
+                .split("<br>")
+                .slice(1)
+                .map(_ => <br />);
+            } else {
+              part = <span key={uuidv4()}>{el}</span>;
+            }
+
             return part;
           })}
         </>
