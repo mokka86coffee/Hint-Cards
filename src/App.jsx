@@ -1,41 +1,36 @@
-import React, { Component } from 'react'
-import { observer, inject } from 'mobx-react'
+import React, { Component } from "react";
+import { observer, inject } from "mobx-react";
 
-class App extends Component{
+class App extends Component {
+  componentDidMount() {
+    this.props.UsersStore.fetchUsers();
+  }
 
-    componentDidMount(){
-        this.props.UsersStore.fetchUsers()
-    }
+  render() {
+    const { getUserInfo } = this.props.UsersStore;
+    const { getBirds } = this.props.BirdsStore;
 
-    render(){
-        const { getUserInfo } = this.props.UsersStore
-        const { getBirds } = this.props.BirdsStore
+    if (!getUserInfo.length) return <div>nothing to display</div>;
 
-        if ( !getUserInfo.length ) return <div>nothing to display</div>
-
-        return (
-            <div>
-            { 
-                getUserInfo.map( user => (
-                    <div key={ user.id }>
-                        <p>Name: { user.name }</p>
-                        <p>Email: { user.email }</p>
-                        <hr />
-                    </div>
-                ) )
-            }
-            { 
-                getBirds.map( bird => (
-                    <div key={ bird }>
-                        <p>Bird: { bird }</p>
-                    </div>
-                ) )
-            }
-            </div>
-        )
-    }
+    return (
+      <div>
+        {getUserInfo.map(user => (
+          <div key={user.id}>
+            <p>Name: {user.name}</p>
+            <p>Email: {user.email}</p>
+            <hr />
+          </div>
+        ))}
+        {getBirds.map(bird => (
+          <div key={bird}>
+            <p>Bird: {bird}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
 }
 
 // @inject('appUsersStore')
 // @observer
-export default inject('UsersStore', 'BirdsStore')(observer(App))
+export default inject("UsersStore", "BirdsStore")(observer(App));
