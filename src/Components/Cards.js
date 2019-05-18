@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { inject, observer } from "mobx-react";
 import styles from "./Card.scss";
+import cx from "classnames";
 
 // export default inject("UsersStore", "MaterialsStore")(observer(Card));
 
@@ -28,12 +29,22 @@ import styles from "./Card.scss";
 
 class Card extends React.Component {
   state = {
-    materialTheme: "Git"
+    materialTheme: "Git",
+    currentPos: {
+      x: null,
+      y: null
+    }
   };
 
   componentDidMount() {
     this.props.MaterialsStore.fetchMaterials(this.state.materialTheme);
   }
+
+  handleMouseMove = e => {
+    console.dir(e.currentTarget);
+    console.dir(e.clientX);
+    console.dir(e.clientY);
+  };
 
   render() {
     const { getMaterials } = this.props.MaterialsStore;
@@ -44,9 +55,9 @@ class Card extends React.Component {
 
     return getMaterials.map(({ title, text, id }) => {
       return (
-        <div className={styles.cards} key={id}>
+        <div className={cx(styles.card)} key={id}>
           <h2>{title}</h2>
-          <span>{text}</span>
+          {text}
         </div>
       );
     });

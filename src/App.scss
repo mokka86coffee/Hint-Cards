@@ -1,3 +1,11 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
 .card__wrap {
   display: flex;
+  padding: 40px;
+  perspective: 500px;
 }

@@ -13,8 +13,10 @@ class App extends Component {
     const { birds } = this.props.BirdsStore;
 
     return (
-      <div className={styles.card__wrap}>
-        <Cards />
+      <div className={styles.app}>
+        <div className={styles.card__wrap}>
+          <Cards />
+        </div>
       </div>
     );
   }

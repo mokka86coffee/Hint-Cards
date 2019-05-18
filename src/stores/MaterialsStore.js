@@ -1,6 +1,7 @@
 import { observable, action, computed, flow, decorate } from "mobx";
 import React from "react";
 import fetchMaterials from "./MaterialsInfo";
+import uuidv4 from "uuid/v4";
 
 class MaterialsStore {
   materials = {};
@@ -23,7 +24,14 @@ class MaterialsStore {
       const text = (
         <>
           {textArr.map(el => {
-            return <p>1</p>;
+            const part = el.includes("{") ? (
+              <b key={uuidv4()}>{el.replace(/[\{\}]/g, " ")}</b>
+            ) : el.includes("[") ? (
+              <code key={uuidv4()}>{el.replace(/[\[\]]/g, " ")}</code>
+            ) : (
+              <span key={uuidv4()}>{el}</span>
+            );
+            return part;
           })}
         </>
       );
