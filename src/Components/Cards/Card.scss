@@ -39,6 +39,8 @@
 
   &__rotated {
     position: absolute;
+    left: 10%;
+    top: 20%;
     flex-basis: 58vw;
     width: 58vw;
     max-width: 58vw;
@@ -82,12 +84,11 @@
     background: #d62e07;
     box-shadow: 0 0 17px #000000, inset 0 0 10px #171616;
   }
+
   & button {
     opacity: 0;
-  }
 
-  &__rotated {
-    & button {
+    @at-root .card__rotated button {
       position: absolute;
       top: 0;
       right: 0;
@@ -99,6 +100,12 @@
       opacity: 1;
       cursor: pointer;
     }
+  }
+
+  & .wrap__nodeText {
+    height: 181px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 

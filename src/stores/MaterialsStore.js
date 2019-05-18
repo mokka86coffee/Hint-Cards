@@ -53,7 +53,7 @@ class MaterialsStore {
               part = el
                 .split("<br>")
                 .slice(1)
-                .map(_ => <br />);
+                .map(_ => <br key={uuidv4()} />);
             } else {
               part = <span key={uuidv4()}>{el}</span>;
             }

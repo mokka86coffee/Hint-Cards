@@ -30,8 +30,7 @@ import cx from "classnames";
 class Card extends React.Component {
   state = {
     materialTheme: this.props.MaterialsStore.currentTheme,
-    chosenCard: null,
-    translateX: null
+    chosenCard: null
   };
 
   componentDidMount() {
@@ -53,7 +52,7 @@ class Card extends React.Component {
     // Получаем позицию выбранной карточки по оси x
 
     if (!prev || prev !== next) {
-      this.setState({ chosenCard: next, translateX: posX - 40 });
+      this.setState({ chosenCard: next });
     }
   };
 
@@ -66,7 +65,7 @@ class Card extends React.Component {
       return null;
     }
 
-    const { chosenCard, translateX } = this.state;
+    const { chosenCard } = this.state;
 
     return getMaterials.map(({ title, nodeText, id, link }, idx) => {
       const className = cx(
@@ -83,8 +82,7 @@ class Card extends React.Component {
         >
           <button onClick={this.closeCard}>x</button>
           <h2>{title}</h2>
-          {nodeText}
-          <br />
+          <div className={styles.wrap__nodeText}>{nodeText}</div>
           <a target="_blank" href={link}>
             LINK
           </a>
