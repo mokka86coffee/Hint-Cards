@@ -47,6 +47,17 @@ class Card extends React.Component {
     console.dir(e.clientY);
   };
 
+  handleDblClick = ({ currentTarget: { dataset } }) => {
+    const { chosenCard: prev } = this.state;
+    const next = +dataset.id;
+
+    if (!prev || prev !== next) {
+      this.setState({ chosenCard: next });
+    }
+  };
+
+  closeCard = e => this.setState({ chosenCard: null });
+
   render() {
     const { getMaterials } = this.props.MaterialsStore;
 
@@ -62,8 +73,13 @@ class Card extends React.Component {
         chosenCard === idx ? styles.card__rotated : null
       );
       return (
-        <div className={style} key={id}>
-          <h2>{title}</h2>
+        <div
+          className={style}
+          key={id}
+          data-id={idx}
+          onDoubleClick={this.handleDblClick}
+        >
+          <h2 onClick={this.closeCard}>{title}</h2>
           {text}
         </div>
       );
