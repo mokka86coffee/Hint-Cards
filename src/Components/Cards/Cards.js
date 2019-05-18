@@ -31,10 +31,7 @@ class Card extends React.Component {
   state = {
     materialTheme: "Git",
     chosenCard: null,
-    currentPos: {
-      x: null,
-      y: null
-    }
+    translateX: null
   };
 
   componentDidMount() {
@@ -47,12 +44,16 @@ class Card extends React.Component {
     console.dir(e.clientY);
   };
 
-  handleDblClick = ({ currentTarget: { dataset } }) => {
+  handleDblClick = ({ currentTarget }) => {
     const { chosenCard: prev } = this.state;
-    const next = +dataset.id;
+    const next = +currentTarget.dataset.id;
+    // Получаем выбранную карточку и текущую
+
+    const posX = currentTarget.offsetLeft;
+    // Получаем позицию выбранной карточки по оси x
 
     if (!prev || prev !== next) {
-      this.setState({ chosenCard: next });
+      this.setState({ chosenCard: next, translateX: posX - 40 });
     }
   };
 
@@ -65,21 +66,23 @@ class Card extends React.Component {
       return null;
     }
 
-    const { chosenCard } = this.state;
+    const { chosenCard, translateX } = this.state;
 
     return getMaterials.map(({ title, text, id, link }, idx) => {
-      const style = cx(
+      const className = cx(
         styles.card,
         chosenCard === idx ? styles.card__rotated : null
       );
+
       return (
         <div
-          className={style}
+          className={className}
           key={id}
           data-id={idx}
           onDoubleClick={this.handleDblClick}
         >
-          <h2 onClick={this.closeCard}>{title}</h2>
+          <button onClick={this.closeCard}>x</button>
+          <h2>{title}</h2>
           {text}
           <br />
           <a target="_blank" href={link}>
