@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { observer, inject } from "mobx-react";
 import styles from "./App.scss";
 
-import Cards from "./Components/Cards";
+import Cards from "./Components/Cards/Cards";
 
 class App extends Component {
   componentDidMount() {

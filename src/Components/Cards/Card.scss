@@ -2,16 +2,17 @@
   position: relative;
   flex: 0 0 220px;
   height: 300px;
-  margin-right: 50px;
+  margin-right: -11vw;
   padding: 20px 16px;
   overflow: hidden;
+  order: 2;
 
   font-size: 13px;
   line-height: 20px;
 
   border-radius: 10px;
   box-shadow: 0 0 47px 7px #000;
-  transform: rotate3d(2, -26, 0, 28deg);
+  transform: rotate3d(6, -36, 0, 18deg) translateY(-50px);
   transition: all 1s;
 
   &::before,
@@ -28,12 +29,20 @@
 
   &::after {
     opacity: 0.4;
-    background: url("../hacker.png") center 227px no-repeat/110px;
+    background: url("../../hacker.png") center 227px no-repeat/110px;
   }
 
-  &--rotated,
   &:hover {
-    transform: scale(1.1, 1.1);
+    transform: translateZ(0) !important;
+    z-index: 2;
+  }
+
+  &--rotated {
+    flex-basis: 68%;
+    height: 20vh;
+    transform: translateZ(0) !important;
+    order: 1;
+    z-index: 2;
   }
 
   & h2 {
