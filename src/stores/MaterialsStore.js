@@ -28,7 +28,6 @@ class MaterialsStore {
 
     const materials = text.map(el => {
       let textArr = el.text.split("|");
-      console.log("TCL: MaterialsStore -> transformText -> textArr", textArr);
       const text = (
         <>
           {textArr.map(el => {

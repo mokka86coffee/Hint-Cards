@@ -82,7 +82,9 @@ class Card extends React.Component {
           <h2 onClick={this.closeCard}>{title}</h2>
           {text}
           <br />
-          <a href={link}>LINK</a>
+          <a target="_blank" href={link}>
+            LINK
+          </a>
         </div>
       );
     });
