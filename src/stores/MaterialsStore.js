@@ -67,19 +67,12 @@ class MaterialsStore {
     this.materials[title] = materials;
   }
 
-  getFromLocalStorage() {
-    this.materials = JSON.parse(localStorage.getItem("shotcodes"));
-    this.currentMaterials = this.materials[title];
-  }
+  getFromLocalStorage() {}
 
   fetchMaterials = flow(function*(title) {
-    if (localStorage.getItem("shotcodes")) {
-      this.getFromLocalStorage();
-    } else {
-      this.materials = yield fetchMaterials();
-      if (title) {
-        this.findMaterials(title);
-      }
+    this.materials = yield fetchMaterials();
+    if (title) {
+      this.findMaterials(title);
     }
   });
 }
@@ -92,7 +85,8 @@ const store = decorate(MaterialsStore, {
   getMaterialsThemes: computed,
   findMaterials: action,
   searchInMaterials: action,
-  transformText: action
+  transformText: action,
+  getFromLocalStorage: action
 });
 
 export default new store();

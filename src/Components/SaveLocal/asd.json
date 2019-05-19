@@ -1,0 +1,17 @@
+{
+  Git: [
+    {
+      "title: "!!!!Как изменить адрес origin репозитория в git?",
+      "text": "{1) Первый способ задать url репозитория:}|<br><br>|
+      использовать команду| [git remote set-url origin]|, например:|<br>|
+      
+      [git remote set-url origin git@github.com:vicman-wi/wi-backend.git]|<br><br>|
+      
+      {2) Второй способ:}|<br>|
+      
+      Отредактировать файл |[.git/config] | : секция |{remote "origin"}| ,  параметр - |{url}|. `,
+      id: uuidv4(),
+      link: "https://jeka.by/ask/137/git-change-origin/"
+    },
+  ],
+}

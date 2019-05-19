@@ -12,7 +12,12 @@ class SaveLocal extends React.Component {
 
   saveLocal = e => {
     e.preventDefault();
-    localStorage.setItem("shortcodes", JSON.stringify(this.ref.value));
+    const data = this.ref.value.replace(/([\n])([\s]{2,})/g, "");
+    localStorage.setItem("shortcodes", JSON.stringify(data));
+    console.log(
+      "in SaveLocal - ",
+      JSON.parse(localStorage.getItem("shortcodes"))
+    );
     this.props.MaterialsStore.getFromLocalStorage();
     this.setState({ isOpened: false });
   };
