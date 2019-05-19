@@ -129,27 +129,30 @@ var Materials = {
       <b>Работа с массивами</b><br><br>
       <c>
       import { debounce } from "lodash";
-      debounceEvent(...args) {</c><k>// comments</k><br>
-      <c>this.debouncedEvent = debounce(...args);
-        return e => {
-          e.persist();
-          return this.debouncedEvent(e);
-        };
-      }
-    
-      handleSearchInput = ({ target }) => {
-        this.props.MaterialsStore.searchInMaterials(target.value);
-      };
+
+      class searchField extends React.Component {
+        debounceEvent(...args) {</c><k>// comments</k><c>
+          this.debouncedEvent = debounce(...args);
+          return e => {
+            e.persist();
+            return this.debouncedEvent(e);
+          };
+        }
       
-      render() {
-        return (
-          <form onSubmit={this.searchInMaterials} className={styles.searchField}>
-            <input
-              onInput={this.debounceEvent(this.handleSearchInput, 300)}
-              onBlur={e => (this.ref.value = "")}
-            />
-          </form>
-        );
+        handleSearchInput = ({ target }) => {
+          this.props.MaterialsStore.searchInMaterials(target.value);
+        };
+        
+        render() {
+          return (
+            <form onSubmit={this.searchInMaterials} className={styles.searchField}>
+              <input
+                onInput={this.debounceEvent(this.handleSearchInput, 300)}
+                onBlur={e => (this.ref.value = "")}
+              />
+            </form>
+          );
+        }
       }
       </c><br>
       <t>Возвращает собранный</t><b> массив</b>
