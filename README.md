@@ -4,13 +4,12 @@
   "Git": [
     {
       "title": "Как изменить адрес origin репозитория в git?",
-      "text": "<?b?>Жирный текст</b>|Простой текст|<code>Ваш код</code>|<br>",
+      "text": "&lt;b&gt;Жирный текст&lt;/b&gt;|Простой текст|&lt;code&gt;Ваш код&lt;/code&gt;|&lt;br&gt;",
       "id": "unique_id",
       "link": "https://jeka.by/ask/137/git-change-origin/"
     }
   ]
 }
-
 
 </pre>
 <br>
