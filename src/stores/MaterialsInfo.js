@@ -159,7 +159,7 @@ var Materials = {
       `,
       id: uuidv4(),
       tags: "",
-      link: "https://lodash.com/docs/4.17.11#zip"
+      link: "https://www.youtube.com/watch?v=KXao_qwl05k"
     },
     {
       title: `Метод zip`,
