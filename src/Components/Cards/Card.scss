@@ -1,6 +1,7 @@
 .card {
-  position: relative;
-  flex: 0 0 220px;
+  position: absolute;
+  width: 18vw;
+  max-width: 200px;
   height: 300px;
   margin-right: -11vw;
   padding: 20px 16px;
@@ -12,8 +13,14 @@
 
   border-radius: 10px;
   box-shadow: 0 0 47px 7px #000;
-  transform: rotate3d(6, -36, 0, 18deg) translateY(-50px);
-  transition: transform 0.6s, height 0.6s, flex-basis 0.6s, order 0s ease 1s;
+  transform: rotate3d(6, -36, 0, 18deg) translateY(-50px) scale(0.9, 0.9);
+  transition: all 0.6s;
+
+  @for $i from 1 through 20 {
+    &:nth-child(#{$i}) {
+      left: (40px + $i * 60);
+    }
+  }
 
   &::before,
   &::after {
@@ -33,20 +40,21 @@
   }
 
   &:hover {
+    max-width: 250px;
     z-index: 2;
     transform: translateZ(0);
   }
 
   &__rotated {
-    position: absolute;
-    left: 5vw;
-    top: 10%;
-    flex-basis: 58vw;
-    width: 58vw;
-    max-width: 58vw;
-    height: 48vh;
-    z-index: 3;
-    transform: translateZ(0);
+    &:nth-child(n) {
+      left: 5vw;
+      top: 10%;
+      width: 58vw;
+      max-width: 58vw;
+      height: 48vh;
+      z-index: 3;
+      transform: translateZ(0);
+    }
   }
 
   & h2 {
@@ -118,6 +126,13 @@
     height: 181px;
     overflow: hidden;
     text-overflow: ellipsis;
+    opacity: 0;
+    transition: 0.6s;
+  }
+
+  &:hover .wrap__nodeText,
+  &__rotated .wrap__nodeText {
+    opacity: 1;
   }
 }
 
