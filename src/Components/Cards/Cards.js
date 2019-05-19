@@ -34,7 +34,7 @@ class Card extends React.Component {
   };
 
   componentDidMount() {
-    this.props.MaterialsStore.fetchMaterials(this.state.materialTheme);
+    this.props.MaterialsStore.fetchMaterials();
   }
 
   handleMouseMove = e => {

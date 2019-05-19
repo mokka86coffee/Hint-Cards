@@ -67,12 +67,17 @@ class MaterialsStore {
     this.materials[title] = materials;
   }
 
-  getFromLocalStorage() {}
+  getFromLocalStorage() {
+    const data = localStorage.getItem("shortcodes");
+    this.materials = JSON.parse(data);
+    this.findMaterials(this.currentTheme);
+  }
 
-  fetchMaterials = flow(function*(title) {
-    this.materials = yield fetchMaterials();
-    if (title) {
-      this.findMaterials(title);
+  fetchMaterials = flow(function*() {
+    if (localStorage.getItem("shortcodes")) {
+      this.getFromLocalStorage();
+    } else {
+      this.materials = yield fetchMaterials();
     }
   });
 }

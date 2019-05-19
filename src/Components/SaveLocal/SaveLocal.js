@@ -5,21 +5,17 @@ import cx from "classnames";
 
 class SaveLocal extends React.Component {
   state = {
-    isOpened: true
+    isOpened: false
   };
 
   showForm = e => this.setState({ isOpened: !this.state.isOpened });
 
   saveLocal = e => {
     e.preventDefault();
-    const data = this.ref.value.replace(/([\n])([\s]{2,})/g, "");
-    localStorage.setItem("shortcodes", JSON.stringify(data));
-    console.log(
-      "in SaveLocal - ",
-      JSON.parse(localStorage.getItem("shortcodes"))
-    );
+    localStorage.setItem("shortcodes", this.ref.value);
     this.props.MaterialsStore.getFromLocalStorage();
     this.setState({ isOpened: false });
+    this.ref.value = "";
   };
 
   render() {
