@@ -1,7 +1,7 @@
 .card {
   position: absolute;
   width: 18vw;
-  max-width: 200px;
+  max-width: 150px;
   height: 300px;
   margin-right: -11vw;
   padding: 20px 16px;
@@ -13,12 +13,18 @@
 
   border-radius: 10px;
   box-shadow: 0 0 47px 7px #000;
-  transform: rotate3d(6, -36, 0, 18deg) translateY(-50px) scale(0.9, 0.9);
+  transform: rotate3d(-3, 25, -12, 15deg) translateY(-50px);
   transition: all 0.6s;
-
-  @for $i from 1 through 20 {
+  &:nth-child(n + 11) {
+    left: 40px + 16 * 60;
+    opacity: 0;
+    z-index: 0;
+  }
+  @for $i from 1 through 11 {
     &:nth-child(#{$i}) {
-      left: (40px + $i * 60);
+      top: $i * 5px;
+      left: 40px + $i * 90;
+      z-index: $i;
     }
   }
 
@@ -41,7 +47,7 @@
 
   &:hover {
     max-width: 250px;
-    z-index: 2;
+    z-index: 20;
     transform: translateZ(0);
   }
 
@@ -52,19 +58,24 @@
       width: 58vw;
       max-width: 58vw;
       height: 48vh;
-      z-index: 3;
+      z-index: 21;
       transform: translateZ(0);
+      opacity: 1;
     }
   }
 
   & h2 {
     margin: 0 0 20px;
-    font-size: 22px;
-    text-align: center;
+    font-size: 18px;
     font-family: "Alegreya Sans SC", sans-serif;
     font-weight: 300;
     color: #fff;
     text-shadow: 0px 0px 2px #fff;
+  }
+  &:hover h2,
+  &__rotated h2 {
+    text-align: center;
+    font-size: 22px;
   }
 
   & p,
