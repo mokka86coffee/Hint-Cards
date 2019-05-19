@@ -67,10 +67,19 @@ class MaterialsStore {
     this.materials[title] = materials;
   }
 
+  getFromLocalStorage() {
+    this.materials = JSON.parse(localStorage.getItem("shotcodes"));
+    this.currentMaterials = this.materials[title];
+  }
+
   fetchMaterials = flow(function*(title) {
-    this.materials = yield fetchMaterials();
-    if (title) {
-      this.findMaterials(title);
+    if (localStorage.getItem("shotcodes")) {
+      this.getFromLocalStorage();
+    } else {
+      this.materials = yield fetchMaterials();
+      if (title) {
+        this.findMaterials(title);
+      }
     }
   });
 }

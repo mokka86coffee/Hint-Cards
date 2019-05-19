@@ -5,10 +5,17 @@ import cx from "classnames";
 
 class SaveLocal extends React.Component {
   state = {
-    isOpened: false
+    isOpened: true
   };
 
   showForm = e => this.setState({ isOpened: !this.state.isOpened });
+
+  saveLocal = e => {
+    e.preventDefault();
+    localStorage.setItem("shortcodes", JSON.stringify(this.ref.value));
+    this.props.MaterialsStore.getFromLocalStorage();
+    this.setState({ isOpened: false });
+  };
 
   render() {
     const { getMaterialsThemes } = this.props.MaterialsStore;
@@ -26,8 +33,8 @@ class SaveLocal extends React.Component {
     return (
       <div className={saveLocalClassName}>
         <button type="button" onClick={this.showForm} />
-        <form className={styles.saveLocal__wrap}>
-          <textarea />
+        <form onSubmit={this.saveLocal} className={styles.saveLocal__wrap}>
+          <textarea ref={n => (this.ref = n)} />
           <button type="submit">Сохранить</button>
         </form>
       </div>
