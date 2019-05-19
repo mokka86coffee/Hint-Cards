@@ -1,7 +1,7 @@
 # Hint-Cards - <a href="https://mokka86coffee.github.io/Hint-Cards/">Link</a>
 <h2>React/Mobx</h2>
 <h3>git clone -> npm i</h3>
-<h4> Json storage находится в 'src/stores/MaterialsInfo.js'</h4>
+<h4 style="color: green;"> Json storage находится в 'src/stores/MaterialsInfo.js'</h4>
 <b>Шаблон</b><br>
 <pre>{
   "Git": [
