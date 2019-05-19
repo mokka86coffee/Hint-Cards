@@ -1,9 +1,9 @@
 {
   "Mine": [
     {
-      "title": "аля улю",
-      "text": "<b>I wish</b><c>you</c><t>were</t><br><b>here</b>",
-      "id": "eto_id_baby",
+      "title": "Название поста",
+      "text": "<b>Жирный текст</b><c>ваш код</c><t>обычный текст</t><br><t>со следующей</t> <b>строки</b>",
+      "id": "unique_id",
       "link": "https://google.com"
     }
   ]
