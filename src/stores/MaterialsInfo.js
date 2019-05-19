@@ -34,6 +34,335 @@ var Materials = {
       
       <b>2) Второй способ:</b><br><t>
       
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
+      Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. <b>1) Первый способ задать url репозитория:</b><br>
+      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      
+      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      
+      <b>2) Второй способ:</b><br><t>
+      
       Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. `,
       id: uuidv4(),
       tags: "",

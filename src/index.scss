@@ -13,3 +13,35 @@ body {
 
   background: url("./bg.jpg") center center no-repeat fixed / cover;
 }
+
+::-webkit-scrollbar-button {
+  background-image: url("");
+  background-repeat: no-repeat;
+  width: 5px;
+  height: 0px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #8a8a8a;
+}
+
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  background-color: #1d84d8;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #1d84d8;
+}
+
+::-webkit-resizer {
+  background-image: url("");
+  background-repeat: no-repeat;
+  width: 4px;
+  height: 0px;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}

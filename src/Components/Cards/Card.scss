@@ -14,12 +14,14 @@
   border-radius: 10px;
   box-shadow: 0 0 47px 7px #000;
   transform: rotate3d(-3, 25, -12, 15deg) translateY(-50px);
-  transition: all 0.6s;
+  transition: all 0.6s, padding 0s;
+
   &:nth-child(n + 11) {
     left: 40px + 16 * 60;
     opacity: 0;
     z-index: 0;
   }
+
   @for $i from 1 through 11 {
     &:nth-child(#{$i}) {
       top: $i * 5px;
@@ -143,7 +145,15 @@
 
   &:hover .wrap__nodeText,
   &__rotated .wrap__nodeText {
+    position: relative;
+    height: 68%;
+    overflow-y: auto;
+    padding-right: 10px;
     opacity: 1;
+  }
+  &__rotated:hover .wrap__nodeText,
+  &__rotated .wrap__nodeText {
+    height: 85%;
   }
 }
 
