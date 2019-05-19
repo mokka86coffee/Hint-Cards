@@ -6,7 +6,7 @@ import uuidv4 from "uuid/v4";
 class MaterialsStore {
   materials = {};
   currentMaterials = [];
-  currentTheme = "Git";
+  currentTheme = "About";
 
   get getMaterials() {
     return this.currentMaterials;
@@ -40,24 +40,33 @@ class MaterialsStore {
     }
 
     const materials = text.map(el => {
-      let textArr = el.text.split("|");
+      let textArr = el.text.split("<");
       const nodeText = (
         <>
           {textArr.map(el => {
             let part;
-            if (el.includes("<b>")) {
-              part = <b key={uuidv4()}>{el.replace(/<(\/)?b>/g, " ")}</b>;
-            } else if (el.includes("<code>")) {
+            if (el.includes("b>")) {
+              part = <b key={uuidv4()}>{el.replace(/<?(\/)?b>/g, " ")}</b>;
+            } else if (/(c|code)>/.test(el)) {
               part = (
-                <code key={uuidv4()}>{el.replace(/<(\/)?code>/g, " ")}</code>
+                <code key={uuidv4()}>
+                  {el.replace(/<?(\/)?(c|code)>/g, " ")}
+                </code>
               );
-            } else if (el.includes("<br>")) {
-              part = el
-                .split("<br>")
-                .slice(1)
-                .map(_ => <br key={uuidv4()} />);
+            } else if (el.includes("br>")) {
+              part = <br />;
+            } else if (el.includes("br>")) {
+              part = <br />;
+            } else if (/(t|span)>/.test(el)) {
+              part = (
+                <span key={uuidv4()}>
+                  {el.replace(/<?(\/)?(span|t)>/g, " ")}
+                </span>
+              );
+            } else if (el.includes("pre>")) {
+              part = <pre key={uuidv4()}>{el.replace(/<?(\/)?pre>/g, "")}</pre>;
             } else {
-              part = <span key={uuidv4()}>{el}</span>;
+              part = null;
             }
 
             return part;

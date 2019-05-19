@@ -72,6 +72,12 @@
     color: #2d9bd8;
   }
 
+  & pre {
+    margin: 0;
+    display: inline-block;
+    color: #eee;
+  }
+
   & a {
     position: absolute;
     bottom: -20px;
@@ -83,6 +89,12 @@
     color: #ffdbdb;
     background: #d62e07;
     box-shadow: 0 0 17px #000000, inset 0 0 10px #171616;
+
+    transition: 0.6s;
+
+    &:hover {
+      transform: translate(26px, -13px) scale(1.2, 1.2);
+    }
   }
 
   & button {
