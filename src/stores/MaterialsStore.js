@@ -18,6 +18,7 @@ class MaterialsStore {
 
   findMaterials(title) {
     this.transformText(title);
+    this.currentTheme = title;
     this.currentMaterials = this.materials[title];
   }
 
@@ -57,9 +58,7 @@ class MaterialsStore {
                 </code>
               );
             } else if (el.includes("br>")) {
-              part = <br />;
-            } else if (el.includes("br>")) {
-              part = <br />;
+              part = <br key={uuidv4()} />;
             } else if (/(t|span)>/.test(el)) {
               part = (
                 <span key={uuidv4()}>
