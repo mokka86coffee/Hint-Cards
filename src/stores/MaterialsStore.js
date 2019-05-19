@@ -78,6 +78,7 @@ class MaterialsStore {
       this.getFromLocalStorage();
     } else {
       this.materials = yield fetchMaterials();
+      this.findMaterials(this.currentTheme);
     }
   });
 }
