@@ -19,4 +19,5 @@
 <h5>&lt;span&gt;&lt;/span&gt; = &lt;t&gt;&lt;/t&gt;</h5>
 <h5>&lt;code&gt;&lt;/code&gt; = &lt;c&gt;&lt;/c&gt;</h5>
 <h5>&lt;pre&gt;&lt;/pre&gt; сохраняет переносы/пробелы</h5>
+<br/><br/>
 Вложенность пока не поддерживается. В link можно добавить ссылку на инф-ю.
