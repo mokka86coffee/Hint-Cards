@@ -16,7 +16,7 @@
 
 </pre>
 <br>
-&lt;span&gt;&lt;/span&gt;=&lt;t&gt;&lt;/t&gt;
-&lt;code&gt;&lt;/code&gt;=&lt;c&gt;&lt;/c&gt;
-&lt;pre&gt;&lt;/pre&gt; сохраняет переносы/пробелы
+<h4>&lt;span&gt;&lt;/span&gt;=&lt;t&gt;&lt;/t&gt;</h4>
+<h4>&lt;code&gt;&lt;/code&gt;=&lt;c&gt;&lt;/c&gt;</h4>
+<h4>&lt;pre&gt;&lt;/pre&gt; сохраняет переносы/пробелы</h4>
 Вложенность пока не поддерживается. В link можно добавить ссылку на инф-ю.
