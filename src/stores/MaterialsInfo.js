@@ -103,14 +103,46 @@ var Materials = {
   ],
   Lodash: [
     {
-      title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<code>git rm -r one-of-the-directories</code><br>
-      <code>git commit -m "Remove duplicated directory"</code><br>
-      <code>git push origin <your-git-branch></code>  typically  <b>'master'</b>, but not always`,
+      title: `Метод each`,
+      text: `
+      <b>Работа с массивами</b><br><br>
+      <c>_.each([1,2], function(elem,idx){</c><br>
+      <c>   console.log(elem) // 1, 2</c><br>
+      <c>   console.log(idx) // 0, 1</c><br>
+      <c>})</c><br>
+      <t>Возвращает переданный</t><b> массив</b>
+      <br><br>
+      <b>Работа с объектами</b><br><br>
+      <c>_.each({a: 1, b: 'string'}, function(elem,key){</c><br>
+        <c>   console.log(elem) // 1, 'string'</c><br>
+        <c>   console.log(key) // 'a', 'b'</c><br>
+      <c>})</c><br>
+      <t>Возвращает переданный</t><b> объект</b>
+      `,
       id: uuidv4(),
       tags: "",
-      link:
-        "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
+      link: "https://lodash.com/docs#forEach"
+    },
+    {
+      title: `Метод zip`,
+      text: `
+      <b>Работа с массивами</b><br><br>
+      <c>_.each([1,2], function(elem,idx){</c><br>
+      <c>   console.log(elem) // 1, 2</c><br>
+      <c>   console.log(idx) // 0, 1</c><br>
+      <c>})</c><br>
+      <t>Возвращает переданный</t><b> массив</b>
+      <br><br>
+      <b>Работа с объектами</b><br><br>
+      <c>_.each({a: 1, b: 'string'}, function(elem,key){</c><br>
+        <c>   console.log(elem) // 1, 'string'</c><br>
+        <c>   console.log(key) // 'a', 'b'</c><br>
+      <c>})</c><br>
+      <t>Возвращает переданный</t><b> объект</b>
+      `,
+      id: uuidv4(),
+      tags: "",
+      link: "#"
     }
   ],
   zzzzzz: [
