@@ -4,13 +4,8 @@ import styles from "./AsideList.scss";
 import cx from "classnames";
 
 class AsideList extends React.Component {
-  state = {
-    currentTheme: this.props.MaterialsStore.currentTheme
-  };
-
   onClick = ({ target: { innerText } }) => {
     this.props.MaterialsStore.findMaterials(innerText);
-    this.setState({ currentTheme: innerText });
   };
 
   render() {
@@ -20,7 +15,7 @@ class AsideList extends React.Component {
       return null;
     }
 
-    const { currentTheme } = this.state;
+    const { currentTheme } = this.props.MaterialsStore;
 
     return (
       <div className={styles.asideList}>

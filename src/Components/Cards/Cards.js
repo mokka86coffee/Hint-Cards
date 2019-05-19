@@ -29,7 +29,6 @@ import cx from "classnames";
 
 class Card extends React.Component {
   state = {
-    materialTheme: this.props.MaterialsStore.currentTheme,
     chosenCard: null
   };
 
