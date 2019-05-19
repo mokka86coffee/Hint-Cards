@@ -44,7 +44,7 @@
 
   &::after {
     opacity: 0.2;
-    background: url("../../hacker.png") center 227px no-repeat/110px;
+    background: url("../../hacker.png") right bottom no-repeat/110px;
   }
 
   &:hover {
@@ -152,7 +152,7 @@
     overflow-y: auto;
     padding-right: 10px;
     opacity: 1;
-    transition: all 0.6s;
+    transition: all 0.3s ease 0.3s;
   }
   &__rotated:hover .wrap__nodeText,
   &__rotated .wrap__nodeText {

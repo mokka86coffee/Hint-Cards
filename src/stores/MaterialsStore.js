@@ -40,7 +40,8 @@ class MaterialsStore {
 
   transformText(theme) {
     let text = this.materials[theme];
-    if (typeof text[0].text !== "string") {
+
+    if (text[0].nodeText) {
       return;
     }
 
@@ -64,11 +65,15 @@ class MaterialsStore {
           {textArr.map(el => {
             let part;
             if (el.includes("b>")) {
-              part = <b key={uuidv4()}>{el.replace(/<?(\/)?b>/g, " ")}</b>;
+              part = (
+                <b key={uuidv4()}>
+                  {" " + el.replace(/<?(\/)?b>/g, " ") + " "}
+                </b>
+              );
             } else if (/(c|code)>/.test(el)) {
               part = (
                 <code key={uuidv4()}>
-                  {htmlentities.decode(el.replace(/<?(\/)?(c|code)>/g, " "))}
+                  {htmlentities.decode(el.replace(/<?(\/)?(c|code)>/g, ""))}
                 </code>
               );
             } else if (el.includes("br>")) {

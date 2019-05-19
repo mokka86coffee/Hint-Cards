@@ -1,18 +1,13 @@
 export default {
   encode: function(str) {
-    var buf = [];
+    let buf = [];
 
-    for (var i = str.length - 1; i >= 0; i--) {
-      buf.unshift(["&#", str[i].charCodeAt(), ";"].join(""));
+    for (let i = str.length - 1; i >= 0; i--) {
+      buf.unshift(`&#${str[i].charCodeAt()};`);
     }
 
     return buf.join("");
   },
-  /**
-   * Converts an html characterSet into its original character.
-   *
-   * @param {String} str htmlSet entities
-   **/
   decode: function(str) {
     return str.replace(/&#(\d+);/g, function(match, dec) {
       return String.fromCharCode(dec);

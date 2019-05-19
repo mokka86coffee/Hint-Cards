@@ -28,9 +28,9 @@ var Materials = {
     {
       title: `Как изменить адрес origin репозитория в git?`,
       text: `<b>1) Первый способ задать url репозитория:</b><br>
-      <t>использовать команду: </t><code>git remote set-url origin</code><pre>, например:   </pre><br>
+      <t>использовать команду: </t><c>  git remote set-url origin  </c><br><t>например:</t><br>
       
-      <code>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</code><br><br>
+      <c>git remote set-url origin git@github.com:vicman-wi/wi-backend.git</c><br><br>
       
       <b>2) Второй способ:</b><br><t>
       
@@ -41,9 +41,15 @@ var Materials = {
     },
     {
       title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<c>git rm -r one-of-the-directories</c><br>
-      <c>git commit -m "Remove duplicated directory"</c><br>
-      <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
+      text: `
+      <b>Удаление отовсюду</b><br><br>
+      <c>git rm -r FolderName   </c><t>Удаляем директорию локально</t><br>
+      <c>git commit -m "Folder removed"   </c><t>Коммитим</t><br>
+      <c>git push origin <your-git-branch>   </c><t>Обычно</t><b>'master'</b><t>, но не всегда</t><br><br>
+      <b>Удаление только из удаленного репоз-я</b><br><br>
+      <c>git rm -r --cached FolderName   </c><t>Удаляем директорию локально</t><br>
+      <c>git commit -m "Folder removed"   </c><t>Коммитим</t><br>
+      <c>git push origin <your-git-branch>   </c><t>Обычно</t><b>'master'</b><t>, но не всегда</t><br><br>`,
       id: uuidv4(),
       tags: "",
       link:
