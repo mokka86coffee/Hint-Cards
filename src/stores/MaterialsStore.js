@@ -78,10 +78,11 @@ class MaterialsStore {
               );
             } else if (el.includes("br>")) {
               part = <br key={uuidv4()} />;
-            } else if (/(t|span)>/.test(el)) {
+            } else if (/(t|span|k)>/.test(el)) {
+              const isKomment = el.includes("k>");
               part = (
-                <span key={uuidv4()}>
-                  {el.replace(/<?(\/)?(span|t)>/g, " ")}
+                <span key={uuidv4()} className={isKomment ? "comment" : null}>
+                  {el.replace(/<?(\/)?(span|t|k)>/g, " ")}
                 </span>
               );
             } else if (el.includes("pre>")) {

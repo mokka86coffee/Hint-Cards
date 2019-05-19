@@ -45,11 +45,11 @@ var Materials = {
       <b>Удаление отовсюду</b><br><br>
       <c>git rm -r FolderName   </c><t>Удаляем директорию локально</t><br>
       <c>git commit -m "Folder removed"   </c><t>Коммитим</t><br>
-      <c>git push origin <your-git-branch>   </c><t>Обычно</t><b>'master'</b><t>, но не всегда</t><br><br>
+      <c>git push origin <your-git-branch>   </c><t>Отправляем на сервер. Обычно</t><b>'master'</b><t>, но не всегда</t><br><br>
       <b>Удаление только из удаленного репоз-я</b><br><br>
-      <c>git rm -r --cached FolderName   </c><t>Удаляем директорию локально</t><br>
+      <c>git rm -r --cached FolderName   </c><t>Удаляем директорию из удаленного репо</t><br>
       <c>git commit -m "Folder removed"   </c><t>Коммитим</t><br>
-      <c>git push origin <your-git-branch>   </c><t>Обычно</t><b>'master'</b><t>, но не всегда</t><br><br>`,
+      <c>git push origin <your-git-branch>   </c><t>Отправляем на сервер. Обычно</t><b>'master'</b><t>, но не всегда</t><br><br>`,
       id: uuidv4(),
       tags: "",
       link:
@@ -107,15 +107,15 @@ var Materials = {
       text: `
       <b>Работа с массивами</b><br><br>
       <c>_.each([1,2], function(elem,idx){</c><br>
-      <c>   console.log(elem) // 1, 2</c><br>
-      <c>   console.log(idx) // 0, 1</c><br>
+      <c>   console.log(elem)</c><k> // 1, 2</k><br>
+      <c>   console.log(idx)</c><k> // 0, 1</k><br>
       <c>})</c><br>
       <t>Возвращает переданный</t><b> массив</b>
       <br><br>
       <b>Работа с объектами</b><br><br>
       <c>_.each({a: 1, b: 'string'}, function(elem,key){</c><br>
-        <c>   console.log(elem) // 1, 'string'</c><br>
-        <c>   console.log(key) // 'a', 'b'</c><br>
+        <c>   console.log(elem) </c><k> // 1, 'string'</k><br>
+        <c>   console.log(key) </c><k> // 'a', 'b'</k><br>
       <c>})</c><br>
       <t>Возвращает переданный</t><b> объект</b>
       `,
@@ -127,22 +127,27 @@ var Materials = {
       title: `Метод zip`,
       text: `
       <b>Работа с массивами</b><br><br>
-      <c>_.each([1,2], function(elem,idx){</c><br>
-      <c>   console.log(elem) // 1, 2</c><br>
-      <c>   console.log(idx) // 0, 1</c><br>
+      <c>let arr = _.zip(['a', 'b'], [1, 2], [true, false]);</c><br>
+      <c>   console.log(arr) </c><k>// [['a', 1, true], ['b', 2, false]]</k><br>
       <c>})</c><br>
-      <t>Возвращает переданный</t><b> массив</b>
-      <br><br>
-      <b>Работа с объектами</b><br><br>
-      <c>_.each({a: 1, b: 'string'}, function(elem,key){</c><br>
-        <c>   console.log(elem) // 1, 'string'</c><br>
-        <c>   console.log(key) // 'a', 'b'</c><br>
-      <c>})</c><br>
-      <t>Возвращает переданный</t><b> объект</b>
+      <t>Возвращает собранный</t><b> массив</b>
       `,
       id: uuidv4(),
       tags: "",
-      link: "#"
+      link: "https://lodash.com/docs/4.17.11#zip"
+    },
+    {
+      title: `Метод zip`,
+      text: `
+      <b>Работа с массивами</b><br><br>
+      <c>let arr = _.zip(['a', 'b'], [1, 2], [true, false]);</c><br>
+      <c>   console.log(arr) </c><k>// [['a', 1, true], ['b', 2, false]]</k><br>
+      <c>})</c><br>
+      <t>Возвращает собранный</t><b> массив</b>
+      `,
+      id: uuidv4(),
+      tags: "",
+      link: "https://lodash.com/docs/4.17.11#zip"
     }
   ],
   zzzzzz: [
