@@ -45,10 +45,12 @@ class MaterialsStore {
         <>
           {textArr.map(el => {
             let part;
-            if (el.includes("{")) {
-              part = <b key={uuidv4()}>{el.replace(/[\{\}]/g, " ")}</b>;
-            } else if (el.includes("[")) {
-              part = <code key={uuidv4()}>{el.replace(/[\[\]]/g, " ")}</code>;
+            if (el.includes("<b>")) {
+              part = <b key={uuidv4()}>{el.replace(/<(\/)?b>/g, " ")}</b>;
+            } else if (el.includes("<code>")) {
+              part = (
+                <code key={uuidv4()}>{el.replace(/<(\/)?code>/g, " ")}</code>
+              );
             } else if (el.includes("<br>")) {
               part = el
                 .split("<br>")
