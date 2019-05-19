@@ -2,6 +2,7 @@ import { observable, action, computed, flow, decorate } from "mobx";
 import React from "react";
 import fetchMaterials from "./MaterialsInfo";
 import uuidv4 from "uuid/v4";
+import htmlentities from "./htmlEntities";
 
 class MaterialsStore {
   materials = {};
@@ -16,10 +17,10 @@ class MaterialsStore {
     return Object.keys(this.materials);
   }
 
-  findMaterials(title) {
-    this.transformText(title);
-    this.currentTheme = title;
-    this.currentMaterials = this.materials[title];
+  findMaterials(theme) {
+    this.transformText(theme);
+    this.currentTheme = theme;
+    this.currentMaterials = this.materials[theme];
   }
 
   searchInMaterials(word) {
@@ -37,8 +38,8 @@ class MaterialsStore {
     );
   }
 
-  transformText(title) {
-    let text = this.materials[title];
+  transformText(theme) {
+    let text = this.materials[theme];
     if (typeof text[0].text !== "string") {
       return;
     }
@@ -49,7 +50,7 @@ class MaterialsStore {
         if (~endPos) {
           let str = el.slice(endPos + 4);
           let code = el.slice(0, endPos);
-          code = window.htmlentities.encode(code);
+          code = htmlentities.encode(code);
           el = `<c>${code}</c>${str}`;
         }
         return el;
@@ -90,7 +91,7 @@ class MaterialsStore {
       );
       return { ...el, nodeText };
     });
-    this.materials[title] = materials;
+    this.materials[theme] = materials;
   }
 
   getFromLocalStorage() {
