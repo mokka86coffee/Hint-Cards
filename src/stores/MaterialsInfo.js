@@ -20,6 +20,7 @@ var Materials = {
             <span>Шаблон находится в </span><b>репозитории</b><span> (клик на красную кнопку  </span><b>link</b><span> внизу карточки)</span>
       `,
       id: uuidv4(),
+      tags: "",
       link: "https://github.com/mokka86coffee/Hint-Cards"
     }
   ],
@@ -35,6 +36,7 @@ var Materials = {
       
       Отредактировать файл </t><code>.git/config</code><t>  : секция </t><b>remote "origin"</b><t>,  параметр - </t><b>url</b>. `,
       id: uuidv4(),
+      tags: "",
       link: "https://jeka.by/ask/137/git-change-origin/"
     },
     {
@@ -43,6 +45,7 @@ var Materials = {
       <c>git commit -m "Remove duplicated directory"</c><br>
       <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     },
@@ -52,6 +55,7 @@ var Materials = {
       <c>git commit -m "Remove duplicated directory"</c><br>
       <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     },
@@ -61,6 +65,7 @@ var Materials = {
       <c>git commit -m "Remove duplicated directory"</c><br>
       <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     },
@@ -70,6 +75,7 @@ var Materials = {
       <c>git commit -m "Remove duplicated directory"</c><br>
       <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     },
@@ -79,6 +85,7 @@ var Materials = {
       <c>git commit -m "Remove duplicated directory"</c><br>
       <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     },
@@ -88,6 +95,7 @@ var Materials = {
       <c>git commit -m "Remove duplicated directory"</c><br>
       <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     },
@@ -97,6 +105,7 @@ var Materials = {
       <c>git commit -m "Remove duplicated directory"</c><br>
       <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     },
@@ -106,6 +115,7 @@ var Materials = {
       <c>git commit -m "Remove duplicated directory"</c><br>
       <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     },
@@ -115,6 +125,7 @@ var Materials = {
       <c>git commit -m "Remove duplicated directory"</c><br>
       <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     },
@@ -124,6 +135,7 @@ var Materials = {
       <c>git commit -m "Remove duplicated directory"</c><br>
       <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     },
@@ -133,6 +145,7 @@ var Materials = {
       <c>git commit -m "Remove duplicated directory"</c><br>
       <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     },
@@ -142,6 +155,7 @@ var Materials = {
       <c>git commit -m "Remove duplicated directory"</c><br>
       <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     },
@@ -151,6 +165,7 @@ var Materials = {
       <c>git commit -m "Remove duplicated directory"</c><br>
       <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     },
@@ -160,6 +175,7 @@ var Materials = {
       <c>git commit -m "Remove duplicated directory"</c><br>
       <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     }
@@ -171,6 +187,7 @@ var Materials = {
       <code>git commit -m "Remove duplicated directory"</code><br>
       <code>git push origin <your-git-branch></code>  typically  <b>'master'</b>, but not always`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     }
@@ -182,6 +199,7 @@ var Materials = {
       <code>git commit -m "Remove duplicated directory"</code><br>
       <code>git push origin <your-git-branch></code>  typically  <b>'master'</b>, but not always`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     }
@@ -193,6 +211,7 @@ var Materials = {
       <code>git commit -m "Remove duplicated directory"</code><br>
       <code>git push origin <your-git-branch></code>  typically  <b>'master'</b>, but not always`,
       id: uuidv4(),
+      tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
     }
@@ -202,6 +221,7 @@ var Materials = {
       title: `zzzzzzzzzzz`,
       text: `zzzzzzzzz`,
       id: uuidv4(),
+      tags: "",
       link: "zzzzzzzzzz"
     }
   ],
@@ -210,6 +230,7 @@ var Materials = {
       title: `zzzzzzzzzzz`,
       text: `zzzzzzzzz`,
       id: uuidv4(),
+      tags: "",
       link: "zzzzzzzzzz"
     }
   ],
@@ -218,6 +239,7 @@ var Materials = {
       title: `zzzzzzzzzzz`,
       text: `zzzzzzzzz`,
       id: uuidv4(),
+      tags: "",
       link: "zzzzzzzzzz"
     }
   ],
@@ -226,6 +248,7 @@ var Materials = {
       title: `zzzzzzzzzzz`,
       text: `zzzzzzzzz`,
       id: uuidv4(),
+      tags: "",
       link: "zzzzzzzzzz"
     }
   ]
