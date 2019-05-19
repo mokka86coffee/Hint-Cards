@@ -2,7 +2,7 @@
   position: absolute;
   bottom: 0;
   left: 50%;
-  transform: translateX(-50%) translateY(260px);
+  transform: translateX(-50%) translateY(360px);
 
   display: flex;
   flex-direction: column;
@@ -36,7 +36,8 @@
     box-shadow: 0 0 10px #000, inset 0 0 10px #000;
 
     & textarea {
-      height: 150px;
+      height: 250px;
+      width: 400px;
       margin-bottom: 20px;
       background: #000;
       border: none;

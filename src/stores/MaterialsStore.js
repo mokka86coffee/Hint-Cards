@@ -83,6 +83,7 @@ class MaterialsStore {
   getFromLocalStorage() {
     const data = localStorage.getItem("shortcodes");
     this.materials = JSON.parse(data);
+    this.currentTheme = Object.keys(this.materials)[0];
     this.findMaterials(this.currentTheme);
   }
 
