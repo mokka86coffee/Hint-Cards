@@ -140,7 +140,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     opacity: 0;
-    transition: 0.6s;
+    transition: all 0.6s, opacity 0s;
   }
 
   &:hover .wrap__nodeText,
@@ -150,6 +150,7 @@
     overflow-y: auto;
     padding-right: 10px;
     opacity: 1;
+    transition: all 0.6s;
   }
   &__rotated:hover .wrap__nodeText,
   &__rotated .wrap__nodeText {
