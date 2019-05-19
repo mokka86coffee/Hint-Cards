@@ -45,12 +45,12 @@ class SaveLocal extends React.Component {
 export default inject("MaterialsStore")(observer(SaveLocal));
 
 var placeholder = `{
-  &quot;Mine&quot;: [
+  "Mine": [
     {
-      &quot;title&quot;: &quot;Название поста&quot;,
-      &quot;text&quot;: &quot;&lt;b&gt;Жирный текст&lt;/b&gt;&lt;c&gt;ваш код&lt;/c&gt;&lt;t&gt;обычный текст&lt;/t&gt;&lt;br&gt;&lt;t&gt;со следующей&lt;/t&gt; &lt;b&gt;строки&lt;/b&gt;&quot;,
-      &quot;id&quot;: &quot;unique_id&quot;,
-      &quot;link&quot;: &quot;https://google.com&quot;
+      "title": "Название поста",
+      "text": "<b>Жирный текст</b><c>ваш код</c><t>обычный текст</t><br><t>со следующей</t> <b>строки</b>",
+      "id": "unique_id",
+      "link": "https://google.com"
     }
   ]
 }
