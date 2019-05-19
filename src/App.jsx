@@ -7,13 +7,7 @@ import AsideList from "./Components/AsideList/AsideList";
 import SearchField from "./Components/searchField/searchField";
 
 class App extends Component {
-  componentDidMount() {
-    this.props.UsersStore.fetchUsers();
-  }
-
   render() {
-    const { birds } = this.props.BirdsStore;
-
     return (
       <div className={styles.app}>
         <SearchField />
@@ -26,6 +20,4 @@ class App extends Component {
   }
 }
 
-// @inject('appUsersStore')
-// @observer
-export default inject("UsersStore", "BirdsStore")(observer(App));
+export default App;

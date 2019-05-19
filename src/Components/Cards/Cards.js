@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { inject, observer } from "mobx-react";
 import styles from "./Card.scss";
 import cx from "classnames";
@@ -91,4 +91,4 @@ class Card extends React.Component {
     });
   }
 }
-export default inject("UsersStore", "MaterialsStore")(observer(Card));
+export default inject("MaterialsStore")(observer(Card));

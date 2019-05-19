@@ -28,8 +28,8 @@ class MaterialsStore {
     }
 
     let materials = this.materials[this.currentTheme];
-    this.currentMaterials = materials.filter(el =>
-      RegExp(word, "i").test(el.text)
+    this.currentMaterials = materials.filter(
+      el => RegExp(word, "i").test(el.text) || RegExp(word, "i").test(el.title)
     );
   }
 
