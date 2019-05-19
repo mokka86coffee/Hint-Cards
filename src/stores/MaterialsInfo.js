@@ -51,129 +51,20 @@ var Materials = {
     },
     {
       title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<c>git rm -r one-of-the-directories</c><br>
-      <c>git commit -m "Remove duplicated directory"</c><br>
-      <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
-      id: uuidv4(),
-      tags: "",
-      link:
-        "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
-    },
-    {
-      title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<c>git rm -r one-of-the-directories</c><br>
-      <c>git commit -m "Remove duplicated directory"</c><br>
-      <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
-      id: uuidv4(),
-      tags: "",
-      link:
-        "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
-    },
-    {
-      title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<c>git rm -r one-of-the-directories</c><br>
-      <c>git commit -m "Remove duplicated directory"</c><br>
-      <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
-      id: uuidv4(),
-      tags: "",
-      link:
-        "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
-    },
-    {
-      title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<c>git rm -r one-of-the-directories</c><br>
-      <c>git commit -m "Remove duplicated directory"</c><br>
-      <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
-      id: uuidv4(),
-      tags: "",
-      link:
-        "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
-    },
-    {
-      title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<c>git rm -r one-of-the-directories</c><br>
-      <c>git commit -m "Remove duplicated directory"</c><br>
-      <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
-      id: uuidv4(),
-      tags: "",
-      link:
-        "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
-    },
-    {
-      title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<c>git rm -r one-of-the-directories</c><br>
-      <c>git commit -m "Remove duplicated directory"</c><br>
-      <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
-      id: uuidv4(),
-      tags: "",
-      link:
-        "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
-    },
-    {
-      title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<c>git rm -r one-of-the-directories</c><br>
-      <c>git commit -m "Remove duplicated directory"</c><br>
-      <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
-      id: uuidv4(),
-      tags: "",
-      link:
-        "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
-    },
-    {
-      title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<c>git rm -r one-of-the-directories</c><br>
-      <c>git commit -m "Remove duplicated directory"</c><br>
-      <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
-      id: uuidv4(),
-      tags: "",
-      link:
-        "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
-    },
-    {
-      title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<c>git rm -r one-of-the-directories</c><br>
-      <c>git commit -m "Remove duplicated directory"</c><br>
-      <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
-      id: uuidv4(),
-      tags: "",
-      link:
-        "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
-    },
-    {
-      title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<c>git rm -r one-of-the-directories</c><br>
-      <c>git commit -m "Remove duplicated directory"</c><br>
-      <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
-      id: uuidv4(),
-      tags: "",
-      link:
-        "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
-    },
-    {
-      title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<c>git rm -r one-of-the-directories</c><br>
-      <c>git commit -m "Remove duplicated directory"</c><br>
-      <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
-      id: uuidv4(),
-      tags: "",
-      link:
-        "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
-    },
-    {
-      title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<c>git rm -r one-of-the-directories</c><br>
-      <c>git commit -m "Remove duplicated directory"</c><br>
-      <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
-      id: uuidv4(),
-      tags: "",
-      link:
-        "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
-    },
-    {
-      title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<c>git rm -r one-of-the-directories</c><br>
-      <c>git commit -m "Remove duplicated directory"</c><br>
-      <c>git push origin <your-git-branch></c><pre>  typically </pre><b>'master'</b><t>, but not always</t>`,
+      text: `<c>
+      <div className={styles.asideList}>
+        <div className={styles.asideList__wrap}>
+          {getMaterialsThemes.map((theme, idx) => {
+            const style = currentTheme == theme ? styles.chosen : null;
+            return (
+              <h2 className={style} onClick={this.onClick} key={idx}>
+                {theme}
+              </h2>
+            );
+          })}
+        </div>
+      </div></c>
+      `,
       id: uuidv4(),
       tags: "",
       link:

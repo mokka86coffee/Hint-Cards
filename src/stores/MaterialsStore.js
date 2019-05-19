@@ -44,6 +44,19 @@ class MaterialsStore {
     }
 
     const materials = text.map(el => {
+      let codeArr = el.text.split("<c>").map(el => {
+        let endPos = el.indexOf("</c>");
+        if (~endPos) {
+          let str = el.slice(endPos + 4);
+          let code = el.slice(0, endPos);
+          code = window.htmlentities.encode(code);
+          el = `<c>${code}</c>${str}`;
+        }
+        return el;
+      });
+
+      el.text = codeArr.join("");
+
       let textArr = el.text.split("<");
       const nodeText = (
         <>
@@ -54,7 +67,7 @@ class MaterialsStore {
             } else if (/(c|code)>/.test(el)) {
               part = (
                 <code key={uuidv4()}>
-                  {el.replace(/<?(\/)?(c|code)>/g, " ")}
+                  {htmlentities.decode(el.replace(/<?(\/)?(c|code)>/g, " "))}
                 </code>
               );
             } else if (el.includes("br>")) {
