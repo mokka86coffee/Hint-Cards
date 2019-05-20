@@ -10,11 +10,24 @@ console.log(_.zip([1, 2, 3], [4, 5, 6], ["a", "b", "c"]));
 class Card extends React.Component {
   state = {
     chosenCard: null,
-    hoveredCard: null
+    hoveredCard: null,
+    theme: this.props.MaterialsStore.currentTheme
   };
 
   componentDidMount() {
     this.props.MaterialsStore.fetchMaterials();
+  }
+
+  static getDerivedStateFromProps({ MaterialsStore }, { theme }) {
+    if (MaterialsStore && MaterialsStore.currentTheme !== theme) {
+      return {
+        theme: MaterialsStore.currentTheme,
+        hoveredCard: null,
+        chosenCard: null
+      };
+    } else {
+      return null;
+    }
   }
 
   render() {
@@ -79,6 +92,6 @@ class Card extends React.Component {
     if (idx !== hoveredCard) {
       this.setState({ hoveredCard: +idx });
     }
-  }, 100);
+  }, 300);
 }
 export default inject("MaterialsStore")(observer(Card));

@@ -25,7 +25,7 @@
   @for $i from 1 through 11 {
     &:nth-child(#{$i}) {
       top: $i * 5px;
-      left: 40px + $i * 90;
+      left: 40px + $i * 130;
       z-index: $i;
     }
   }
@@ -49,9 +49,9 @@
 
   &__hovered {
     &:nth-child(n) {
-      max-width: 250px;
+      max-width: 220px;
       z-index: 20;
-      transform: translateZ(0);
+      transform: translateZ(0) translateX(-60px);
     }
   }
 
