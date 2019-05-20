@@ -7,7 +7,7 @@ import htmlentities from "./htmlEntities";
 class MaterialsStore {
   materials = {};
   currentMaterials = [];
-  currentTheme = "About";
+  currentTheme = "Lodash";
 
   get getMaterials() {
     return this.currentMaterials;
@@ -65,11 +65,7 @@ class MaterialsStore {
           {textArr.map(el => {
             let part;
             if (el.includes("b>")) {
-              part = (
-                <b key={uuidv4()}>
-                  {" " + el.replace(/<?(\/)?b>/g, " ") + " "}
-                </b>
-              );
+              part = <b key={uuidv4()}>{el.replace(/<?(\/)?b>/g, " ")}</b>;
             } else if (/(c|code)>/.test(el)) {
               part = (
                 <code key={uuidv4()}>

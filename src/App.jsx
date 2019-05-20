@@ -5,13 +5,14 @@ import styles from "./App.scss";
 import Cards from "./Components/Cards/Cards";
 import AsideList from "./Components/AsideList/AsideList";
 import SearchField from "./Components/searchField/searchField";
+import SearchFieldThrottle from "./Components/searchField/searchField_throttle";
 import SaveLocal from "./Components/SaveLocal/SaveLocal";
 
 class App extends Component {
   render() {
     return (
       <div className={styles.app}>
-        <SearchField />
+        <SearchFieldThrottle />
         <AsideList />
         <div className={styles.card__wrap}>
           <Cards />

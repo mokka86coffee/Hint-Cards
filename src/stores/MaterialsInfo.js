@@ -126,36 +126,66 @@ var Materials = {
     {
       title: `Debounce`,
       text: `
-      <b>Работа с массивами</b><br><br>
+      <t>Создание задержки перед выполнением функции методом <b>Debounce<br>
+      <t>Функция выполняется <b>после срабатывания<t>того события, после наступления которого прошло<b>заданное время<br>
       <c>
       import { debounce } from "lodash";
 
       class searchField extends React.Component {
-        debounceEvent(...args) {</c><k>// comments</k><c>
-          this.debouncedEvent = debounce(...args);
+        state = { value: '' }
+
+        debounceEvent(...args) {    </c><k> // Создаем доп. метод для</k> преобразования и захвата <b>event</b><k> по замыканию</k><c>
+          const debouncedEvent = debounce(...args);    </c><k> // Создаем</k><b>замыкание</b><k>из</k><b>debounce</b><k>для</k><b>fn</b><k>и</k><b>event</b></k><c>
           return e => {
-            e.persist();
-            return this.debouncedEvent(e);
+            e.persist();    </c><k> // Преобразуем </k><b>syntetic event  <k> (событие не сотрется сборщиком мусора)</k><c>
+            return debouncedEvent(e);    </c><k> // Запускаем созданное</k><b>debounce замыкание</b><c>
           };
         }
       
-        handleSearchInput = ({ target }) => {
-          this.props.MaterialsStore.searchInMaterials(target.value);
+        handleSearchInput = ({ target }) => {    </c><k> // Метод-обработчик создаем стандартным образом</k><c>
+          this.setState(value: target.value);
         };
         
         render() {
-          return (
-            <form onSubmit={this.searchInMaterials} className={styles.searchField}>
-              <input
-                onInput={this.debounceEvent(this.handleSearchInput, 300)}
-                onBlur={e => (this.ref.value = "")}
-              />
-            </form>
-          );
+          return <input onInput={this.debounceEvent(this.handleSearchInput, 300)}/> 
+                                      </c><k> // </k><b>debounce</b><k> принимает</k><b>функцию</b><k>и</k><b>время задержки</b><c>
         }
       }
       </c><br>
-      <t>Возвращает собранный</t><b> массив</b>
+      `,
+      id: uuidv4(),
+      tags: "",
+      link: "https://www.youtube.com/watch?v=KXao_qwl05k"
+    },
+    {
+      title: `Throttle`,
+      text: `
+      <t>Создание задержки перед выполнением функции методом </t><b>Throttle</b><br>
+      <t>Функция выполняется через </t><b>равные интервалы</b><t>  времени, в течении </t><b>постоянного срабатывания</b><t> события</t><br>
+      <c>
+      import { throttle } from "lodash";
+
+      class searchField extends React.Component {
+        state = { value: '' }
+
+        throttleEvent(...args) {    </c><k> // Создаем доп. метод для</k> преобразования и захвата <b>event</b><k> по замыканию</k><c>
+          const throttledEvent = throttle(...args);    </c><k> // Создаем</k><b>замыкание</b><k>из</k><b>throttle</b><k>для</k><b>fn</b><k>и</k><b>event</b></k><c>
+          return e => {
+            e.persist();    </c><k> // Преобразуем </k><b>syntetic event  <k> (событие не сотрется сборщиком мусора)</k><c>
+            return throttledEvent(e);    </c><k> // Запускаем созданное</k><b>throttle замыкание</b><c>
+          };
+        }
+      
+        handleSearchInput = ({ target }) => {    </c><k> // Метод-обработчик создаем стандартным образом</k><c>
+          this.setState(value: target.value);
+        };
+        
+        render() {
+          return <input onInput={this.throttleeEvent(this.handleSearchInput, 300)}/> 
+                                      </c><k> // </k><b>throttle</b><k> принимает</k><b>функцию</b><k>и</k><b>время задержки</b><c>
+        }
+      }
+      </c><br>
       `,
       id: uuidv4(),
       tags: "",
