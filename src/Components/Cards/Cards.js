@@ -3,16 +3,53 @@ import { inject, observer } from "mobx-react";
 import styles from "./Card.scss";
 import cx from "classnames";
 import _ from "lodash";
+import { debounce, throttle } from "lodash";
 
 console.log(_.zip([1, 2, 3], [4, 5, 6], ["a", "b", "c"]));
 
 class Card extends React.Component {
   state = {
-    chosenCard: null
+    chosenCard: null,
+    hoveredCard: null
   };
 
   componentDidMount() {
     this.props.MaterialsStore.fetchMaterials();
+  }
+
+  render() {
+    const { getMaterials } = this.props.MaterialsStore;
+
+    if (!getMaterials.length) {
+      return null;
+    }
+
+    const { chosenCard, hoveredCard } = this.state;
+
+    return getMaterials.map(({ title, nodeText, id, link }, idx) => {
+      const className = cx(
+        styles.card,
+        chosenCard === idx ? styles.card__rotated : null,
+        hoveredCard === idx ? styles.card__hovered : null
+      );
+
+      return (
+        <div
+          className={className}
+          key={id}
+          data-id={idx}
+          onDoubleClick={this.handleDblClick}
+          onMouseEnter={() => this.handleHover(idx)}
+        >
+          <button onClick={this.closeCard}>x</button>
+          <h2>{title}</h2>
+          <div className={styles.wrap__nodeText}>{nodeText}</div>
+          <a target="_blank" href={link}>
+            LINK
+          </a>
+        </div>
+      );
+    });
   }
 
   handleMouseMove = e => {
@@ -36,37 +73,12 @@ class Card extends React.Component {
 
   closeCard = e => this.setState({ chosenCard: null });
 
-  render() {
-    const { getMaterials } = this.props.MaterialsStore;
+  handleHover = debounce(idx => {
+    const { hoveredCard } = this.state;
 
-    if (!getMaterials.length) {
-      return null;
+    if (idx !== hoveredCard) {
+      this.setState({ hoveredCard: +idx });
     }
-
-    const { chosenCard } = this.state;
-
-    return getMaterials.map(({ title, nodeText, id, link }, idx) => {
-      const className = cx(
-        styles.card,
-        chosenCard === idx ? styles.card__rotated : null
-      );
-
-      return (
-        <div
-          className={className}
-          key={id}
-          data-id={idx}
-          onDoubleClick={this.handleDblClick}
-        >
-          <button onClick={this.closeCard}>x</button>
-          <h2>{title}</h2>
-          <div className={styles.wrap__nodeText}>{nodeText}</div>
-          <a target="_blank" href={link}>
-            LINK
-          </a>
-        </div>
-      );
-    });
-  }
+  }, 100);
 }
 export default inject("MaterialsStore")(observer(Card));
