@@ -14,9 +14,7 @@ class App extends Component {
       <div className={styles.app}>
         <SearchFieldThrottle />
         <AsideList />
-        <div className={styles.card__wrap}>
-          <Cards />
-        </div>
+        <Cards />
         <SaveLocal />
       </div>
     );

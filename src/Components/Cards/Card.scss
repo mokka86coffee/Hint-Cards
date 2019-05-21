@@ -1,6 +1,15 @@
+.card__wrap {
+  max-width: calc(100% - 170px);
+  box-sizing: border-box;
+  display: flex;
+  padding: 40px;
+  perspective: 500px;
+}
+
 .card {
   position: absolute;
   width: 18vw;
+  min-width: 14vw;
   max-width: 150px;
   height: 300px;
   margin-right: -11vw;
@@ -60,6 +69,7 @@
       left: 5vw;
       top: 10%;
       width: 58vw;
+      min-width: 900px;
       max-width: 58vw;
       height: 48vh;
       z-index: 21;
