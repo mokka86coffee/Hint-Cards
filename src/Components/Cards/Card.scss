@@ -17,7 +17,7 @@
   overflow: hidden;
   order: 2;
 
-  font-size: 13px;
+  font-size: 13.4px;
   line-height: 20px;
 
   border-radius: 10px;
@@ -115,6 +115,8 @@
   }
 
   & code {
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 14px;
     white-space: pre;
     color: #2196f3;
   }
