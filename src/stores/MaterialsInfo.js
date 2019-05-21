@@ -107,8 +107,8 @@ var Materials = {
       text: `
       <b>Работа с массивами</b><br><br>
       <c>_.each([1,2], function(elem,idx){</c><br>
-      <c>   console.log(elem)</c><k> // 1, 2</k><br>
-      <c>   console.log(idx)</c><k> // 0, 1</k><br>
+      <c>   console.log(</c>elem<c>) </c><k> // 1, 2</k><br>
+      <c>   console.log(idx) </c><k> // 0, 1</k><br>
       <c>})</c><br>
       <t>Возвращает переданный</t><b> массив</b>
       <br><br>

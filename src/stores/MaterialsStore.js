@@ -3,6 +3,7 @@ import React from "react";
 import fetchMaterials from "./MaterialsInfo";
 import uuidv4 from "uuid/v4";
 import htmlentities from "./htmlEntities";
+import styles from "../Components/Cards/Card.scss";
 
 class MaterialsStore {
   materials = {};
@@ -36,6 +37,14 @@ class MaterialsStore {
         RegExp(word, "i").test(el.title) ||
         RegExp(word, "i").test(el.tags)
     );
+  }
+
+  computeCommentClassName(el) {
+    let typeClassName = el.includes("k>") ? styles["comment"] : "";
+    typeClassName = el.includes("f>") ? styles["function"] : typeClassName;
+    typeClassName = el.includes("v>") ? styles["value"] : typeClassName;
+    console.log(typeClassName);
+    return typeClassName;
   }
 
   transformText(theme) {
@@ -74,11 +83,11 @@ class MaterialsStore {
               );
             } else if (el.includes("br>")) {
               part = <br key={uuidv4()} />;
-            } else if (/(t|span|k)>/.test(el)) {
-              const isKomment = el.includes("k>");
+            } else if (/(t|span|k|f|v)>/.test(el)) {
+              const className = this.computeCommentClassName(el);
               part = (
-                <span key={uuidv4()} className={isKomment ? "comment" : null}>
-                  {el.replace(/<?(\/)?(span|t|k)>/g, " ")}
+                <span key={uuidv4()} className={className}>
+                  {el.replace(/<?(\/)?(span|t|k|f|v)>/g, "")}
                 </span>
               );
             } else if (el.includes("pre>")) {
