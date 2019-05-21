@@ -62,7 +62,7 @@ class Card extends React.Component {
               data-id={idx}
               onDoubleClick={this.handleDblClick}
               onMouseOver={() => this.handleHover(idx)}
-              onMouseOut={this.debounceEvent(this.handleMouseOut, 400)}
+              onMouseOut={this.handleMouseOut}
             >
               <button onClick={this.closeCard}>x</button>
               <h2>{title}</h2>
@@ -100,7 +100,11 @@ class Card extends React.Component {
       clearTimeout(this.timeout);
       this.timeout = null;
     }
-    this.timeout = setTimeout(() => this.setState({ hoveredCard: null }), 100);
+
+    this.timeout = setTimeout(() => {
+      this.handleHover.cancel();
+      this.setState({ hoveredCard: null });
+    }, 0);
   };
 
   handleDblClick = ({ currentTarget }) => {

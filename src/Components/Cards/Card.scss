@@ -165,15 +165,21 @@
     overflow-y: auto;
     padding-right: 10px;
     opacity: 1;
-    transition: all 0.3s ease 0.3s;
+    transition: all 0.6s ease-in;
   }
-  &__rotated:hover .wrap__nodeText,
+
   &__rotated .wrap__nodeText {
     height: 85%;
+    // animation: makevisible .6s ease-in-out delay iteration-count direction fill-mode;
+    animation: makevisible 0.6s ease-in;
   }
 }
 
-@for $i from 1 through 5 {
-  h#{$i} {
+@keyframes makevisible {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
