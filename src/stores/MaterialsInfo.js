@@ -245,13 +245,23 @@ var Materials = {
       link: "https://www.youtube.com/watch?v=_bFXuLcXoXg"
     }
   ],
-  zzzzzz2: [
+  Node: [
     {
-      title: `zzzzzzzzzzz`,
-      text: `zzzzzzzzz`,
+      title: `NVM изменение версии`,
+      text: `
+      <c>nvm install 8.9.4
+
+      nvm ls-remote
+
+      nvm ls available
+
+      nvm use 8.9.4
+
+      nvm install v9.0.0 --reinstall-packages-from=8.9</c><t>By running the above, nvm will install Node.js version 9.0.0, the corresponding npm version, and reinstall the npm packages you had installed on the 8.9 version.</t>
+      `,
       id: uuidv4(),
       tags: "",
-      link: "zzzzzzzzzz"
+      link: "https://www.sitepoint.com/quick-tip-multiple-versions-node-nvm/"
     }
   ],
   zzzzzz3: [
