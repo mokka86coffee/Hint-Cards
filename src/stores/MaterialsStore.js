@@ -43,6 +43,7 @@ class MaterialsStore {
     let typeClassName = el.includes("k>") ? styles["comment"] : "";
     typeClassName = el.includes("f>") ? styles["function"] : typeClassName;
     typeClassName = el.includes("v>") ? styles["value"] : typeClassName;
+    typeClassName = el.includes("n>") ? styles["name"] : typeClassName;
     console.log(typeClassName);
     return typeClassName;
   }
@@ -83,11 +84,11 @@ class MaterialsStore {
               );
             } else if (el.includes("br>")) {
               part = <br key={uuidv4()} />;
-            } else if (/(t|span|k|f|v)>/.test(el)) {
+            } else if (/(t|span|k|f|v|n)>/.test(el)) {
               const className = this.computeCommentClassName(el);
               part = (
                 <span key={uuidv4()} className={className}>
-                  {el.replace(/<?(\/)?(span|t|k|f|v)>/g, "")}
+                  {el.replace(/<?(\/)?(span|t|k|f|v|n)>/g, "")}
                 </span>
               );
             } else if (el.includes("pre>")) {

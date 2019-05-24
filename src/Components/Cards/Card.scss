@@ -101,11 +101,17 @@
     }
 
     &.function {
-      color: #fff;
+      color: chocolate;
+      font-weight: bold;
+      font-size: 14px;
     }
 
     &.value {
-      color: #cacaca;
+      color: indianred;
+    }
+
+    &.name {
+      color: #cddc39;
     }
   }
 

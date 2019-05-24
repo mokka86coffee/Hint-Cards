@@ -129,13 +129,13 @@ var Materials = {
       <t>Создание задержки перед выполнением функции методом <b>Debounce<br>
       <t>Функция выполняется <b>после срабатывания<t>того события, после наступления которого прошло<b>заданное время<br>
       <c>
-      import { debounce } from "lodash";
+      <f>import <c>{ </c><n>debounce<c> } from "lodash";
 
-      class searchField extends React.Component {
-        state = { value: '' }
+      </c><f>class <n>searchField <f>extends <n>React.Component</c> {
+        </c><n>state</c> = { </c><v>value<c>: '' }
 
-        debounceEvent(...args) {    </c><k> // Создаем доп. метод для</k> преобразования и захвата <b>event</b><k> по замыканию</k><c>
-          const debouncedEvent = debounce(...args);    </c><k> // Создаем</k><b>замыкание</b><k>из</k><b>debounce</b><k>для</k><b>fn</b><k>и</k><b>event</b></k><c>
+        </c><n>debounceEvent<c>( </c><v>...args <c>) {    </c><k> // Создаем доп. метод для</k> преобразования и захвата <b>event</b><k> по замыканию</k><c>
+          </c><f>const <n>debouncedEvent = debounce(...args);    </c><k> // Создаем</k><b>замыкание</b><k>из</k><b>debounce</b><k>для</k><b>fn</b><k>и</k><b>event</b></k><c>
           return e => {
             e.persist();    </c><k> // Преобразуем </k><b>syntetic event  <k> (событие не сотрется сборщиком мусора)</k><c>
             return debouncedEvent(e);    </c><k> // Запускаем созданное</k><b>debounce замыкание</b><c>
