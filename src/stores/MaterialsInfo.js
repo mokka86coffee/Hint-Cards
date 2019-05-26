@@ -205,6 +205,24 @@ var Materials = {
       link: "https://lodash.com/docs/4.17.11#zip"
     },
     {
+      title: `Метод omit / pick`,
+      text: `
+      <b>Работа с объектами<br><br>
+      <t>Копирует все ( <b>кроме указанных / <b>только указанные ) <t>свойства переданного объекта соответственно
+      <br>
+      <br>
+      <c>let </c><n>object<c> = { </c><n>'a': <v>1, <n>'b': <v>'2', <n>'c': <v>3<c> };</c><br>
+      <n>_.omit<c> ( </c><n>object, <c> [ </c><v>'a', 'c'<c> ] );      </c><k>// => { 'b': 2 }<br>
+      <n>_.pick<c> ( </c><n>object, <c>[</c><v>'a', 'c'<c> ] );      </c><k>// => { 'a': 1, 'c': 3 }
+      <br>
+      <br>
+      <t>Возвращает новый</t><b> объект</b>
+      `,
+      id: uuidv4(),
+      tags: "",
+      link: "https://lodash.com/docs/4.17.11#zip"
+    },
+    {
       title: `import {noop, omit} from 'lodash'`,
       text: "",
       id: uuidv4(),
