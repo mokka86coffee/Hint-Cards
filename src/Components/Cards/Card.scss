@@ -106,6 +106,12 @@
       font-size: 14px;
     }
 
+    &.key {
+      color: tomato;
+      font-size: 12.8px;
+      font-weight: lighter;
+    }
+
     &.value {
       color: indianred;
     }

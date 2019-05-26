@@ -5,8 +5,6 @@ import cx from "classnames";
 import _ from "lodash";
 import { debounce, throttle } from "lodash";
 
-console.log(_.zip([1, 2, 3], [4, 5, 6], ["a", "b", "c"]));
-
 class Card extends React.Component {
   constructor(props) {
     super(props);
@@ -92,7 +90,7 @@ class Card extends React.Component {
   };
 
   handleMouseOut = e => {
-    if (!e.relatedTarget.contains(this.cardWrap.current)) {
+    if (!e.relatedTarget || !e.relatedTarget.contains(this.cardWrap.current)) {
       return;
     }
 
