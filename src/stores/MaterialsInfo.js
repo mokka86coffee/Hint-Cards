@@ -203,6 +203,13 @@ var Materials = {
       id: uuidv4(),
       tags: "",
       link: "https://lodash.com/docs/4.17.11#zip"
+    },
+    {
+      title: `import {noop, omit} from 'lodash'`,
+      text: '',
+      id: uuidv4(),
+      tags: '',
+      link: ''
     }
   ],
   Javascript: [
