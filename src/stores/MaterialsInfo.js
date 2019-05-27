@@ -289,10 +289,39 @@ var Materials = {
       link: "https://www.sitepoint.com/quick-tip-multiple-versions-node-nvm/"
     }
   ],
-  zzzzzz3: [
+  'Jest, Enzyme': [
     {
       title: `zzzzzzzzzzz`,
-      text: `zzzzzzzzz`,
+      text: `<c>
+      it('my fn mousemove', () => {
+          const fnFromProps = jest.fn();
+          const valueFromProps = 'valueFromProps';
+          const wrapper = shallow(
+              <Fn 
+                  fnFromProps={fnFromProps}
+                  valueFromProps={valueFromProps}
+              />
+          );
+          wrapper.find('p').simulate('mouseMove');
+          expect(fnFromProps).toHaveBeenCalledWith(valueFromProps);
+      });
+      
+
+      export class Fn extends React.Component{
+        handleMouseMove = () => {
+            const { fnFromProps = () => this.props.fnFromProps, valueFromProps } = this.props;
+            fnFromProps(valueFromProps)
+        }
+
+        render() {
+            return(
+                <div>
+                    <p onMouseMove={this.handleMouseMove}>sadasdasd</p>
+                </div>
+            ) 
+        }
+
+      }`,
       id: uuidv4(),
       tags: "",
       link: "zzzzzzzzzz"
