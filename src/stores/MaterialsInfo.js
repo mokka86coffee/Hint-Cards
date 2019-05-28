@@ -329,6 +329,15 @@ var Materials = {
     {
       title: "Usual",
       text: `
+        <b>Функция:<c>
+        export function fn(a, b, cb = () => {}) {
+          for (let i = 0; i < 3; i++) {
+            cb(a, b);
+          }
+          return a + b;
+        }</c>
+        <br>
+        <br>
         <c>import React from "react";
         import ReactDOM from "react-dom";
         import App, { fn } from "./App";
