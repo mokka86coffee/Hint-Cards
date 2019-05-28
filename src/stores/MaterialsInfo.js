@@ -333,28 +333,34 @@ var Materials = {
         import ReactDOM from "react-dom";
         import App, { fn } from "./App";
         import _ from "lodash";
-
+        
         it("renders without crashing", () => {
           const div = document.createElement("div");
           ReactDOM.render(<App />, div);
           ReactDOM.unmountComponentAtNode(div);
         });
-
+        
         describe("summ function should receive summ", () => {
           it("should return 5", () => {
             expect(fn(2, 3)).toEqual(5);
           });
-
+        
           it("have been called with 2,3", () => {
             const testFn = jest.fn();
             fn(2, 3, testFn);
             expect(testFn).toHaveBeenCalledWith(2, 3);
           });
-
+        
           it("have been called", () => {
             const testFn = jest.fn();
             fn(1, 2, testFn);
             expect(testFn).toHaveBeenCalled();
+          });
+        
+          it("have been called 3 times", () => {
+            const testFn = jest.fn();
+            fn(1, 2, testFn);
+            expect(testFn).toHaveBeenCalledTimes(3);
           });
         });</c>
       `,
