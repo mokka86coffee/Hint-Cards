@@ -351,7 +351,7 @@ var Materials = {
           ReactDOM.unmountComponentAtNode(div);
         });
 
-        describe("summ function should receive summ", () => {
+        describe("tests", () => {
           it("should return 5", () => {
             expect(fn(2, 3)).toEqual(5);
           });
@@ -378,9 +378,16 @@ var Materials = {
             const wrap = shallow(<App />);
             expect(wrap.find("a").text()).toBe("Learn React");
           });
+
+          it("Should return smth on mouseMove", () => {
+            const testFn = jest.fn();
+            const wrap = shallow(<App onMouseMove={testFn} />);
+            wrap.find("a").simulate("mouseMove");
+            expect(testFn).toHaveBeenCalled();
+          });
         });
-        </c>
-      `,
+
+      </c>`,
       id: uuidv4(),
       tags: "",
       link: ""
