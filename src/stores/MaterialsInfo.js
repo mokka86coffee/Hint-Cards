@@ -393,6 +393,76 @@ var Materials = {
       link: ""
     }
   ],
+  Troubles: [
+    {
+      title: `[js] types can only be used in a .ts file.`,
+      text: `
+      <t>Solved it with this steps:
+      <br>
+      <br>
+      <b>install  <t> the extension:<c>   Flow Language Support</c><br>
+      <b>disable  <t>the built-in<c>   TypeScript extension:</c>
+      <br>
+      <t>How to disable built-in TypeScript:
+      <br>
+      <br>
+      <t>go to <b>extensions<t> tab<br>
+      <b>search <t>for <c>@builtin TypeScript and JavaScript Language Features</c><br>
+      <t>click on <b>Disable`,
+      id: uuidv4(),
+      tags: "",
+      link: "zzzzzzzzzz"
+    },
+    {
+      title: `zzzzzzzzzzz`,
+      text: `zzzzzzzzz`,
+      id: uuidv4(),
+      tags: "",
+      link: "zzzzzzzzzz"
+    },
+    {
+      title: `zzzzzzzzzzz`,
+      text: `zzzzzzzzz`,
+      id: uuidv4(),
+      tags: "",
+      link: "zzzzzzzzzz"
+    },
+    {
+      title: `zzzzzzzzzzz`,
+      text: `zzzzzzzzz`,
+      id: uuidv4(),
+      tags: "",
+      link: "zzzzzzzzzz"
+    },
+    {
+      title: `zzzzzzzzzzz`,
+      text: `zzzzzzzzz`,
+      id: uuidv4(),
+      tags: "",
+      link: "zzzzzzzzzz"
+    },
+    {
+      title: `zzzzzzzzzzz`,
+      text: `zzzzzzzzz`,
+      id: uuidv4(),
+      tags: "",
+      link: "zzzzzzzzzz"
+    },
+    {
+      title: `zzzzzzzzzzz`,
+      text: `zzzzzzzzz`,
+      id: uuidv4(),
+      tags: "",
+      link: "zzzzzzzzzz"
+    },
+    {
+      title: `zzzzzzzzzzz`,
+      text: `zzzzzzzzz`,
+      id: uuidv4(),
+      tags: "",
+      link: "zzzzzzzzzz"
+    }
+  ],
   zzzzzz4: [
     {
       title: `zzzzzzzzzzz`,
