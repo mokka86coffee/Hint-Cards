@@ -394,68 +394,72 @@ var Materials = {
     },
     {
       title: 'spyOn',
-      text: `Hey buddy I know I'm a bit late here, but you were almost done without any changes besides how you spyOn. When you use the spy, you have two options: spyOn the App.prototype, or component component.instance().
+      text: `<t>Hey buddy I know I'm a bit late here, but you were almost done without any changes besides how you spyOn. <br>
+      When you use the spy, you have two options: spyOn the App.prototype, or component component.instance().<br>
 
-const spy = jest.spyOn(Class.prototype, "method")
+      <c>const spy = jest.spyOn(Class.prototype, "method")</c>
 
-The order of attaching the spy on the class prototype and rendering (shallow rendering) your instance is important.
+      <t>The order of attaching the spy on the class prototype and rendering (shallow rendering) your instance is important.
+      <br>
+      <c>const spy = jest.spyOn(App.prototype, "myClickFn");
+          const instance = shallow(<App />);
+      </c>
+      <b>The App.prototype<pre> bit on the first line there are what you needed to make things work.
+      A javascript  class doesn't have any of its methods until you instantiate it with new MyClass(), or you dip into the MyClass.prototype.
+      For your particular question, you just needed to spy on the App.prototype method myClickFn.
 
-const spy = jest.spyOn(App.prototype, "myClickFn");
-const instance = shallow(<App />);
-The App.prototype bit on the first line there are what you needed to make things work. A javascript  class doesn't have any of its methods until you instantiate it with new MyClass(), or you dip into the MyClass.prototype. For your particular question, you just needed to spy on the App.prototype method myClickFn.
+      <c>jest.spyOn(component.instance(), "method")
 
-jest.spyOn(component.instance(), "method")
+      const component = shallow(<App />);
+      const spy = jest.spyOn(component.instance(), "myClickFn");
+      This method requires a shallow/render/mount instance of a React.Component to be available. Essentially spyOn is just looking for something to hijack and shove into a jest.fn(). It could be:
 
-const component = shallow(<App />);
-const spy = jest.spyOn(component.instance(), "myClickFn");
-This method requires a shallow/render/mount instance of a React.Component to be available. Essentially spyOn is just looking for something to hijack and shove into a jest.fn(). It could be:
+      A plain object:
 
-A plain object:
+      const obj = {a: x => (true)};
+      const spy = jest.spyOn(obj, "a");
+      A class:
 
-const obj = {a: x => (true)};
-const spy = jest.spyOn(obj, "a");
-A class:
+      class Foo {
+          bar() {}
+      }
 
-class Foo {
-    bar() {}
-}
+      const nope = jest.spyOn(Foo, "bar");
+      // THROWS ERROR. Foo has no "bar" method.
+      // Only an instance of Foo has "bar".
+      const fooSpy = jest.spyOn(Foo.prototype, "bar");
+      // Any call to "bar" will trigger this spy; prototype or instance
 
-const nope = jest.spyOn(Foo, "bar");
-// THROWS ERROR. Foo has no "bar" method.
-// Only an instance of Foo has "bar".
-const fooSpy = jest.spyOn(Foo.prototype, "bar");
-// Any call to "bar" will trigger this spy; prototype or instance
+      const fooInstance = new Foo();
+      const fooInstanceSpy = jest.spyOn(fooInstance, "bar");
+      // Any call fooInstance makes to "bar" will trigger this spy.
+      Or a React.Component instance:
 
-const fooInstance = new Foo();
-const fooInstanceSpy = jest.spyOn(fooInstance, "bar");
-// Any call fooInstance makes to "bar" will trigger this spy.
-Or a React.Component instance:
+      const component = shallow(<App />);
+      /*
+      component.instance()
+      -> {myClickFn: f(), render: f(), ...etc}
+      */
+      const spy = jest.spyOn(component.instance(), "myClickFn");
+      Or a React.Component.prototype:
 
-const component = shallow(<App />);
-/*
-component.instance()
--> {myClickFn: f(), render: f(), ...etc}
-*/
-const spy = jest.spyOn(component.instance(), "myClickFn");
-Or a React.Component.prototype:
+      /*
+      App.prototype
+      -> {myClickFn: f(), render: f(), ...etc}
+      */
+      const spy = jest.spyOn(App.prototype, "myClickFn");
+      // Any call to "myClickFn" from any instance of App will trigger this spy.
+      I've used and seen both methods. When I have a beforeEach() or beforeAll() block, I might go with the first approach. If I just need a quick spy, I'll use the second. Just mind the order of attaching the spy.
 
-/*
-App.prototype
--> {myClickFn: f(), render: f(), ...etc}
-*/
-const spy = jest.spyOn(App.prototype, "myClickFn");
-// Any call to "myClickFn" from any instance of App will trigger this spy.
-I've used and seen both methods. When I have a beforeEach() or beforeAll() block, I might go with the first approach. If I just need a quick spy, I'll use the second. Just mind the order of attaching the spy.
+      EDIT: If you want to check the side effects of your myClickFn you can just invoke it in a separate test.
 
-EDIT: If you want to check the side effects of your myClickFn you can just invoke it in a separate test.
-
-const app = shallow(<App />);
-app.instance().myClickFn()
-/*
-Now assert your function does what it is supposed to do...
-eg.
-expect(app.state("foo")).toEqual("bar");
-*/`,
+      const app = shallow(<App />);
+      app.instance().myClickFn()
+      /*
+      Now assert your function does what it is supposed to do...
+      eg.
+      expect(app.state("foo")).toEqual("bar");
+      */</c>`,
       id: uuidv4(),
       tags: "",
       link: "https://stackoverflow.com/questions/44769404/jest-spyon-function-called"
@@ -482,11 +486,11 @@ expect(app.state("foo")).toEqual("bar");
       link: "zzzzzzzzzz"
     },
     {
-      title: `zzzzzzzzzzz`,
-      text: `zzzzzzzzz`,
+      title: `Setup Flow with Visual Studio Code`,
+      text: `When first time using flow, many people use it through terminal. This is fine but there is a better way to implement Flow to your workflow. Many modern text editors and IDEs like Visual Studio Code and Atom offer extension for Flow that runs the Flow checks every time for example a file is saved and displays the errors right at the editor.`,
       id: uuidv4(),
       tags: "",
-      link: "zzzzzzzzzz"
+      link: "https://codepulse.blog/setup-flow-with-visual-studio-code/"
     },
     {
       title: `zzzzzzzzzzz`,
@@ -531,7 +535,32 @@ expect(app.state("foo")).toEqual("bar");
       link: "zzzzzzzzzz"
     }
   ],
-  zzzzzz4: [
+  Flow: [
+    {
+      title: `Setup Flow with Visual Studio Code`,
+      text: `<t>When first time using flow, many people use it through terminal. This is fine but there is a better way to implement Flow to your workflow. Many modern text editors and IDEs like Visual Studio Code and Atom offer extension for Flow that runs the Flow checks every time for example a file is saved and displays the errors right at the editor.`,
+      id: uuidv4(),
+      tags: "",
+      link: "https://codepulse.blog/setup-flow-with-visual-studio-code/"
+    },
+    {
+      title: `zzzzzzzzzzz`,
+      text: `zzzzzzzzz`,
+      id: uuidv4(),
+      tags: "",
+      link: "zzzzzzzzzz"
+    }
+  ],
+  zzzzzz5: [
+    {
+      title: `zzzzzzzzzzz`,
+      text: `zzzzzzzzz`,
+      id: uuidv4(),
+      tags: "",
+      link: "zzzzzzzzzz"
+    }
+  ],
+  zzzzzz6: [
     {
       title: `zzzzzzzzzzz`,
       text: `zzzzzzzzz`,

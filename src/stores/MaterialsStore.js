@@ -8,7 +8,7 @@ import styles from "../Components/Cards/Card.scss";
 class MaterialsStore {
   materials = {};
   currentMaterials = [];
-  currentTheme = "Lodash";
+  currentTheme = "Jest, Enzyme";
 
   get getMaterials() {
     return this.currentMaterials;
