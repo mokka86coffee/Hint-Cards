@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactHTMLParser from 'react-html-parser';
 
 const code = `
 textArr.map(el => {
@@ -40,13 +41,15 @@ function computeCommentClassName(el) {
 }
 
 const operators = ['let', 'const', 'return'];
+const operatorsRegExp = new RegExp(`(${operators.join('|')})`,'g');
 
-export default function codeParser (code){
-    let arr = [];
+console.log(operatorsRegExp)
 
-    code.replace()
-
-    return code;
+function codeParser (code){
+    return code.replace(operatorsRegExp, '<sssss>$1</sssss>');
 }
 
-console.log(codeParser(code))
+
+console.log(
+    codeParser(code)
+)
