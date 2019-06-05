@@ -84,6 +84,8 @@ class MaterialsStore {
               );
             } else if (el.includes("br>")) {
               part = <br key={uuidv4()} />;
+            } else if (el.includes("pre>")) {
+              part = <pre key={uuidv4()}>{el.replace(/<?(\/)?pre>/g, "")}</pre>;
             } else if (/(t|span|k|f|v|n|y)>/.test(el)) {
               const className = this.computeCommentClassName(el);
               part = (
@@ -91,8 +93,6 @@ class MaterialsStore {
                   {el.replace(/<?(\/)?(span|t|k|f|v|n|y)>/g, "")}
                 </span>
               );
-            } else if (el.includes("pre>")) {
-              part = <pre key={uuidv4()}>{el.replace(/<?(\/)?pre>/g, "")}</pre>;
             } else {
               part = null;
             }
