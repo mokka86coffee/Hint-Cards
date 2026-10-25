@@ -1,4 +1,4 @@
-import { observable, action, computed, flow, decorate } from "mobx";
+import { makeObservable, observable, observableRef, action, computed, flow } from "mobx";
 import React from "react";
 import fetchMaterials from "./MaterialsInfo";
 import uuidv4 from "uuid/v4";
@@ -9,6 +9,22 @@ class MaterialsStore {
   materials = {};
   currentMaterials = [];
   currentTheme = "Jest, Enzyme";
+
+  constructor() {
+    // materials/currentMaterials хранят React-элементы (nodeText), поэтому только ссылка, без глубокой обсервабельности
+    makeObservable(this, {
+      materials: observableRef,
+      currentMaterials: observableRef,
+      currentTheme: observable,
+      getMaterials: computed,
+      getMaterialsThemes: computed,
+      findMaterials: action,
+      searchInMaterials: action,
+      transformText: action,
+      getFromLocalStorage: action,
+      fetchMaterials: flow
+    });
+  }
 
   get getMaterials() {
     return this.currentMaterials;
@@ -103,7 +119,7 @@ class MaterialsStore {
       );
       return { ...el, nodeText };
     });
-    this.materials[theme] = materials;
+    this.materials = { ...this.materials, [theme]: materials };
   }
 
   getFromLocalStorage() {
@@ -113,26 +129,14 @@ class MaterialsStore {
     this.findMaterials(this.currentTheme);
   }
 
-  fetchMaterials = flow(function*() {
+  *fetchMaterials() {
     if (localStorage.getItem("shortcodes")) {
       this.getFromLocalStorage();
     } else {
       this.materials = yield fetchMaterials();
       this.findMaterials(this.currentTheme);
     }
-  });
+  }
 }
 
-const store = decorate(MaterialsStore, {
-  materials: observable,
-  currentMaterials: observable,
-  currentTheme: observable,
-  getMaterials: computed,
-  getMaterialsThemes: computed,
-  findMaterials: action,
-  searchInMaterials: action,
-  transformText: action,
-  getFromLocalStorage: action
-});
-
-export default new store();
+export default new MaterialsStore();

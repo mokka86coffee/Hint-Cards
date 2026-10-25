@@ -53,7 +53,7 @@
 
   &::after {
     opacity: 0.2;
-    background: url("../../hacker.png") right bottom no-repeat/110px;
+    background: url("../../hacker.png") right bottom / 110px no-repeat;
   }
 
   &__hovered {

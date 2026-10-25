@@ -1,19 +1,17 @@
 import "./index.scss";
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./App.jsx";
 
-import DevTools from "mobx-react-devtools";
 import { configure } from "mobx";
-import { Provider } from "mobx-react";
+import { StoresProvider } from "./stores/StoresContext";
 
 import MaterialsStore from "./stores/MaterialsStore";
 
 configure({ enforceActions: "observed" });
 
-ReactDOM.render(
-  <Provider {...{ MaterialsStore }}>
+createRoot(document.getElementById("root")).render(
+  <StoresProvider {...{ MaterialsStore }}>
     <App />
-  </Provider>,
-  document.getElementById("root")
+  </StoresProvider>
 );

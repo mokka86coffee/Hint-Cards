@@ -1,5 +1,6 @@
 import React from "react";
-import { inject, observer } from "mobx-react";
+import { observer } from "mobx-react";
+import { inject } from "../../stores/StoresContext";
 import styles from "./SaveLocal.scss";
 import cx from "classnames";
 

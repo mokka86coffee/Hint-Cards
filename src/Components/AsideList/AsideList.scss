@@ -11,6 +11,26 @@
   border-radius: 100px;
   box-shadow: inset 11px -10px 20px #000;
 
+  // тень сверху и снизу: текст у краёв капсулы уходит под неё и чуть скрывается
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 80px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  &::before {
+    top: 0;
+    background: linear-gradient(to bottom, rgba(8, 8, 8, 0.95), rgba(30, 30, 30, 0.6) 45%, rgba(48, 48, 48, 0));
+  }
+  &::after {
+    bottom: 0;
+    background: linear-gradient(to top, rgba(4, 4, 4, 0.98), rgba(25, 25, 25, 0.6) 45%, rgba(48, 48, 48, 0));
+  }
+
   &__wrap {
     position: absolute;
     top: 0;
@@ -26,23 +46,39 @@
     flex-direction: column;
   }
 
+  // неоновый текст кнопок: тонкие заглавные с разрядкой, выбранная светится голубым, слева точка
   & h2 {
-    max-width: 58%;
-    padding: 10px 20px;
+    position: relative;
+    padding: 6px 10px;
     text-align: center;
-    font-size: 18px;
-    color: #fff;
-    box-shadow: inset 0 0 10px #000;
-    border-radius: 11px;
+    max-width: 128px;
+    font: 300 10px "Unbounded", sans-serif;
+    line-height: 1.6;
+    letter-spacing: 0.16em;   // длинные названия (JEST, ENZYME) не вылезают за края капсулы — переносятся по словам
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.38);
+    text-shadow: none;
     cursor: pointer;
-    transition: all 0.6s;
-    font-family: "BenchNine", sans-serif;
-    text-shadow: 1px 1px 1px #000;
+    transition: all 0.35s;
     &:hover:not(.chosen) {
-      background-color: rgba(108, 188, 253, 0.801);
+      color: rgba(255, 255, 255, 0.85);
+      letter-spacing: 0.2em;
     }
     &.chosen {
-      background-color: #2196f3;
+      color: #e9f6ff;
+      text-shadow: 0 0 6px #6cbcfd, 0 0 18px #2d9bd8, 0 0 34px rgba(45, 155, 216, 0.6);
+      &::before {
+        content: "";
+        position: absolute;
+        left: -10px;
+        top: 50%;
+        width: 5px;
+        height: 5px;
+        margin-top: -2.5px;
+        border-radius: 50%;
+        background: #6cbcfd;
+        box-shadow: 0 0 10px #6cbcfd;
+      }
     }
   }
 }

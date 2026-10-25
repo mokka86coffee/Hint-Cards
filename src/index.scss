@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Alegreya+Sans+SC:300&display=swap");
 @import url("https://fonts.googleapis.com/css?family=BenchNine:300|Caveat&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Unbounded:wght@300&display=swap");
 body {
   width: 100vw;
   overflow: hidden;
@@ -12,7 +13,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background: url("./bg.jpg") center center no-repeat fixed / cover;
+  background: #141414 url("./bg.svg") center center / cover no-repeat fixed;
 }
 
 ::-webkit-scrollbar-button {
