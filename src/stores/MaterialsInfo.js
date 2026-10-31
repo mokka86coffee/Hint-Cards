@@ -79,14 +79,197 @@ var Materials = {
   ],
   "React hooks": [
     {
-      title: `Как удалить директорию локально и из удаленного репо?`,
-      text: `<code>git rm -r one-of-the-directories</code><br>
-      <code>git commit -m "Remove duplicated directory"</code><br>
-      <code>git push origin <your-git-branch></code>  typically  <b>'master'</b>, but not always`,
+      title: `useEffectEvent · React 19.2`,
+      text: `
+      <b>React 19.2+</b><t>— лечит stale closure и лишние перезапуски эффекта</t><br><br>
+      <t>Задача: переподключаться к чату при смене roomId, но</t><b>не</b><t>при смене theme</t><br><br>
+      <f>const</f><c> </c><n>onConnected</n><c> = </c><n>useEffectEvent</n><c>(() => {</c><br>
+      <c>  </c><n>showNotification</n><c>(</c><v>'Подключено'</v><c>, </c><n>theme</n><c>);</c><k>  // всегда свежая theme</k><br>
+      <c>});</c><br><br>
+      <n>useEffect</n><c>(() => {</c><br>
+      <c>  </c><f>const</f><c> </c><n>conn</n><c> = </c><n>createConnection</n><c>(</c><n>roomId</n><c>);</c><br>
+      <c>  </c><n>conn</n><c>.</c><n>on</n><c>(</c><v>'connected'</v><c>, () => </c><n>onConnected</n><c>());</c><br>
+      <c>  </c><n>conn</n><c>.</c><n>connect</n><c>();</c><br>
+      <c>  </c><y>return</y><c> () => </c><n>conn</n><c>.</c><n>disconnect</n><c>();</c><br>
+      <c>}, [roomId]);</c><k>  // theme в зависимостях не нужна</k><br><br>
+      <b>Правила:</b><t>вызывать только из эффектов, не передавать в другие компоненты, не класть в зависимости</t>
+      `,
       id: uuidv4(),
-      tags: "",
-      link:
-        "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
+      tags: "useEffectEvent 19.2 stale closure зависимости",
+      link: "https://react.dev/reference/react/useEffectEvent"
+    },
+    {
+      title: `use · React 19`,
+      text: `
+      <b>React 19+</b><t>— читает промис или контекст прямо в рендере</t><br><br>
+      <f>function</f><c> </c><n>Comments</n><c>({ </c><n>commentsPromise</n><c> }) {</c><br>
+      <c>  </c><f>const</f><c> </c><n>comments</n><c> = </c><n>use</n><c>(</c><n>commentsPromise</n><c>);</c><k>  // ждёт через Suspense</k><br>
+      <c>  </c><y>return</y><c> </c><n>comments</n><c>.</c><n>map</n><c>(</c><n>renderComment</n><c>);</c><br>
+      <c>}</c><br><br>
+      <f>if</f><c> (</c><n>show</n><c>) {</c><br>
+      <c>  </c><f>const</f><c> </c><n>theme</n><c> = </c><n>use</n><c>(</c><n>ThemeContext</n><c>);</c><k>  // можно внутри if — в отличие от useContext</k><br>
+      <c>}</c><br><br>
+      <b>Важно:</b><t>промис создают</t><b>вне рендера</b><t>(в серверном компоненте, кэше или родителе). Новый промис на каждый рендер = бесконечная загрузка. В try/catch use не вызывают — ошибки ловит Error Boundary</t>
+      `,
+      id: uuidv4(),
+      tags: "use 19 suspense промис контекст",
+      link: "https://react.dev/reference/react/use"
+    },
+    {
+      title: `useActionState · React 19`,
+      text: `
+      <b>React 19+</b><t>— состояние формы + отправка + флаг загрузки в одном хуке</t><br><br>
+      <f>async</f><c> </c><f>function</f><c> </c><n>addToCart</n><c>(</c><n>prevState</n><c>, </c><n>formData</n><c>) {</c><br>
+      <c>  </c><f>const</f><c> </c><n>res</n><c> = </c><f>await</f><c> </c><n>api</n><c>.</c><n>add</n><c>(</c><n>formData</n><c>.</c><n>get</n><c>(</c><v>'id'</v><c>));</c><br>
+      <c>  </c><y>return</y><c> </c><n>res</n><c>.</c><n>ok</n><c> ? </c><v>'Добавлено'</v><c> : </c><v>'Ошибка'</v><c>;</c><br>
+      <c>}</c><br><br>
+      <c>const [message, formAction, isPending] =</c><br>
+      <c>  </c><n>useActionState</n><c>(</c><n>addToCart</n><c>, </c><f>null</f><c>);</c><br><br>
+      <c><form action={formAction}></c><br><br>
+      <t>Функция получает</t><b>предыдущее состояние</b><t>и formData, её результат становится новым state.</t><br>
+      <t>В ранних canary назывался</t><n>ReactDOM</n><c>.</c><n>useFormState</n>
+      `,
+      id: uuidv4(),
+      tags: "useActionState 19 форма action",
+      link: "https://react.dev/reference/react/useActionState"
+    },
+    {
+      title: `useOptimistic · React 19`,
+      text: `
+      <b>React 19+</b><t>— показать результат сразу, не дожидаясь сервера</t><br><br>
+      <c>const [optimisticLikes, addLike] = useOptimistic(</c><br>
+      <c>  </c><n>likes</n><c>,</c><br>
+      <c>  (</c><n>current</n><c>, </c><n>delta</n><c>) => </c><n>current</n><c> + </c><n>delta</n><br>
+      <c>);</c><br><br>
+      <f>async</f><c> </c><f>function</f><c> </c><n>like</n><c>() {</c><br>
+      <c>  </c><n>addLike</n><c>(</c><v>1</v><c>);</c><k>        // UI обновился мгновенно</k><br>
+      <c>  </c><f>await</f><c> </c><n>api</n><c>.</c><n>like</n><c>();</c><k>  // пока ждём — показываем оптимистичное</k><br>
+      <c>}</c><br><br>
+      <t>Вызывать внутри Action или startTransition. Когда действие закончилось, значение возвращается к настоящему</t><n>likes</n><t>— при ошибке «откат» происходит сам</t>
+      `,
+      id: uuidv4(),
+      tags: "useOptimistic 19 оптимистичный ui",
+      link: "https://react.dev/reference/react/useOptimistic"
+    },
+    {
+      title: `useFormStatus · React 19`,
+      text: `
+      <b>React 19+, импорт из react-dom</b><br><br>
+      <f>import</f><c> { </c><n>useFormStatus</n><c> } </c><f>from</f><c> </c><v>'react-dom'</v><c>;</c><br><br>
+      <f>function</f><c> </c><n>SubmitButton</n><c>() {</c><br>
+      <c>  </c><f>const</f><c> { </c><n>pending</n><c>, </c><n>data</n><c>, </c><n>method</n><c> } = </c><n>useFormStatus</n><c>();</c><br>
+      <c>  </c><y>return</y><c> (</c><br>
+      <c>    <button disabled={pending}>Отправить</button></c><br>
+      <c>  );</c><br>
+      <c>}</c><br><br>
+      <b>Подвох:</b><t>хук видит только</t><b>родительскую</b><t>form. Если вызвать его в том же компоненте, где рендерится form, pending всегда будет false. Поэтому кнопку выносят в отдельный компонент</t>
+      `,
+      id: uuidv4(),
+      tags: "useFormStatus 19 react-dom pending",
+      link: "https://react.dev/reference/react-dom/hooks/useFormStatus"
+    },
+    {
+      title: `useTransition · React 18 / 19`,
+      text: `
+      <b>React 18+</b><t>— пометить обновление как несрочное</t><br><br>
+      <c>const [isPending, startTransition] = useTransition();</c><br><br>
+      <f>function</f><c> </c><n>selectTab</n><c>(</c><n>tab</n><c>) {</c><br>
+      <c>  </c><n>startTransition</n><c>(() => {</c><br>
+      <c>    </c><n>setTab</n><c>(</c><n>tab</n><c>);</c><k>  // тяжёлый рендер можно прервать вводом</k><br>
+      <c>  });</c><br>
+      <c>}</c><br><br>
+      <t>Это не debounce: задержки нет, есть</t><b>приоритет.</b><t>Пока рендер идёт, на экране старый UI, isPending = true</t><br><br>
+      <b>React 19+:</b><t>в startTransition можно передать</t><b>async-функцию</b><t>(Action) — isPending держится до конца await</t>
+      `,
+      id: uuidv4(),
+      tags: "useTransition startTransition 18 19 приоритет",
+      link: "https://react.dev/reference/react/useTransition"
+    },
+    {
+      title: `useDeferredValue · React 18 / 19`,
+      text: `
+      <b>React 18+</b><t>— «отстающая» копия значения</t><br><br>
+      <c>const [query, setQuery] = useState('');</c><br>
+      <f>const</f><c> </c><n>deferredQuery</n><c> = </c><n>useDeferredValue</n><c>(</c><n>query</n><c>);</c><br><br>
+      <c><input value={query} onChange={...} /></c><k>  // мгновенно</k><br>
+      <c><SearchResults query={deferredQuery} /></c><k>  // догоняет в фоне</k><br><br>
+      <t>Ввод не тормозит: сначала рендер со старым deferredQuery, затем фоновый с новым, прерываемый следующим символом</t><br><br>
+      <b>React 19+:</b><t>второй аргумент</t><n>useDeferredValue</n><c>(</c><n>query</n><c>, </c><v>''</v><c>)</c><t>— начальное значение для первого рендера</t><br><br>
+      <t>Когда использовать: нет доступа к setState (значение пришло пропсом) — иначе useTransition</t>
+      `,
+      id: uuidv4(),
+      tags: "useDeferredValue 18 19 поиск ввод",
+      link: "https://react.dev/reference/react/useDeferredValue"
+    },
+    {
+      title: `useSyncExternalStore · React 18`,
+      text: `
+      <b>React 18+</b><t>— подписка на внешний стор без tearing</t><br><br>
+      <f>const</f><c> </c><n>isOnline</n><c> = </c><n>useSyncExternalStore</n><c>(</c><br>
+      <c>  </c><n>subscribe</n><c>,</c><k>                   // (callback) => unsubscribe</k><br>
+      <c>  () => </c><n>navigator</n><c>.</c><n>onLine</n><c>,</c><k>      // снимок на клиенте</k><br>
+      <c>  () => </c><f>true</f><k>                   // снимок при SSR</k><br>
+      <c>);</c><br><br>
+      <b>Tearing:</b><t>конкурентный рендер прерывается, стор меняется в паузе — и одни компоненты видят старое значение, другие новое. Хук гарантирует один снимок</t><br><br>
+      <b>Подвох:</b><t>getSnapshot должен возвращать</t><b>тот же объект,</b><t>если данные не менялись. Новый объект на каждый вызов → бесконечный ре-рендер</t>
+      `,
+      id: uuidv4(),
+      tags: "useSyncExternalStore 18 tearing redux zustand",
+      link: "https://react.dev/reference/react/useSyncExternalStore"
+    },
+    {
+      title: `useId · React 18`,
+      text: `
+      <b>React 18+</b><t>— уникальный id, одинаковый на сервере и клиенте</t><br><br>
+      <f>function</f><c> </c><n>Field</n><c>({ </c><n>label</n><c> }) {</c><br>
+      <c>  </c><f>const</f><c> </c><n>id</n><c> = </c><n>useId</n><c>();</c><br>
+      <c>  </c><y>return</y><c> (</c><br>
+      <c>    <></c><br>
+      <c>      <label htmlFor={id}>{label}</label></c><br>
+      <c>      <input id={id} aria-describedby={id + '-hint'} /></c><br>
+      <c>    </></c><br>
+      <c>  );</c><br>
+      <c>}</c><br><br>
+      <t>Счётчик</t><n>id</n><c>++</c><t>или Math.random() ломаются при SSR: id на сервере и клиенте не совпадут</t><br><br>
+      <b>Не для key в списках</b><t>— key берут из данных</t>
+      `,
+      id: uuidv4(),
+      tags: "useId 18 ssr accessibility label",
+      link: "https://react.dev/reference/react/useId"
+    },
+    {
+      title: `useInsertionEffect · React 18`,
+      text: `
+      <b>React 18+</b><t>— только для авторов CSS-in-JS библиотек</t><br><br>
+      <n>useInsertionEffect</n><c>(() => {</c><br>
+      <c>  </c><n>injectStyle</n><c>(</c><n>rule</n><c>);</c><k>  // вставить style до замеров layout</k><br>
+      <c>});</c><br><br>
+      <b>Порядок эффектов:</b><br>
+      <c>useInsertionEffect → useLayoutEffect → отрисовка → useEffect</c><br><br>
+      <t>Стили успевают попасть в DOM до того, как useLayoutEffect начнёт мерить элементы</t><br><br>
+      <t>Внутри нет доступа к refs и нельзя вызывать setState. В обычном коде — useEffect или useLayoutEffect</t>
+      `,
+      id: uuidv4(),
+      tags: "useInsertionEffect 18 css-in-js порядок эффектов",
+      link: "https://react.dev/reference/react/useInsertionEffect"
+    },
+    {
+      title: `Хуки и React 18: батчинг и StrictMode`,
+      text: `
+      <b>React 18+, createRoot</b><br><br>
+      <b>Автоматический батчинг:</b><t>несколько setState — один рендер везде, даже в setTimeout и промисах (раньше только в React-обработчиках)</t><br>
+      <n>setTimeout</n><c>(() => {</c><br>
+      <c>  </c><n>setCount</n><c>(</c><n>c</n><c> => </c><n>c</n><c> + </c><v>1</v><c>);</c><br>
+      <c>  </c><n>setFlag</n><c>(</c><n>f</n><c> => !</c><n>f</n><c>);</c><k>  // один рендер</k><br>
+      <c>});</c><br>
+      <t>Нужен немедленный рендер —</t><n>flushSync</n><c>(() => </c><n>setCount</n><c>(</c><v>1</v><c>))</c><br><br>
+      <b>StrictMode в dev:</b><t>эффект запускается так —</t><br>
+      <c>setup → cleanup → setup</c><br>
+      <t>Это проверка, что cleanup написан правильно. В продакшене один запуск</t>
+      `,
+      id: uuidv4(),
+      tags: "18 батчинг flushSync strictmode эффект дважды",
+      link: "https://react.dev/blog/2022/03/29/react-v18"
     }
   ],
   "React Mobx": [
@@ -268,6 +451,765 @@ var Materials = {
       id: uuidv4(),
       tags: "",
       link: "https://www.youtube.com/watch?v=_bFXuLcXoXg"
+    }
+  ],
+  "Event loop": [
+    {
+      title: `Один цикл event loop`,
+      text: `
+      <b>1.</b><t>Взять</t><b>одну</b><t>макрозадачу (setTimeout, клик, ответ сети) и выполнить</t><br>
+      <b>2.</b><t>Выполнить</t><b>все</b><t>микрозадачи, пока очередь не опустеет. Новые, добавленные по ходу, тоже сейчас</t><br>
+      <b>3.</b><t>Если пора — отрисовать кадр: requestAnimationFrame → стили → layout → paint</t><br>
+      <b>4.</b><t>Следующая макрозадача</t><br><br>
+      <b>«Если пора»:</b><t>экран 60 Гц обновляется раз в ~16,7 мс. За это время может пройти много макрозадач, а кадр будет один</t><br><br>
+      <c>|---- 16 мс ----|---- 16 мс ----|</c><br>
+      <c> [з][з][з]  🎨    [з][з]   🎨</c><br><br>
+      <t>Отрисовка чередуется с</t><b>макрозадачами,</b><t>а не с микрозадачами</t>
+      `,
+      id: uuidv4(),
+      tags: "event loop отрисовка кадр макрозадача микрозадача",
+      link: "https://javascript.info/event-loop"
+    },
+    {
+      title: `Микро- и макрозадачи`,
+      text: `
+      <b>Макрозадачи</b><t>(по одной за круг):</t><br>
+      <n>setTimeout</n><c>, </c><n>setInterval</n><c>, </c><n>MessageChannel</n><br>
+      <t>клик, ввод, ответ сети, сообщение WebSocket</t><br><br>
+      <b>Микрозадачи</b><t>(все сразу, до отрисовки):</t><br>
+      <n>promise</n><c>.</c><n>then</n><c> / </c><f>catch</f><c> / </c><n>finally</n><br>
+      <c>код после </c><f>await</f><br>
+      <n>queueMicrotask</n><c>(</c><n>fn</n><c>)</c><br><br>
+      <t>Тело async-функции</t><b>до первого await</b><t>выполняется синхронно</t>
+      `,
+      id: uuidv4(),
+      tags: "микрозадача макрозадача promise setTimeout await",
+      link: "https://javascript.info/microtask-queue"
+    },
+    {
+      title: `Порядок вывода: классика`,
+      text: `
+      <n>console</n><c>.</c><n>log</n><c>(</c><v>1</v><c>);</c><br>
+      <n>setTimeout</n><c>(() => </c><n>console</n><c>.</c><n>log</n><c>(</c><v>2</v><c>));</c><br>
+      <n>Promise</n><c>.</c><n>resolve</n><c>().</c><n>then</n><c>(() => </c><n>console</n><c>.</c><n>log</n><c>(</c><v>3</v><c>));</c><br>
+      <n>queueMicrotask</n><c>(() => </c><n>console</n><c>.</c><n>log</n><c>(</c><v>4</v><c>));</c><br>
+      <c>(</c><f>async</f><c> () => {</c><br>
+      <c>  </c><n>console</n><c>.</c><n>log</n><c>(</c><v>5</v><c>);</c><br>
+      <c>  </c><f>await</f><c> </c><f>null</f><c>;</c><br>
+      <c>  </c><n>console</n><c>.</c><n>log</n><c>(</c><v>6</v><c>);</c><br>
+      <c>})();</c><br>
+      <n>console</n><c>.</c><n>log</n><c>(</c><v>7</v><c>);</c><br><br>
+      <b>1 5 7 3 4 6 2</b><br><br>
+      <t>Синхронно: 1, 5 (тело async до await), 7</t><br>
+      <t>Микрозадачи по порядку постановки: 3, 4, 6</t><br>
+      <t>Макрозадача setTimeout: 2</t>
+      `,
+      id: uuidv4(),
+      tags: "порядок вывода собеседование",
+      link: "https://javascript.info/microtask-queue"
+    },
+    {
+      title: `then всегда асинхронный`,
+      text: `
+      <n>console</n><c>.</c><n>log</n><c>(</c><v>'старт'</v><c>);</c><br>
+      <f>let</f><c> </c><n>p</n><c> = </c><n>Promise</n><c>.</c><n>resolve</n><c>();</c><br>
+      <f>for</f><c> (</c><f>let</f><c> </c><n>i</n><c> = </c><v>0</v><c>; </c><n>i</n><c> < </c><v>3</v><c>; </c><n>i</n><c>++) {</c><br>
+      <c>  </c><n>console</n><c>.</c><n>log</n><c>(</c><v>'цикл'</v><c>, </c><n>i</n><c>);</c><br>
+      <c>  </c><n>p</n><c> = </c><n>p</n><c>.</c><n>then</n><c>(() => </c><n>console</n><c>.</c><n>log</n><c>(</c><v>'then'</v><c>, </c><n>i</n><c>));</c><br>
+      <c>}</c><br>
+      <n>console</n><c>.</c><n>log</n><c>(</c><v>'конец'</v><c>);</c><br><br>
+      <k>// старт, цикл 0, цикл 1, цикл 2, конец, then 0, then 1, then 2</k><br><br>
+      <t>Колбэк then</t><b>никогда</b><t>не вызывается синхронно, даже если промис уже готов.</t><br>
+      <t>Сначала весь синхронный код (весь цикл), потом очередь микрозадач.</t><br><br>
+      <t>Зачем: иначе код был бы то синхронным, то асинхронным (баги «Zalgo»)</t>
+      `,
+      id: uuidv4(),
+      tags: "then асинхронный zalgo",
+      link: "https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide"
+    },
+    {
+      title: `500 then и setTimeout`,
+      text: `
+      <f>let</f><c> </c><n>p</n><c> = </c><n>Promise</n><c>.</c><n>resolve</n><c>();</c><br>
+      <f>for</f><c> (</c><f>let</f><c> </c><n>i</n><c> = </c><v>0</v><c>; </c><n>i</n><c> < </c><v>500</v><c>; </c><n>i</n><c>++) {</c><br>
+      <c>  </c><n>p</n><c> = </c><n>p</n><c>.</c><n>then</n><c>(() => </c><n>console</n><c>.</c><n>log</n><c>(</c><n>i</n><c>));</c><br>
+      <c>}</c><br>
+      <n>setTimeout</n><c>(() => </c><n>console</n><c>.</c><n>log</n><c>(</c><v>'timeout'</v><c>));</c><br><br>
+      <k>// 0 … 499, и только потом timeout</k><br><br>
+      <t>Каждый then встаёт в очередь, когда выполнился предыдущий, — пока event loop ещё в шаге «все микрозадачи». Вся цепочка проходит за один заход, без отрисовки между шагами.</t><br><br>
+      <b>Стек не переполнится:</b><t>каждая микрозадача стартует с пустого стека</t><br>
+      <b>С var вместо let:</b><t>500 раз «500» — переменная одна на весь цикл</t>
+      `,
+      id: uuidv4(),
+      tags: "цепочка then let var",
+      link: "https://javascript.info/promise-chaining"
+    },
+    {
+      title: `Бесконечные микрозадачи вешают страницу`,
+      text: `
+      <f>function</f><c> </c><n>loop</n><c>() { </c><n>queueMicrotask</n><c>(</c><n>loop</n><c>); }</c><k>  // вкладка зависнет</k><br>
+      <f>function</f><c> </c><n>loop</n><c>() { </c><n>setTimeout</n><c>(</c><n>loop</n><c>); }</c><k>  // страница живая</k><br><br>
+      <t>Очередь микрозадач должна</t><b>опустеть</b><t>до отрисовки и следующей макрозадачи — а она не пустеет никогда (starvation).</t><br><br>
+      <b>Вывод:</b><t>тяжёлую работу дробят через</t><b>макрозадачи</b><t>(setTimeout, MessageChannel, scheduler.yield()). Так React-планировщик уступает поток браузеру.</t>
+      `,
+      id: uuidv4(),
+      tags: "queueMicrotask starvation зависание",
+      link: "https://developer.mozilla.org/en-US/docs/Web/API/Window/queueMicrotask"
+    },
+    {
+      title: `Ответ сервера — это макрозадача`,
+      text: `
+      <b>1.</b><n>fetch</n><c>(</c><n>url</n><c>)</c><t>— JS только отдаёт запрос браузеру и получает промис</t><br>
+      <b>2.</b><t>Ожидание идёт</t><b>вне JS,</b><t>в сетевом потоке браузера</t><br>
+      <b>3.</b><t>Event loop крутится дальше: клики, таймеры, кадры</t><br>
+      <b>4.</b><t>Ответ пришёл →</t><b>макрозадача</b><t>→ резолв промиса →</t><b>микрозадача</b><t>с вашим then / кодом после await</t><br><br>
+      <c>JS:   [fetch][клик][кадр][кадр][ответ → then]</c><br>
+      <c>Сеть:    └──── ждём сервер ────┘</c><br><br>
+      <f>const</f><c> </c><n>res</n><c> = </c><f>await</f><c> </c><n>fetch</n><c>(</c><n>url</n><c>);   </c><k>// ждём заголовки</k><br>
+      <f>const</f><c> </c><n>data</n><c> = </c><f>await</f><c> </c><n>res</n><c>.</c><n>json</n><c>();  </c><k>// ждём и разбираем тело</k>
+      `,
+      id: uuidv4(),
+      tags: "fetch сеть await ожидание",
+      link: "https://javascript.info/event-loop"
+    },
+    {
+      title: `Web Worker: считать, не мешая рендеру`,
+      text: `
+      <t>У воркера</t><b>свой поток и свой event loop.</b><t>Главный поток в это время рисует и отвечает на клики</t><br><br>
+      <f>const</f><c> </c><n>worker</n><c> = </c><f>new</f><c> </c><n>Worker</n><c>(</c><v>'/worker.js'</v><c>);</c><br>
+      <n>worker</n><c>.</c><n>postMessage</n><c>(</c><n>rawData</n><c>);</c><k>               // отдали работу</k><br>
+      <n>worker</n><c>.</c><n>onmessage</n><c> = (</c><n>e</n><c>) => </c><n>render</n><c>(</c><n>e</n><c>.</c><n>data</n><c>);</c><k>  // получили результат</k><br><br>
+      <b>Выносить:</b><t>fetch + JSON.parse больших ответов, сортировку и фильтры, markdown и подсветку кода, поисковый индекс, хеши и сжатие, картинки через OffscreenCanvas</t><br><br>
+      <b>Нельзя:</b><t>DOM, window, замеры размеров. Рендер (и React) — только главный поток</t><br><br>
+      <b>Подвохи:</b><br>
+      <t>postMessage</t><b>копирует</b><t>данные. Без копирования —</t><c>worker.postMessage(buf, [buf])</c><br>
+      <t>Старт воркера не бесплатный: выносить то, что дольше</t><b>~50 мс.</b><t>Короче — дробить через scheduler.yield()</t>
+      `,
+      id: uuidv4(),
+      tags: "web worker поток postMessage transferable",
+      link: "https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers"
+    }
+  ],
+  Promises: [
+    {
+      title: `Цепочка и веер`,
+      text: `
+      <t>then</t><b>не меняет</b><t>промис, а</t><b>возвращает новый</b><br><br>
+      <b>Цепочка</b><t>— каждый шаг ждёт предыдущий:</t><br>
+      <n>p</n><c> = </c><n>p</n><c>.</c><n>then</n><c>(...)</c><k>  // P0 → then0 → then1 → then2</k><br><br>
+      <b>Веер</b><t>— все висят на одном промисе:</t><br>
+      <n>p</n><c>.</c><n>then</n><c>(...); </c><n>p</n><c>.</c><n>then</n><c>(...); </c><n>p</n><c>.</c><n>then</n><c>(...)</c><br><br>
+      <t>С асинхронными шагами по 1 сек:</t><br>
+      <t>цепочка ≈ 3 сек, веер ≈ 1 сек</t><br><br>
+      <t>Последовательно сегодня пишут так:</t><br>
+      <f>for</f><c> (</c><f>const</f><c> </c><n>x</n><c> </c><f>of</f><c> </c><n>list</n><c>) { </c><f>await</f><c> </c><n>work</n><c>(</c><n>x</n><c>); }</c>
+      `,
+      id: uuidv4(),
+      tags: "цепочка веер then последовательно",
+      link: "https://javascript.info/promise-chaining"
+    },
+    {
+      title: `Порядок в очереди: цепочка уступает`,
+      text: `
+      <t>Подписчики промиса встают в очередь</t><b>разом,</b><t>когда он резолвится</t><br><br>
+      <b>Веер:</b><br>
+      <n>p</n><c>.</c><n>then</n><c>(веер1); </c><n>p</n><c>.</c><n>then</n><c>(веер2); </c><n>p</n><c>.</c><n>then</n><c>(веер3);</c><br>
+      <n>Promise</n><c>.</c><n>resolve</n><c>().</c><n>then</n><c>(</c><n>X</n><c>);</c><br>
+      <k>// веер1, веер2, веер3, X</k><br><br>
+      <b>Цепочка:</b><br>
+      <n>Promise</n><c>.</c><n>resolve</n><c>().</c><n>then</n><c>(ц1).</c><n>then</n><c>(ц2).</c><n>then</n><c>(ц3);</c><br>
+      <n>Promise</n><c>.</c><n>resolve</n><c>().</c><n>then</n><c>(</c><n>X</n><c>);</c><br>
+      <k>// ц1, X, ц2, ц3 — X вклинился</k><br><br>
+      <t>Две параллельные цепочки чередуются: A1, B1, A2, B2</t>
+      `,
+      id: uuidv4(),
+      tags: "очередь порядок цепочка веер",
+      link: "https://javascript.info/microtask-queue"
+    },
+    {
+      title: `Ошибка течёт только вниз`,
+      text: `
+      <t>Ошибка отклоняет только промис</t><b>своего</b><t>then. Вверх и вбок не идёт.</t><br><br>
+      <c>        </c><n>p</n><c> (успех)</c><br>
+      <c>       /         \\</c><br>
+      <c>  </c><n>a</n><c> (ошибка)   </c><n>b</n><c> (успех)</c><br><br>
+      <b>Цепочка</b><t>— одна длинная ветка: ошибка пропускает все then до ближайшего catch, после catch цепочка продолжается</t><br>
+      <b>Веер</b><t>— много коротких веток: падение одной не трогает соседей. Без своего catch будет Uncaught (in promise)</t><br><br>
+      <n>Promise</n><c>.</c><n>all</n><t>— как цепочка: первая ошибка роняет всё</t><br>
+      <n>Promise</n><c>.</c><n>allSettled</n><t>— как веер: статус каждой ветки</t>
+      `,
+      id: uuidv4(),
+      tags: "ошибка catch all allSettled",
+      link: "https://javascript.info/promise-error-handling"
+    },
+    {
+      title: `return промиса из then = +2 тика`,
+      text: `
+      <n>Promise</n><c>.</c><n>resolve</n><c>()</c><br>
+      <c>  .</c><n>then</n><c>(() => { </c><n>log</n><c>(</c><v>'A1'</v><c>); </c><y>return</y><c> </c><n>Promise</n><c>.</c><n>resolve</n><c>(); })</c><br>
+      <c>  .</c><n>then</n><c>(() => </c><n>log</n><c>(</c><v>'A2'</v><c>));</c><br>
+      <n>Promise</n><c>.</c><n>resolve</n><c>()</c><br>
+      <c>  .</c><n>then</n><c>(() => </c><n>log</n><c>(</c><v>'B1'</v><c>)).</c><n>then</n><c>(() => </c><n>log</n><c>(</c><v>'B2'</v><c>))</c><br>
+      <c>  .</c><n>then</n><c>(() => </c><n>log</n><c>(</c><v>'B3'</v><c>)).</c><n>then</n><c>(() => </c><n>log</n><c>(</c><v>'B4'</v><c>));</c><br><br>
+      <b>A1, B1, B2, B3, A2, B4</b><br><br>
+      <t>Возвращённый промис нужно «распаковать» — это 2 лишние микрозадачи: вызвать у него then и дождаться резолва.</t><br>
+      <t>С</t><y>return</y><c> </c><v>42</v><t>было бы: A1, B1, A2, B2, B3, B4</t>
+      `,
+      id: uuidv4(),
+      tags: "thenable распаковка тики",
+      link: "https://tc39.es/ecma262/#sec-newpromiseresolvethenablejob"
+    },
+    {
+      title: `Последовательно или параллельно`,
+      text: `
+      <b>Медленно</b><t>— независимые запросы по очереди, время складывается:</t><br>
+      <f>for</f><c> (</c><f>const</f><c> </c><n>id</n><c> </c><f>of</f><c> </c><n>ids</n><c>) {</c><br>
+      <c>  </c><f>await</f><c> </c><n>fetch</n><c>(</c><v>'/item/'</v><c> + </c><n>id</n><c>);</c><br>
+      <c>}</c><br><br>
+      <b>Быстро</b><t>— все уходят сразу, сеть ждёт их параллельно:</t><br>
+      <f>await</f><c> </c><n>Promise</n><c>.</c><n>all</n><c>(</c><n>ids</n><c>.</c><n>map</n><c>(</c><n>id</n><c> => </c><n>fetch</n><c>(</c><v>'/item/'</v><c> + </c><n>id</n><c>)));</c><br><br>
+      <t>Цепочку оставляют, только когда следующий запрос</t><b>зависит</b><t>от ответа предыдущего (сначала id пользователя, потом его заказы)</t>
+      `,
+      id: uuidv4(),
+      tags: "Promise.all await цикл тормозит",
+      link: "https://javascript.info/promise-api"
+    }
+  ],
+  Network: [
+    {
+      title: `Что происходит после Enter`,
+      text: `
+      <b>1. Разбор ввода:</b><t>адрес или поиск, подставить https, HSTS</t><br>
+      <b>2. DNS:</b><t>имя → IP</t><br>
+      <b>3. Соединение:</b><t>TCP-рукопожатие, затем TLS</t><br>
+      <b>4. HTTP:</b><t>GET / → 200 и HTML (приходит потоком)</t><br>
+      <b>5. Парсинг:</b><t>HTML → DOM, CSS → CSSOM, по пути новые запросы</t><br>
+      <b>6. Рендеринг:</b><t>layout → paint → composite</t><br>
+      <b>7. Экран,</b><t>дальше работает JS и event loop</t><br><br>
+      <t>Браузер начинает ещё</t><b>до Enter:</b><t>подсказки, заранее DNS и даже соединение</t>
+      `,
+      id: uuidv4(),
+      tags: "enter адресная строка собеседование",
+      link: "https://developer.mozilla.org/en-US/docs/Web/Performance/Guides/How_browsers_work"
+    },
+    {
+      title: `DNS: где ищется адрес`,
+      text: `
+      <t>От ближнего к дальнему, до первого найденного:</t><br>
+      <b>1.</b><t>кэш браузера</t><br>
+      <b>2.</b><t>кэш ОС и файл hosts</t><br>
+      <b>3.</b><t>роутер</t><br>
+      <b>4.</b><t>DNS провайдера (или 8.8.8.8, 1.1.1.1)</t><br><br>
+      <t>Если и там нет:</t><br>
+      <c>корень → «за .com отвечают те»</c><br>
+      <c>.com   → «за site.com отвечает тот»</c><br>
+      <c>site.com → «IP: 93.184.216.34»</c><br><br>
+      <t>Ответ кэшируется на</t><b>TTL.</b><t>Поэтому после смены IP одни видят новый сервер, другие — старый</t>
+      `,
+      id: uuidv4(),
+      tags: "dns ttl кэш",
+      link: "https://developer.mozilla.org/en-US/docs/Glossary/DNS"
+    },
+    {
+      title: `IP, пакет, порт, TCP, UDP`,
+      text: `
+      <b>IP-адрес</b><t>— адрес дома</t><br>
+      <b>Пакет</b><t>— письмо, ~1,4 КБ данных</t><br>
+      <b>IP</b><t>— небрежная почта: письма теряются, приходят не по порядку, дублируются</t><br>
+      <b>Порт</b><t>— номер квартиры, какая программа (443 — HTTPS)</t><br>
+      <b>TCP</b><t>— секретарь: нумерует, ждёт подтверждений (ACK), переотправляет потерянное, выдаёт всё по порядку</t><br>
+      <b>UDP</b><t>— без секретаря: быстро, без гарантий (звонки, игры, QUIC)</t><br><br>
+      <b>Рукопожатие TCP:</b><br>
+      <c>SYN → SYN-ACK → ACK</c>
+      `,
+      id: uuidv4(),
+      tags: "tcp udp ip порт пакет",
+      link: "https://hpbn.co/building-blocks-of-tcp/"
+    },
+    {
+      title: `Соединение, запрос, пакет`,
+      text: `
+      <b>Соединение</b><t>— телефонный звонок: открыли рукопожатием, линия живёт секунды и минуты</t><br>
+      <b>Запрос/ответ</b><t>— одна реплика в этом звонке</t><br>
+      <b>Пакеты</b><t>— кусочки, на которые режется каждая реплика</t><br><br>
+      <t>Соединение задают 4 числа:</t><br>
+      <c>мой IP : мой порт ↔ IP сервера : 443</c><br>
+      <t>Мой порт для каждого нового соединения свой — поэтому к одному серверу их может быть несколько</t><br><br>
+      <b>HTTP</b><t>— формат разговора («что и как сказать»)</t><br>
+      <b>TCP</b><t>— линия («как доставить»)</t>
+      `,
+      id: uuidv4(),
+      tags: "соединение запрос пакет звонок",
+      link: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview"
+    },
+    {
+      title: `Slow start и первые 14 КБ`,
+      text: `
+      <t>В начале соединения сервер шлёт</t><b>10 пакетов</b><t>без подтверждения: 10 × 1,4 КБ ≈</t><b>14 КБ</b><br>
+      <c>14 → 28 → 56 → 112 КБ ...</c><k>  // порция удваивается</k><br><br>
+      <b>Каждое новое соединение начинает с нуля</b><br><br>
+      <t>14 КБ сжатого текста ≈ 50–70 КБ HTML/CSS ≈</t><b>1–2 тысячи строк</b><br>
+      <t>Влезает: каркас HTML, критический CSS первого экрана, SVG-иконки</t><br>
+      <t>Не влезает: фото, шрифты, React (~45 КБ)</t><br><br>
+      <t>Это не лимит страницы, а самая быстрая порция — в неё кладут то, что нужно для первого экрана</t>
+      `,
+      id: uuidv4(),
+      tags: "slow start 14kb tcp оптимизация",
+      link: "https://hpbn.co/building-blocks-of-tcp/"
+    },
+    {
+      title: `HTTP/1.1, HTTP/2, HTTP/3`,
+      text: `
+      <b>HTTP/1.1:</b><t>по линии один файл за раз → браузер открывает до</t><b>6 соединений.</b><t>Открывает по мере находок в HTML. Каждое — своё рукопожатие и свой разгон</t><br><br>
+      <b>HTTP/2:</b><t>одно соединение, файлы вперемешку. Но TCP видит одну ленту байтов:</t><br>
+      <c>[css][js][ ✗ img ][css][js]</c><k>  // ждут все</k><br>
+      <b>head-of-line blocking</b><br><br>
+      <b>HTTP/3 (QUIC поверх UDP):</b><t>порядок держится отдельно для каждого файла, ждёт только картинка. Плюс быстрее рукопожатие и переживает смену Wi-Fi → мобильная сеть</t><br><br>
+      <t>Подсказать браузеру соединиться заранее:</t><br>
+      <c><link rel="preconnect" href="https://cdn.site.com"></c>
+      `,
+      id: uuidv4(),
+      tags: "http2 http3 quic head-of-line",
+      link: "https://hpbn.co/http2/"
+    },
+    {
+      title: `TLS (бывший SSL)`,
+      text: `
+      <b>Transport Layer Security</b><t>— шифрование поверх TCP, https и замочек</t><br><br>
+      <b>Тайна:</b><t>посторонние видят кашу байтов</t><br>
+      <b>Подлинность:</b><t>это правда site.com</t><br>
+      <b>Целостность:</b><t>подмену байта заметят</t><br><br>
+      <b>1.</b><t>Сервер показывает сертификат, подписанный доверенным центром</t><br>
+      <b>2.</b><t>Браузер проверяет подпись и имя</t><br>
+      <b>3.</b><t>Стороны вычисляют общий ключ — даже если их подслушивают</t><br>
+      <b>4.</b><t>Дальше всё шифруется</t><br><br>
+      <t>Балансировщик часто снимает TLS на входе, дальше запрос идёт по внутренней сети</t>
+      `,
+      id: uuidv4(),
+      tags: "tls ssl https сертификат",
+      link: "https://developer.mozilla.org/en-US/docs/Glossary/TLS"
+    },
+    {
+      title: `Картинка опоздала: layout shift`,
+      text: `
+      <t>CSS блокирует отрисовку, картинки —</t><b>нет.</b><t>Без размеров у img браузер даёт ей 0 px, а когда она приходит, всё ниже</t><b>прыгает</b><br><br>
+      <t>Резервируем место заранее:</t><br>
+      <c><img src="photo.jpg" width="800" height="600"></c><br>
+      <n>img</n><c> { </c><n>aspect</n><c>-</c><n>ratio</n><c>: </c><v>4</v><c> / </c><v>3</v><c>; </c><n>width</n><c>: </c><v>100</v><c>%; }</c><br><br>
+      <t>JS, который один раз измерил позиции до картинки, работает со старыми координатами. Лучше</t><n>IntersectionObserver</n><br><br>
+      <n>DOMContentLoaded</n><t>— HTML разобран, картинки могут быть в пути</t><br>
+      <n>load</n><t>— пришло всё</t><br><br>
+      <t>QUIC тут не поможет: это вопрос вёрстки, а не транспорта</t>
+      `,
+      id: uuidv4(),
+      tags: "cls layout shift img размеры",
+      link: "https://web.dev/articles/cls"
+    },
+    {
+      title: `JS в первых 14 КБ или готовый HTML`,
+      text: `
+      <b>Готовый HTML (SSR):</b><br>
+      <c>пришли байты → браузер сразу рисует</c><br>
+      <t>HTML рисуется потоком, кусок за куском</t><br><br>
+      <b>JS, который рисует по шаблону (CSR):</b><br>
+      <c>JS пришёл → разбор → выполнение → запрос данных → ответ → рисуем</c><br><br>
+      <b>1.</b><t>Скрипт выполняется только целиком — экран пока пустой</t><br>
+      <b>2.</b><t>Шаблону нужны данные — ещё одна поездка до сервера</t><br>
+      <b>3.</b><t>В 14 КБ мало влезает: React ~45 КБ, Preact ~4 КБ</t><br><br>
+      <b>Гибрид — гидратация:</b><t>сервер шлёт готовый HTML, JS догружается и «оживляет» кнопки. Так работают Next.js и Nuxt</t>
+      `,
+      id: uuidv4(),
+      tags: "ssr csr гидратация 14kb next",
+      link: "https://web.dev/articles/rendering-on-the-web"
+    }
+  ],
+  Server: [
+    {
+      title: `Путь запроса на сервере`,
+      text: `
+      <c>вы → [CDN] → [балансировщик] → [приложение] → [БД]</c><br><br>
+      <b>CDN</b><t>— копии файлов по миру, отвечает ближайший узел</t><br>
+      <b>Балансировщик / reverse proxy</b><t>(nginx) — принимает соединение, снимает TLS, раздаёт по серверам</t><br>
+      <b>Приложение</b><t>— роутинг (/users/42 → обработчик), авторизация, логика</t><br>
+      <b>Данные</b><t>— база, кэш (Redis), другие сервисы</t><br><br>
+      <t>Сервер «слушает» порт, TCP-рукопожатие делает</t><b>ОС</b><t>и складывает готовые соединения в очередь</t>
+      `,
+      id: uuidv4(),
+      tags: "cdn nginx балансировщик сервер",
+      link: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview"
+    },
+    {
+      title: `Поток на соединение или event loop`,
+      text: `
+      <t>Почти всё время запроса — это</t><b>ожидание</b><t>(база ~5 мс против ~0,1 мс работы)</t><br><br>
+      <b>Поток на соединение:</b><t>простой код, но ~1 МБ стека на поток, 10 000 спящих потоков — гигабайты (проблема C10K)</t><br><br>
+      <b>Event loop:</b><t>один поток, ОС будит при данных на любом сокете (epoll). Не ждёт, а идёт к следующему. Минус — тяжёлый расчёт держит всех</t><br><br>
+      <b>Гибриды:</b><br>
+      <t>Node / nginx — процесс на ядро, в каждом свой loop</t><br>
+      <t>Go — пишешь просто, горутины по несколько КБ, внутри event loop</t><br><br>
+      <t>Потоки нужны, чтобы</t><b>ждать</b><t>(тут loop лучше) и чтобы</t><b>считать на всех ядрах</b>
+      `,
+      id: uuidv4(),
+      tags: "c10k epoll node nginx go потоки",
+      link: "http://www.kegel.com/c10k.html"
+    },
+    {
+      title: `Гонки в однопоточном JS`,
+      text: `
+      <f>async</f><c> </c><f>function</f><c> </c><n>buy</n><c>() {</c><br>
+      <c>  </c><f>const</f><c> </c><n>balance</n><c> = </c><f>await</f><c> </c><n>getBalance</n><c>();</c><k>  // оба прочитали 100</k><br>
+      <c>  </c><f>if</f><c> (</c><n>balance</n><c> >= </c><v>100</v><c>) {</c><br>
+      <c>    </c><f>await</f><c> </c><n>setBalance</n><c>(</c><n>balance</n><c> - </c><v>100</v><c>);</c><k>  // оба списали</k><br>
+      <c>  }</c><br>
+      <c>}</c><br><br>
+      <t>Каждый</t><f>await</f><t>— граница макрозадач. Между «прочитал» и «записал» event loop берёт чужие запросы</t><br><br>
+      <b>Правило:</b><t>всё неделимое — без await посередине. Если без await никак, неделимость обеспечивает база</t><br><br>
+      <t>Гонка — это не про потоки, а про</t><b>щель между «прочитал» и «записал»</b>
+      `,
+      id: uuidv4(),
+      tags: "race condition гонка await",
+      link: "https://en.wikipedia.org/wiki/Race_condition"
+    },
+    {
+      title: `Атомарный UPDATE`,
+      text: `
+      <f>UPDATE</f><c> </c><n>accounts</n><c> </c><f>SET</f><c> </c><n>balance</n><c> = </c><n>balance</n><c> - </c><v>100</v><br>
+      <f>WHERE</f><c> </c><n>id</n><c> = </c><v>42</v><c> </c><f>AND</f><c> </c><n>balance</n><c> >= </c><v>100</v><c>;</c><br><br>
+      <t>Чтение, проверка и запись — одна команда. База блокирует строку, второй запрос ждёт и видит уже свежее значение:</t><br><br>
+      <c>A: 100 >= 100 ✓ → 0</c><br>
+      <c>B: ждал... 0 >= 100 ✗ → 0 строк</c><br><br>
+      <t>В коде смотрим число обновлённых строк: 1 — покупка прошла, 0 — денег не хватило</t>
+      `,
+      id: uuidv4(),
+      tags: "sql update атомарность блокировка",
+      link: "https://www.postgresql.org/docs/current/explicit-locking.html"
+    },
+    {
+      title: `Транзакции и FOR UPDATE`,
+      text: `
+      <b>Всё или ничего:</b><br>
+      <f>BEGIN</f><c>;</c><br>
+      <f>UPDATE</f><c> </c><n>accounts</n><c> </c><f>SET</f><c> </c><n>balance</n><c> = </c><n>balance</n><c> - </c><v>100</v><c> </c><f>WHERE</f><c> </c><n>id</n><c> = </c><v>'аня'</v><c>;</c><br>
+      <f>UPDATE</f><c> </c><n>accounts</n><c> </c><f>SET</f><c> </c><n>balance</n><c> = </c><n>balance</n><c> + </c><v>100</v><c> </c><f>WHERE</f><c> </c><n>id</n><c> = </c><v>'боря'</v><c>;</c><br>
+      <f>COMMIT</f><c>;</c><k>  // при ошибке — ROLLBACK, как будто ничего не было</k><br><br>
+      <t>Транзакция сама по себе</t><b>не спасает от гонки.</b><t>Строку запирают при чтении:</t><br>
+      <f>SELECT</f><c> </c><n>balance</n><c> </c><f>FROM</f><c> </c><n>accounts</n><c> </c><f>WHERE</f><c> </c><n>id</n><c> = </c><v>'аня'</v><c> </c><f>FOR</f><c> </c><f>UPDATE</f><c>;</c><br>
+      <t>Остальные ждут у двери до COMMIT</t><br><br>
+      <t>Вся инженерия — борьба с</t><b>гонками</b><t>и</t><b>обрывами:</b><t>не оставлять мир в полуготовом состоянии</t>
+      `,
+      id: uuidv4(),
+      tags: "транзакция for update rollback",
+      link: "https://www.postgresql.org/docs/current/explicit-locking.html"
+    },
+    {
+      title: `Оптимистичная блокировка`,
+      text: `
+      <t>Не запираем строку, а перед записью проверяем, что её никто не менял</t><br><br>
+      <f>SELECT</f><c> </c><n>balance</n><c>, </c><n>version</n><c> </c><f>FROM</f><c> </c><n>accounts</n><c> </c><f>WHERE</f><c> </c><n>id</n><c> = </c><v>42</v><c>;</c><k>  // version = 7</k><br>
+      <f>UPDATE</f><c> </c><n>accounts</n><c> </c><f>SET</f><c> </c><n>balance</n><c> = </c><v>0</v><c>, </c><n>version</n><c> = </c><n>version</n><c> + </c><v>1</v><br>
+      <f>WHERE</f><c> </c><n>id</n><c> = </c><v>42</v><c> </c><f>AND</f><c> </c><n>version</n><c> = </c><v>7</v><c>;</c><br><br>
+      <c>A: version 7 → ✓ (стала 8)</c><br>
+      <c>B: version 7 → 0 строк ✗ → перечитать и повторить</c><br><br>
+      <b>Пессимистичная</b><t>(FOR UPDATE) — конфликты частые: баланс, остатки на распродаже</t><br>
+      <b>Оптимистичная</b><t>— конфликты редкие: профиль, статья. «Документ изменён другим пользователем»</t>
+      `,
+      id: uuidv4(),
+      tags: "optimistic locking version конкурентность",
+      link: "https://en.wikipedia.org/wiki/Optimistic_concurrency_control"
+    },
+    {
+      title: `Балансировщик`,
+      text: `
+      <t>Один адрес сайта, много одинаковых копий приложения. Балансировщик — администратор в ресторане</t><br><br>
+      <c>                     ┌→ сервер 1 ✓</c><br>
+      <c>вы → [балансировщик] ├→ сервер 2 ✗ пропускаем</c><br>
+      <c>                     └→ сервер 3 ✓</c><br><br>
+      <b>Round robin</b><t>— по кругу: 1, 2, 3, 1…</t><br>
+      <b>Least connections</b><t>— кому меньше всего открытых соединений</t><br>
+      <b>IP hash</b><t>— один пользователь всегда на одном сервере</t><br><br>
+      <b>Health check:</b><t>регулярно спрашивает «ты жив?», упавший сервер выпадает из раздачи</t>
+      `,
+      id: uuidv4(),
+      tags: "балансировщик round robin health check",
+      link: "https://nginx.org/en/docs/http/load_balancing.html"
+    },
+    {
+      title: `nginx: конфиг`,
+      text: `
+      <t>Статика, reverse proxy, балансировка и HTTPS в одном конфиге:</t><br><br>
+      <f>upstream </f><n>app</n><c> {</c><br>
+      <c>    </c><f>server </f><v>10.0.0.1:3000</v><c>;</c><br>
+      <c>    </c><f>server </f><v>10.0.0.2:3000</v><c>;</c><k>   # least_conn; — наименее загруженному</k><br>
+      <c>}</c><br>
+      <f>server</f><c> {</c><br>
+      <c>    </c><f>listen </f><v>443 ssl</v><c>;</c><br>
+      <c>    </c><f>server_name </f><v>site.com</v><c>;</c><br>
+      <c>    </c><f>ssl_certificate </f><v>/etc/ssl/site.crt</v><c>;</c><br>
+      <c>    </c><f>location </f><v>/static/</v><c> { </c><f>root </f><v>/var/www</v><c>; }</c><k>  # файлы с диска</k><br>
+      <c>    </c><f>location </f><v>/api/</v><c> { </c><f>proxy_pass </f><v>http://app</v><c>; }</c><k>  # в приложение</k><br>
+      <c>}</c><br><br>
+      <t>Внутри — event loop: процесс на ядро, тысячи соединений в каждом</t>
+      `,
+      id: uuidv4(),
+      tags: "nginx upstream proxy_pass location reverse proxy",
+      link: "https://nginx.org/en/docs/beginners_guide.html"
+    }
+  ],
+  Queues: [
+    {
+      title: `Зачем очередь сообщений`,
+      text: `
+      <t>Регистрация: сохранить в базу, отправить письмо, сжать аватарку, сообщить аналитике</t><br><br>
+      <t>Сервер делает</t><b>только главное</b><t>(база), остальное кладёт задачами в очередь и сразу отвечает «готово». Воркеры разбирают очередь в своём темпе</t><br><br>
+      <c>сервер → [ очередь: 📧 🖼️ 📊 ] → воркеры</c><br><br>
+      <b>Быстрый ответ</b><t>— пользователь не ждёт медленное</t><br>
+      <b>Сбои</b><t>— почта упала, письма ждут в очереди</t><br>
+      <b>Пики</b><t>— 10 000 заказов встают в очередь, ничего не падает</t><br>
+      <b>Масштаб</b><t>— не успевают? Ещё воркеров</t><br><br>
+      <t>RabbitMQ, Kafka, Redis, SQS —</t><b>брокеры сообщений.</b><t>Это event loop в масштабе системы</t>
+      `,
+      id: uuidv4(),
+      tags: "очередь rabbitmq брокер воркер",
+      link: "https://www.rabbitmq.com/tutorials/tutorial-two-javascript"
+    },
+    {
+      title: `Воркер упал: ack`,
+      text: `
+      <t>Без подтверждений: выдали задачу → удалили → воркер упал →</t><b>задача потеряна</b><br><br>
+      <b>С ack:</b><br>
+      <b>1.</b><t>Задачу выдали, но не удалили: «жду подтверждения»</t><br>
+      <b>2.</b><t>Воркер</t><b>полностью</b><t>сделал работу → ack → удаляем</t><br>
+      <b>3.</b><t>ack не пришёл → задача уходит другому воркеру</t><br><br>
+      <c>очередь → 📧 → воркер 1 💥  (ack нет)</c><br>
+      <c>очередь → 📧 → воркер 2 ✓ ack → удалена</c><br><br>
+      <t>Падение брокер видит по оборванному TCP-соединению с воркером</t>
+      `,
+      id: uuidv4(),
+      tags: "ack подтверждение redelivery",
+      link: "https://www.rabbitmq.com/docs/confirms"
+    },
+    {
+      title: `Порядок задач не гарантирован`,
+      text: `
+      <t>А «создать заказ», Б «письмо о заказе»:</t><br>
+      <c>воркер 1 взял А 💥 → воркер 2 взял Б → заказа нет ✗</c><br>
+      <t>И без падений: несколько воркеров, Б просто быстрее</t><br><br>
+      <b>1. Цепочка:</b><t>в очередь кладут только А, воркер</t><b>после А</b><t>сам ставит Б (как цепочка промисов)</t><br>
+      <b>2. Один потребитель на ключ:</b><t>всё про заказ 42 — в один раздел, читается по порядку (Kafka partitions)</t><br>
+      <b>3. Отложить:</b><t>Б видит, что заказа нет, и возвращает себя в очередь с задержкой</t><br><br>
+      <t>Если Б зависит от А — это не две параллельные задачи, а одна цепочка</t>
+      `,
+      id: uuidv4(),
+      tags: "порядок зависимые задачи kafka partition",
+      link: "https://kafka.apache.org/documentation/#intro_concepts_and_terms"
+    },
+    {
+      title: `At most / at least / exactly once`,
+      text: `
+      <t>Воркер отправил письмо и упал</t><b>до ack</b><t>→ задачу отдадут снова →</t><b>письмо дважды</b><br><br>
+      <t>Между «сделал» и «подтвердил» всегда есть момент для падения. Выбираем, какая ошибка менее страшна:</t><br><br>
+      <b>At most once</b><t>— удалить сразу. Дублей нет, но можно потерять</t><br>
+      <b>At least once</b><t>— удалить после ack. Не теряем, но возможны дубли</t><br>
+      <b>Exactly once</b><t>— в общем виде недостижим</t><br><br>
+      <t>Та же щель, что в гонках: там «прочитал → записал», здесь «сделал → подтвердил»</t><br><br>
+      <b>Рецепт:</b><t>at least once + идемпотентность</t>
+      `,
+      id: uuidv4(),
+      tags: "at least once exactly once гарантии доставки дубли",
+      link: "https://www.rabbitmq.com/docs/reliability"
+    },
+    {
+      title: `Идемпотентность`,
+      text: `
+      <t>Повторное выполнение не меняет результат. У задачи уникальный id:</t><br><br>
+      <f>BEGIN</f><c>;</c><br>
+      <n>INSERT</n><c> </c><n>INTO</n><c> </c><n>processed</n><c> (</c><n>message_id</n><c>) </c><n>VALUES</n><c> (</c><v>'abc-123'</v><c>);</c><br>
+      <f>UPDATE</f><c> </c><n>accounts</n><c> </c><f>SET</f><c> </c><n>balance</n><c> = </c><n>balance</n><c> - </c><v>100</v><c> </c><f>WHERE</f><c> </c><n>id</n><c> = </c><v>42</v><c>;</c><br>
+      <f>COMMIT</f><c>;</c><br><br>
+      <t>id уже есть → ошибка уникальности → уже сделано, просто ack</t><br><br>
+      <b>Важно:</b><t>отметка «сделано» и работа —</t><b>в одной транзакции,</b><t>иначе снова щель «списал, но не записал»</t><br><br>
+      <b>Внешний сервис</b><t>(платёж, почта) — передаём ключ ему:</t><br>
+      <n>Idempotency</n><c>-</c><n>Key</n><c>: </c><n>abc</n><c>-</c><v>123</v><t>— тот же ключ дважды проведут один раз</t>
+      `,
+      id: uuidv4(),
+      tags: "идемпотентность idempotency key дубли",
+      link: "https://docs.stripe.com/api/idempotent_requests"
+    },
+    {
+      title: `RabbitMQ или Kafka`,
+      text: `
+      <b>RabbitMQ — почтовый ящик:</b><t>забрали, ack — сообщение удалено. Очередь = то, что ещё не обработано</t><br>
+      <b>Kafka — журнал:</b><t>сообщения дописываются в конец и хранятся дни и недели. Читатель помнит, до какой строки дочитал (offset)</t><br><br>
+      <c>RabbitMQ: [📧 📧 📧] → забрали → удалили</c><br>
+      <c>Kafka:    [0][1][2][3][4] ... каждый читатель на своём offset</c><br><br>
+      <b>RabbitMQ — для задач:</b><t>ack и повтор на каждое сообщение, задержки, приоритеты, dead letter queue, гибкая маршрутизация, проще в эксплуатации</t><br>
+      <b>Kafka — для событий:</b><t>много независимых читателей, огромные объёмы, перечитать историю, сверка (reconciliation)</t><br><br>
+      <t>Надёжность одинаково серьёзная. Дубли у Kafka те же: обработал и упал до сохранения offset → at least once → нужна идемпотентность</t>
+      `,
+      id: uuidv4(),
+      tags: "rabbitmq kafka журнал лог offset отличия",
+      link: "https://kafka.apache.org/documentation/#intro_concepts_and_terms"
+    },
+    {
+      title: `Kafka: разделы и ключ`,
+      text: `
+      <t>Тема делится на</t><b>разделы</b><t>— каждый отдельный журнал со своим порядком. Раздел выбирается по хешу</t><b>ключа</b><br><br>
+      <c>тема «платежи»:</c><br>
+      <c>  раздел 0: [счёт 42][счёт 17][счёт 42][счёт 42]</c><br>
+      <c>  раздел 1: [счёт 5 ][счёт 99][счёт 5 ]</c><br><br>
+      <b>Одинаковый ключ — всегда один раздел:</b><t>все операции счёта 42 строго по порядку, а разные разделы читаются параллельно</t><br><br>
+      <t>Порядок гарантирован</t><b>внутри ключа,</b><t>а не глобально. Банку это и нужно: важен порядок операций одного счёта</t><br><br>
+      <b>Правило:</b><t>читателей в группе не больше, чем разделов — лишний будет простаивать. Нужна параллельность — заранее больше разделов</t>
+      `,
+      id: uuidv4(),
+      tags: "kafka partition раздел ключ порядок",
+      link: "https://kafka.apache.org/documentation/#intro_concepts_and_terms"
+    },
+    {
+      title: `Kafka на примере банка`,
+      text: `
+      <t>Аня (счёт 42) → раздел 0, Боря (счёт 5) → раздел 1</t><br><br>
+      <b>1.</b><t>Аня +1000, кофе −300: оба события в разделе 0 по порядку. Баланс пока 0 — события ещё не прочитаны</t><br>
+      <b>2.</b><t>Проводки читают оба раздела параллельно: Аня 700, Боря 300. Если бы −300 пришло раньше +1000 — ушли бы в ноль</t><br>
+      <b>3.</b><t>Уведомления — другая группа читателей: тот же раздел со своего offset, Ане 2 пуша. События не удалены</t><br>
+      <b>4.</b><t>Такси −100: проводки списали и записали op4 в «проведённые» (одна транзакция), упали до сохранения offset</t><br>
+      <b>5.</b><t>Перезапуск: op4 пришло снова, но уже проведено → пропуск. Баланс 600, а не 500</t><br><br>
+      <b>Итог:</b><t>ключ → порядок, группы → независимые сервисы, offset + идемпотентность → без двойных списаний</t>
+      `,
+      id: uuidv4(),
+      tags: "kafka пример банк consumer group offset идемпотентность",
+      link: "https://claude.ai/artifact/KMf2shSfhoEy4QWB9eRYJS"
+    }
+  ],
+  Kubernetes: [
+    {
+      title: `Зачем Kubernetes`,
+      text: `
+      <t>Сотни микросервисов, у каждого несколько копий. Нужно решать: на каком сервере запустить, поднять упавшую копию, перенести всё со сгоревшего сервера, добавить копий под нагрузку, выкатить версию без простоя</t><br><br>
+      <b>Kubernetes (k8s)</b><t>делает это сам. Вы описываете</t><b>что хотите:</b><t>«проводки, 5 копий, по 1 ГБ памяти», а он решает</t><b>где и как</b><t>и постоянно следит, чтобы так и было</t><br><br>
+      <b>Декларативный подход:</b><t>описываем желаемое состояние, кубер бесконечно приводит реальность к нему</t>
+      `,
+      id: uuidv4(),
+      tags: "kubernetes k8s кубер микросервисы декларативный",
+      link: "https://kubernetes.io/docs/concepts/overview/"
+    },
+    {
+      title: `Нода, под, контейнер`,
+      text: `
+      <c>нода (сервер)</c><br>
+      <c> └── под (обёртка кубера)</c><br>
+      <c>      └── контейнер (ваш docker-образ, запущенный)</c><br><br>
+      <b>Нода</b><t>— сервер, где раньше вы делали docker run</t><br>
+      <b>Контейнер</b><t>— запущенный образ. Образ = установочный диск, контейнер = запущенная игра</t><br>
+      <b>Под</b><t>— минимальная единица кубера: один или несколько контейнеров с</t><b>общим IP</b><t>(видят друг друга как localhost), общими папками, живут и умирают вместе</t><br><br>
+      <t>Обычно в поде один контейнер. Второй —</t><b>sidecar,</b><t>например сборщик логов рядом с бэкендом</t><br><br>
+      <b>Поды временные:</b><t>их постоянно пересоздают, поэтому ничего важного «у себя» не храним — логи сразу вывозим, данные в базе и Kafka</t>
+      `,
+      id: uuidv4(),
+      tags: "pod node container sidecar под нода",
+      link: "https://kubernetes.io/docs/concepts/workloads/pods/"
+    },
+    {
+      title: `Service и Ingress`,
+      text: `
+      <t>IP пода временный — пересоздали, и адрес другой. Поэтому обращаются к</t><b>Service</b><br><br>
+      <c>уведомления → http://provodki → Service</c><br>
+      <c>                 ├→ под 10.1.0.7</c><br>
+      <c>                 ├→ под 10.1.0.9</c><br>
+      <c>                 └→ под 10.2.0.4</c><br><br>
+      <b>Service</b><t>— постоянное имя перед группой подов и встроенный балансировщик: знает, кто сейчас жив и готов</t><br>
+      <b>Ingress</b><t>— вход из интернета: «site.com/api → Service provodki». Часто это ingress-nginx с теми же location и proxy_pass</t><br><br>
+      <c>интернет → Ingress (nginx) → Service → поды → Kafka → другие поды</c>
+      `,
+      id: uuidv4(),
+      tags: "service ingress nginx балансировка кубер",
+      link: "https://kubernetes.io/docs/concepts/services-networking/service/"
+    },
+    {
+      title: `Deployment и самолечение`,
+      text: `
+      <n>kind</n><c>: </c><n>Deployment</n><br>
+      <n>spec</n><c>:</c><br>
+      <c>  </c><n>replicas</n><c>: </c><v>3</v><k>                 # хочу 3 копии</k><br>
+      <c>  </c><n>template</n><c>:</c><br>
+      <c>    </c><n>spec</n><c>:</c><br>
+      <c>      </c><n>containers</n><c>:</c><br>
+      <c>        - image: bank/provodki:1.4</c><br><br>
+      <b>Контроллер</b><t>— бесконечный цикл: сколько подов есть? сколько надо? не хватает — создаю. Упал под, сгорела нода — восстановит</t><br><br>
+      <b>Пробы:</b><br>
+      <b>liveness</b><t>— «ты жив?» Не отвечает несколько раз → перезапуск</t><br>
+      <b>readiness</b><t>— «готов принимать запросы?» Пока стартует и прогревается, Service не шлёт ему трафик</t>
+      `,
+      id: uuidv4(),
+      tags: "deployment replicas liveness readiness probe контроллер",
+      link: "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/"
+    },
+    {
+      title: `Rolling update и откат`,
+      text: `
+      <t>Меняем образ на</t><c>bank/provodki:1.5</c><t>— кубер обновляет постепенно:</t><br><br>
+      <c>[1.4] [1.4] [1.4] [1.5 стартует…]</c><br>
+      <c>[1.4] [1.4] [1.4] [1.5 ✓ готов]</c><k>   # readiness прошла</k><br>
+      <c>[1.4] [1.4] [1.5] [1.5 …]</c><k>        # один старый убран</k><br>
+      <c>[1.5] [1.5] [1.5]</c><br><br>
+      <t>Старый под убирается</t><b>только после</b><t>того, как новый прошёл readiness. Сломанная 1.5 не пройдёт её — выкатка встанет, 1.4 продолжит работать</t><br><br>
+      <c>kubectl rollout undo deployment/provodki</c><k>  # откат</k><br><br>
+      <b>Ловушка:</b><t>во время выкатки старая и новая версии работают</t><b>одновременно</b><t>— с одной базой и одними сообщениями Kafka</t>
+      `,
+      id: uuidv4(),
+      tags: "rolling update rollout undo откат релиз без простоя",
+      link: "https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/"
+    },
+    {
+      title: `Миграции без простоя: expand / contract`,
+      text: `
+      <t>Переименовать phone → phone_number одним релизом нельзя: во время rolling update старые поды пишут в phone, новые читают phone_number — данные разъезжаются, откат ломается</t><br><br>
+      <b>1. Expand:</b><t>миграция добавляет phone_number</t><br>
+      <b>2. Релиз A:</b><t>пишет в обе колонки, читает старую</t><br>
+      <b>3. Backfill:</b><t>фоном копируем старые строки phone → phone_number</t><br>
+      <b>4. Релиз B:</b><t>пишет в обе, читает новую</t><br>
+      <b>5. Релиз C:</b><t>только phone_number</t><br>
+      <b>6. Contract:</b><t>миграция удаляет phone</t><br><br>
+      <t>Рядом живут только соседние версии, и они понимают друг друга. Откат возможен на любом шаге</t><br><br>
+      <b>Сжать:</b><t>чтение</t><n>phone_number</n><c> ?? </c><n>phone</n><t>и feature flag вместо релиза → часто 2 релиза и 2 миграции. Просто</t><b>добавить</b><t>колонку можно одним релизом</t>
+      `,
+      id: uuidv4(),
+      tags: "expand contract миграция колонка rolling update совместимость",
+      link: "https://martinfowler.com/bliki/ParallelChange.html"
+    }
+  ],
+  Terminal: [
+    {
+      title: `Порт занят: EADDRINUSE`,
+      text: `
+      <f>Error:</f><c> listen </c><v>EADDRINUSE</v><c>: address already in use :::3000</c><br><br>
+      <t>На порту уже кто-то сидит — обычно забытый</t><n>npm</n><c> </c><v>start</v><t>в другом терминале</t><br><br>
+      <b>Убить того, кто слушает порт:</b><br>
+      <n>lsof</n><c> </c><f>-ti</f><c> </c><v>:3000</v><c> </c><f>-sTCP:LISTEN</f><c> </c><c>|</c><c> </c><n>xargs</n><c> </c><n>kill</n><br>
+      <n>lsof</n><c> </c><f>-ti</f><c> </c><v>:3000</v><c> </c><f>-sTCP:LISTEN</f><c> </c><c>|</c><c> </c><n>xargs</n><c> </c><n>kill</n><c> </c><v>-9</v><k>  // если не умирает</k><br><br>
+      <t>Или найти терминал с сервером и нажать</t><b>Ctrl+C</b><br><br>
+      <t>Без</t><f>-sTCP:LISTEN</f><t>вы получите и сервер, и клиентов (например, вкладку браузера на localhost) — поэтому PID бывает два</t>
+      `,
+      id: uuidv4(),
+      tags: "порт eaddrinuse kill lsof 3000 8080",
+      link: "https://ss64.com/mac/lsof.html"
+    },
+    {
+      title: `lsof — List Open Files`,
+      text: `
+      <t>В Unix</t><b>«всё есть файл»:</b><t>файлы, папки, сокеты, сетевые соединения. Поэтому lsof показывает и кто держит файл, и кто занял порт</t><br><br>
+      <n>lsof</n><c> </c><f>-i</f><c> </c><v>:3000</v><k>        // кто использует порт (таблица)</k><br>
+      <n>lsof</n><c> </c><f>-ti</f><c> </c><v>:3000</v><k>       // только PID</k><br>
+      <n>lsof</n><c> </c><f>-i</f><c> </c><v>:3000</v><c> </c><f>-sTCP:LISTEN</f><k>  // только сервер</k><br>
+      <n>lsof</n><c> </c><f>-p</f><c> </c><v>1789</v><k>         // все файлы и соединения процесса</k><br>
+      <n>lsof</n><c> </c><v>~/file.txt</v><k>      // кто держит файл (флешка «используется»)</k><br><br>
+      <b>В таблице:</b><t>COMMAND — программа,</t><b>LISTEN</b><t>— сервер,</t><b>ESTABLISHED</b><t>— подключение</t><br><br>
+      <b>Пайп:</b><n>lsof</n><c> </c><f>-ti</f><c> </c><v>:3000</v><c> </c><c>|</c><c> </c><n>xargs</n><c> </c><n>kill</n><br>
+      <t>lsof печатает PID → | передаёт вывод дальше → xargs подставляет его в kill</t>
+      `,
+      id: uuidv4(),
+      tags: "lsof порт pid xargs kill",
+      link: "https://ss64.com/mac/lsof.html"
     }
   ],
   Node: [
@@ -543,24 +1485,6 @@ var Materials = {
       tags: "",
       link: "https://codepulse.blog/setup-flow-with-visual-studio-code/"
     },
-    {
-      title: `zzzzzzzzzzz`,
-      text: `zzzzzzzzz`,
-      id: uuidv4(),
-      tags: "",
-      link: "zzzzzzzzzz"
-    }
-  ],
-  zzzzzz5: [
-    {
-      title: `zzzzzzzzzzz`,
-      text: `zzzzzzzzz`,
-      id: uuidv4(),
-      tags: "",
-      link: "zzzzzzzzzz"
-    }
-  ],
-  zzzzzz6: [
     {
       title: `zzzzzzzzzzz`,
       text: `zzzzzzzzz`,
