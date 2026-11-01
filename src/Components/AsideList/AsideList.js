@@ -5,6 +5,7 @@ import styles from "./AsideList.scss";
 import cx from "classnames";
 
 // 1
+// 2
 
 class AsideList extends React.Component {
   // тему берём из данных, а не из innerText: с text-transform: uppercase innerText приходит заглавными
