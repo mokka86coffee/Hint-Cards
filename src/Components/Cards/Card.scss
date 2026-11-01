@@ -1,5 +1,8 @@
 .card__wrap {
+  height: 600px;
+  width: calc(100% - 170px);
   max-width: calc(100% - 170px);
+  overflow-x: scroll;
   box-sizing: border-box;
   display: flex;
   padding: 40px;
@@ -31,9 +34,9 @@
     z-index: 0;
   }
 
-  @for $i from 1 through 11 {
+  @for $i from 1 through 50 {
     &:nth-child(#{$i}) {
-      top: $i * 5px;
+      top: $i * 2px + 110px;
       left: 40px + $i * 130;
       z-index: $i;
     }
@@ -66,7 +69,6 @@
 
   &__rotated {
     &:nth-child(n) {
-      left: 5vw;
       top: 10%;
       width: 58vw;
       min-width: 900px;
@@ -75,6 +77,24 @@
       z-index: 21;
       transform: translateZ(0);
       opacity: 1;
+    }
+
+    @for $i from 1 through 5 {
+      &:nth-child(#{$i}) {
+        left: $i * 3vw;
+      }
+    }
+
+    @for $i from 5 through 15 {
+      &:nth-child(#{$i}) {
+        left: $i * 1.5vw;
+      }
+    }
+
+    @for $i from 16 through 25 {
+      &:nth-child(#{$i}) {
+        left: $i * 1.18vw;
+      }
     }
   }
 
