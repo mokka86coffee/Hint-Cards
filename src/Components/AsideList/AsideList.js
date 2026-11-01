@@ -7,6 +7,9 @@ import cx from "classnames";
 // 1
 // 2
 // 3
+//4
+//5
+//6
 
 class AsideList extends React.Component {
   // тему берём из данных, а не из innerText: с text-transform: uppercase innerText приходит заглавными
