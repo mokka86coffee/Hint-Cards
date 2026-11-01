@@ -75,6 +75,132 @@ var Materials = {
       tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
+    },
+    {
+      title: `Основы: снимки, стикеры, три места`,
+      text: `
+      <b>Коммит</b><t>— снимок проекта + ссылка на предыдущий:</t><br>
+      <c>A ← B ← C</c><br>
+      <b>Ветка</b><t>— просто стикер на одном коммите. Новый коммит → стикер переклеивается на него.</t><b>HEAD</b><t>— «я сейчас здесь»</t><br><br>
+      <b>Три места:</b><br>
+      <c>папка  →(git add)→  корзина  →(git commit)→  история</c><br>
+      <t>Корзина = staging area / index. В git status: «to be committed» — в корзине, «not staged» — только в папке</t><br><br>
+      <b>.gitignore</b><t>действует только на</t><b>ещё не отслеживаемые</b><t>файлы. Уже добавленные — сначала в .gitignore, потом:</t><br>
+      <n>git</n><c> </c><n>rm</n><c> </c><f>-r</f><c> </c><f>--cached</f><c> </c><v>.idea</v><k>  # убрать из гита, на диске останется</k>
+      `,
+      id: uuidv4(),
+      tags: "коммит ветка head staging index gitignore rm cached",
+      link: "https://git-scm.com/book/ru/v2/Ветвление-в-Git-О-ветвлении-в-двух-словах"
+    },
+    {
+      title: `reset: soft, mixed, hard`,
+      text: `
+      <t>reset</t><b>переклеивает стикер ветки</b><t>на другой коммит. Коммиты не удаляются</t><br><br>
+      <c>A ← B ← C ← D        A ← B ← C ← D</c><br>
+      <c>            ↑    →           ↑</c><br>
+      <c>          main               main</c><br><br>
+      <n>git</n><c> </c><n>reset</n><c> </c><f>--soft</f><c> </c><v>C</v><k>   # изменения D → в корзине</k><br>
+      <n>git</n><c> </c><n>reset</n><c> </c><f>--mixed</f><c> </c><v>C</v><k>  # изменения D → только в папке (по умолчанию)</k><br>
+      <n>git</n><c> </c><n>reset</n><c> </c><f>--hard</f><c> </c><v>C</v><k>   # изменения D → не видно нигде</k><br><br>
+      <c>--soft   стикер</c><br>
+      <c>--mixed  стикер + корзина</c><br>
+      <c>--hard   стикер + корзина + папка</c><br><br>
+      <b>Перед --hard</b><t>всё закоммитить или убрать в stash</t>
+      `,
+      id: uuidv4(),
+      tags: "reset soft mixed hard откат",
+      link: "https://git-scm.com/docs/git-reset"
+    },
+    {
+      title: `Спасение после --hard`,
+      text: `
+      <b>Было в коммите</b><t>→ легко. Дневник перемещений стикера:</t><br>
+      <n>git</n><c> </c><n>reflog</n><br>
+      <n>git</n><c> </c><n>reset</n><c> </c><f>--hard</f><c> </c><v>f9e8d7</v><k>  # хеш нужного коммита из reflog</k><br><br>
+      <b>Было только в корзине (git add)</b><t>→ можно, но вручную. Содержимое без имён файлов:</t><br>
+      <n>git</n><c> </c><n>fsck</n><c> </c><f>--lost-found</f><k>  # смотреть .git/lost-found/other/</k><br><br>
+      <b>Было только в папке</b><t>→ гит не поможет. Спасёт Local History в IDE (JetBrains: правой кнопкой → Local History)</t><br><br>
+      <c>папка  →  корзина  →  коммит</c><br>
+      <t>Чем правее, тем безопаснее</t>
+      `,
+      id: uuidv4(),
+      tags: "reflog fsck lost-found восстановить hard local history",
+      link: "https://git-scm.com/docs/git-reflog"
+    },
+    {
+      title: `stash: стопка ящиков`,
+      text: `
+      <t>Убрать изменения из папки и корзины в ящик, папка станет чистой. Ящиков —</t><b>стопка</b><br><br>
+      <n>git</n><c> </c><n>stash</n><c> </c><v>push</v><c> </c><f>-m</f><c> </c><v>"кнопка логина"</v><br>
+      <n>git</n><c> </c><n>stash</n><c> </c><v>list</v><k>             # stash@{0} — последний, сверху</k><br>
+      <n>git</n><c> </c><n>stash</n><c> </c><v>show</v><c> </c><f>-p</f><c> </c><v>stash@{1}</v><k>  # что внутри</k><br><br>
+      <n>git</n><c> </c><n>stash</n><c> </c><v>pop</v><c> </c><v>stash@{1}</v><k>    # достать и убрать из стопки</k><br>
+      <n>git</n><c> </c><n>stash</n><c> </c><v>apply</v><c> </c><v>stash@{1}</v><k>  # достать, копия остаётся</k><br>
+      <n>git</n><c> </c><n>stash</n><c> </c><v>drop</v><c> </c><v>stash@{1}</v><k>   # выбросить</k><br><br>
+      <b>apply</b><t>безопаснее: если при доставании конфликт, ящик не пропал</t>
+      `,
+      id: uuidv4(),
+      tags: "stash pop apply list drop",
+      link: "https://git-scm.com/docs/git-stash"
+    },
+    {
+      title: `merge и его отмена`,
+      text: `
+      <b>Fast-forward:</b><t>в main ничего нового — стикер просто перематывается вперёд, без нового коммита</t><br>
+      <b>Merge-коммит:</b><t>обе ветки ушли вперёд — новый коммит M с двумя родителями:</t><br>
+      <c>main:    [B] → [футер] → [M]</c><br>
+      <c>            ↘           ↗</c><br>
+      <c>feature:    [кнопка]</c><br>
+      <t>Родитель 1 — куда вливали (main), родитель 2 — что вливали</t><br><br>
+      <b>Конфликт:</b><t>оба поменяли одну строку. Выбрать вариант между маркерами конфликта, потом git add и git commit</t><br><br>
+      <b>Отменить, если НЕ отправлен:</b><br>
+      <n>git</n><c> </c><n>reset</n><c> </c><f>--hard</f><c> </c><v>HEAD~1</v><br>
+      <b>Отменить, если уже на сервере</b><t>(историю не переписываем):</t><br>
+      <n>git</n><c> </c><n>revert</n><c> </c><f>-m</f><c> </c><v>1</v><c> </c><v>HEAD</v><k>  # новый коммит, убирающий влитое</k><br><br>
+      <n>git</n><c> </c><n>log</n><c> </c><f>--oneline</f><c> </c><f>--first-parent</f><k>  # история без «пузырьков»</k>
+      `,
+      id: uuidv4(),
+      tags: "merge fast-forward конфликт revert отменить merge first-parent",
+      link: "https://git-scm.com/docs/git-revert"
+    },
+    {
+      title: `rebase`,
+      text: `
+      <t>Переносит ваши коммиты, как будто вы начали после свежего main:</t><br>
+      <c>main:    [B] → [D: футер]</c><br>
+      <c>                     ↘</c><br>
+      <c>feature:              [C': кнопка]</c><br><br>
+      <n>git</n><c> </c><n>checkout</n><c> </c><v>feature</v><br>
+      <n>git</n><c> </c><n>rebase</n><c> </c><v>main</v><br>
+      <n>git</n><c> </c><n>checkout</n><c> </c><v>main</v><br>
+      <n>git</n><c> </c><n>merge</n><c> </c><v>feature</v><k>  # fast-forward: просто перемотка, одна прямая линия</k><br><br>
+      <b>C'</b><t>— новый коммит с новым хешем. Поэтому:</t><br>
+      <b>можно</b><t>— своя ветка задачи</t><br>
+      <b>нельзя</b><t>— общие ветки (dev, main), которые уже скачали другие</t><br><br>
+      <n>git</n><c> </c><n>rebase</n><c> </c><f>--abort</f><k>  # передумал — всё как до rebase</k>
+      `,
+      id: uuidv4(),
+      tags: "rebase fast-forward перенос коммитов abort",
+      link: "https://git-scm.com/book/ru/v2/Ветвление-в-Git-Перебазирование"
+    },
+    {
+      title: `rebase без боли`,
+      text: `
+      <b>Почему больно:</b><t>rebase переносит коммиты по одному. 3 коммита трогали одну строку → один и тот же конфликт 3 раза, на версиях, которых уже нет</t><br><br>
+      <b>1. Склеить фичу в один коммит</b><t>(всё закоммичено!):</t><br>
+      <n>git</n><c> </c><n>reset</n><c> </c><f>--soft</f><c> </c><v>$(git</v><c> </c><v>merge-base</v><c> </c><v>main</v><c> </c><v>HEAD)</v><br>
+      <n>git</n><c> </c><n>commit</n><c> </c><f>-m</f><c> </c><v>"Кнопка: вся фича"</v><br>
+      <n>git</n><c> </c><n>rebase</n><c> </c><v>main</v><k>  # один коммит → максимум один конфликт</k><br>
+      <t>Код тот же, теряется только история промежуточных шагов. В GitLab — галочка «Squash commits»</t><br><br>
+      <b>2. Запоминать решения конфликтов:</b><br>
+      <n>git</n><c> </c><n>config</n><c> </c><f>--global</f><c> </c><v>rerere.enabled</v><c> </c><v>true</v><br><br>
+      <b>3. Отправить переписанную ветку:</b><br>
+      <n>git</n><c> </c><n>push</n><c> </c><f>--force-with-lease</f><br>
+      <t>Перезапишет, только если на сервере никто ничего не добавил с вашего последнего pull.</t><c>--force</c><t>затрёт и чужое</t>
+      `,
+      id: uuidv4(),
+      tags: "rebase squash rerere force-with-lease merge-base конфликты",
+      link: "https://git-scm.com/docs/git-rerere"
     }
   ],
   "React hooks": [
@@ -451,6 +577,174 @@ var Materials = {
       id: uuidv4(),
       tags: "",
       link: "https://www.youtube.com/watch?v=_bFXuLcXoXg"
+    }
+  ],
+  "TypeScript": [
+    {
+      title: `Дистрибутивные условные типы`,
+      text: `
+      <f>type</f><c> </c><n>ToArray</n><c><</c><n>T</n><c>> = </c><n>T</n><c> </c><f>extends</f><c> </c><f>any</f><c> ? </c><n>T</n><c>[] : </c><f>never</f><c>;</c><br>
+      <f>type</f><c> </c><n>R</n><c> = </c><n>ToArray</n><c><</c><f>string</f><c> | </c><f>number</f><c>>;</c><br><br>
+      <b>Ответ:</b><c>string[] | number[]</c><br><br>
+      <t>Условный тип на «голом» параметре применяется к каждому члену объединения отдельно. Чтобы получить</t><c>(string | number)[]</c><t>, дистрибутивность отключают скобками:</t><c>[T] extends [any] ? T[] : never</c>
+      `,
+      id: uuidv4(),
+      tags: "typescript conditional distributive union",
+      link: "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html"
+    },
+    {
+      title: `never в условном типе`,
+      text: `
+      <f>type</f><c> </c><n>IsString</n><c><</c><n>T</n><c>> = </c><n>T</n><c> </c><f>extends</f><c> </c><f>string</f><c> ? </c><v>'yes'</v><c> : </c><v>'no'</v><c>;</c><br>
+      <f>type</f><c> </c><n>X</n><c> = </c><n>IsString</n><c><</c><f>never</f><c>>;</c><br><br>
+      <b>Ответ:</b><c>never</c><br><br>
+      <b>never — пустое объединение.</b><t>Дистрибутивный тип применяется к каждому члену, а их нет, поэтому и результат пустой. Проверка «это never?» пишется так:</t><c>[T] extends [never]</c>
+      `,
+      id: uuidv4(),
+      tags: "typescript never conditional",
+      link: "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html"
+    },
+    {
+      title: `satisfies против аннотации`,
+      text: `
+      <f>const</f><c> </c><n>a</n><c>: </c><n>Record</n><c><</c><f>string</f><c>, </c><f>string</f><c>> = { </c><n>x</n><c>: </c><v>'a'</v><c> };</c><br>
+      <f>const</f><c> </c><n>b</n><c> = { </c><n>x</n><c>: </c><v>'a'</v><c> } </c><f>satisfies</f><c> </c><n>Record</n><c><</c><f>string</f><c>, </c><f>string</f><c>>;</c><br><br>
+      <b>Ответ:</b><t>satisfies проверяет соответствие, но</t><b>сохраняет точный выведенный тип</b><br><br>
+      <t>Аннотация расширяет тип: у</t><c>a.y</c><t>тип string, хотя поля нет. У</t><c>b</c><t>тип</t><c>{ x: string }</c><t>, и</t><c>b.y</c><t>— ошибка компиляции. Всё только на этапе проверки типов, в рантайме ничего нет</t>
+      `,
+      id: uuidv4(),
+      tags: "typescript satisfies annotation",
+      link: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-9.html"
+    },
+    {
+      title: `Сужение через флаг и замыкание`,
+      text: `
+      <f>function</f><c> </c><n>f</n><c>(</c><n>x</n><c>: </c><f>string</f><c> | </c><f>number</f><c>) {</c><br>
+      <c>  </c><f>const</f><c> </c><n>isStr</n><c> = </c><f>typeof</f><c> </c><n>x</n><c> === </c><v>'string'</v><c>;</c><br>
+      <c>  </c><n>setTimeout</n><c>(() => {</c><br>
+      <c>    </c><f>if</f><c> (</c><n>isStr</n><c>) </c><n>x</n><c>.</c><n>toUpperCase</n><c>(); </c><k>// ошибка, если x переприсваивается</k><br>
+      <c>  });</c><br>
+      <c>}</c><br><br>
+      <b>Ответ:</b><t>сужение через сохранённое условие работает, только если</t><b>x не переприсваивается</b><br><br>
+      <t>Колбэк выполнится позже, в другой макрозадаче. К этому моменту x могла стать числом, а флаг остался старым. Та же щель «проверил → использовал», что и в гонках</t>
+      `,
+      id: uuidv4(),
+      tags: "typescript narrowing aliased condition closure",
+      link: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html"
+    },
+    {
+      title: `infer: параметры функции`,
+      text: `
+      <f>type</f><c> </c><n>Params</n><c><</c><n>F</n><c>> = </c><n>F</n><c> </c><f>extends</f><c> (...</c><n>args</n><c>: </c><f>infer</f><c> </c><n>A</n><c>) => </c><f>any</f><c> ? </c><n>A</n><c> : </c><f>never</f><c>;</c><br>
+      <f>type</f><c> </c><n>P</n><c> = </c><n>Params</n><c><(</c><n>id</n><c>: </c><f>number</f><c>, </c><n>name</n><c>?: </c><f>string</f><c>) => </c><f>void</f><c>>;</c><br><br>
+      <b>Ответ:</b><c>[id: number, name?: string]</c><br><br>
+      <t>infer захватывает список аргументов целиком как кортеж — с именами и необязательностью. Так устроен встроенный</t><c>Parameters<F></c>
+      `,
+      id: uuidv4(),
+      tags: "typescript infer parameters tuple",
+      link: "https://www.typescriptlang.org/docs/handbook/2/conditional-types.html"
+    },
+    {
+      title: `as const`,
+      text: `
+      <f>const</f><c> </c><n>config</n><c> = { </c><n>status</n><c>: </c><v>'ok'</v><c>, </c><n>retries</n><c>: </c><v>3</v><c> } </c><f>as</f><c> </c><f>const</f><c>;</c><br>
+      <f>type</f><c> </c><n>S</n><c> = </c><f>typeof</f><c> </c><n>config</n><c>.</c><n>status</n><c>;</c><br><br>
+      <b>Ответ:</b><c>'ok'</c><br><br>
+      <t>Без as const поле расширилось бы до string: его можно поменять. as const делает поля readonly и сохраняет литералы: status — именно 'ok', retries — именно 3</t>
+      `,
+      id: uuidv4(),
+      tags: "typescript as const literal readonly",
+      link: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html"
+    },
+    {
+      title: `Проверка полноты через never`,
+      text: `
+      <f>type</f><c> </c><n>Shape</n><c> = { </c><n>kind</n><c>: </c><v>'circle'</v><c>; </c><n>r</n><c>: </c><f>number</f><c> } | { </c><n>kind</n><c>: </c><v>'square'</v><c>; </c><n>a</n><c>: </c><f>number</f><c> };</c><br>
+      <f>function</f><c> </c><n>area</n><c>(</c><n>s</n><c>: </c><n>Shape</n><c>) {</c><br>
+      <c>  </c><f>switch</f><c> (</c><n>s</n><c>.</c><n>kind</n><c>) {</c><br>
+      <c>    </c><f>case</f><c> </c><v>'circle'</v><c>: </c><y>return</y><c> </c><n>Math</n><c>.</c><n>PI</n><c> * </c><n>s</n><c>.</c><n>r</n><c> ** </c><v>2</v><c>;</c><br>
+      <c>    </c><f>case</f><c> </c><v>'square'</v><c>: </c><y>return</y><c> </c><n>s</n><c>.</c><n>a</n><c> ** </c><v>2</v><c>;</c><br>
+      <c>    </c><f>default</f><c>: </c><f>const</f><c> </c><n>_x</n><c>: </c><f>never</f><c> = </c><n>s</n><c>; </c><y>return</y><c> </c><n>_x</n><c>;</c><br>
+      <c>  }</c><br>
+      <c>}</c><br><br>
+      <b>Ответ:</b><t>добавили</t><c>{ kind: 'triangle' }</c><t>и не обработали →</t><b>ошибка компиляции</b><br><br>
+      <t>Пока все варианты разобраны, в default тип s сужен до never. Новый вариант попадёт в default, и присвоить его в never нельзя. Компилятор сам напомнит про забытый случай</t>
+      `,
+      id: uuidv4(),
+      tags: "typescript exhaustiveness never switch discriminated union",
+      link: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking"
+    },
+    {
+      title: `Ковариантность массивов`,
+      text: `
+      <f>const</f><c> </c><n>dogs</n><c>: </c><n>Dog</n><c>[] = [];</c><br>
+      <f>const</f><c> </c><n>animals</n><c>: </c><n>Animal</n><c>[] = </c><n>dogs</n><c>;</c><br>
+      <n>animals</n><c>.</c><n>push</n><c>(</c><f>new</f><c> </c><n>Cat</n><c>());</c><br>
+      <n>dogs</n><c>[</c><v>0</v><c>].</c><n>bark</n><c>(); </c><k>// 💥</k><br><br>
+      <b>Ответ:</b><t>массивы в TS</t><b>ковариантны намеренно</b><t>, ради удобства</t><br><br>
+      <t>Читать Dog как Animal безопасно, записывать — нет: туда можно положить Cat. Строго массивы должны быть инвариантными — это известная дыра в системе типов. Защита — принимать</t><c>readonly Animal[]</c><t>, тогда push невозможен</t>
+      `,
+      id: uuidv4(),
+      tags: "typescript variance covariance array readonly",
+      link: "https://www.typescriptlang.org/docs/handbook/type-compatibility.html"
+    }
+  ],
+  Webpack: [
+    {
+      title: `Module Federation: Invalid hook call`,
+      text: `
+      <b>Симптом:</b><t>в удалённом модуле микрофронтенда падает «Invalid hook call»</t><br><br>
+      <b>Причина:</b><t>на странице</t><b>две копии React</b><t>— хоста и удалённого модуля</t><br><br>
+      <c>хост:    React #1  ← рендерит дерево</c><br>
+      <c>remote:  React #2  ← useState спрашивает его</c><br>
+      <c>         «кто сейчас рендерится?» → никто → ошибка</c><br><br>
+      <t>Хуки работают через внутреннее состояние</t><b>конкретного экземпляра</b><t>React: какой компонент сейчас рендерится. Чужой экземпляр об этом ничего не знает</t><br><br>
+      <b>Лечение</b><t>— одна копия на всех, в конфиге и хоста, и remote:</t><br>
+      <c>shared: {</c><br>
+      <c>  react: { singleton: true },</c><br>
+      <c>  'react-dom': { singleton: true }</c><br>
+      <c>}</c><br><br>
+      <t>Та же идея, что runtimeChunk: 'single' — один рантайм и одни экземпляры модулей на страницу</t>
+      `,
+      id: uuidv4(),
+      tags: "webpack module federation microfrontend shared singleton react invalid hook call",
+      link: "https://webpack.js.org/plugins/module-federation-plugin/#singleton"
+    },
+    {
+      title: `HMR: почему полная перезагрузка`,
+      text: `
+      <c>export const PAGE_SIZE = 20;</c><br>
+      <c>export default function Table() { /* ... */ }</c><br><br>
+      <b>Правка этого файла</b><t>→ полная перезагрузка страницы, а соседние компоненты обновляются на лету</t><br><br>
+      <b>Причина:</b><t>React Refresh считает модуль</t><b>границей обновления</b><t>, только если он экспортирует</t><b>одни компоненты</b><br><br>
+      <t>Компонент Refresh умеет подменить, сохранив состояние. Константа — произвольное значение: те, кто её импортировал, держат старую. Модуль не граница, и обновление всплывает вверх по импортёрам:</t><br>
+      <c>Table.jsx  ✗ не граница</c><br>
+      <c>   ↑ кто импортирует?</c><br>
+      <c>Page.jsx   ✗ …</c><br>
+      <c>   ↑</c><br>
+      <c>index.js   никто не принял → reload</c><br><br>
+      <b>Лечение:</b><t>константы в отдельный файл, в файле компонента — только компоненты</t>
+      `,
+      id: uuidv4(),
+      tags: "webpack hmr react refresh fast refresh reload граница обновления",
+      link: "https://github.com/pmmmwh/react-refresh-webpack-plugin"
+    },
+    {
+      title: `Загрузчики: pitch-фаза`,
+      text: `
+      <c>use: ['a-loader', 'b-loader', 'c-loader']</c><br><br>
+      <b>Цепочка проходится дважды:</b><br>
+      <c>pitch:    a → b → c</c><k>     # слева направо</k><br>
+      <c>файл:     читается с диска</c><br>
+      <c>обычная:  c → b → a</c><k>     # справа налево</k><br><br>
+      <b>Если pitch b что-то вернул</b><t>— c и чтение файла пропускаются, результат сразу идёт в обычную фазу a:</t><br>
+      <c>pitch:    a → b ✋ вернул результат</c><br>
+      <c>обычная:  a</c><br><br>
+      <b>Так работает style-loader:</b><t>его pitch возвращает код «импортируй результат css-loader и вставь в тег style», а не получает CSS строкой из цепочки</t>
+      `,
+      id: uuidv4(),
+      tags: "webpack loader pitch style-loader css-loader порядок загрузчиков",
+      link: "https://webpack.js.org/api/loaders/#pitching-loader"
     }
   ],
   "Event loop": [
@@ -1176,6 +1470,44 @@ var Materials = {
       id: uuidv4(),
       tags: "expand contract миграция колонка rolling update совместимость",
       link: "https://martinfowler.com/bliki/ParallelChange.html"
+    }
+  ],
+  "Хаки": [
+    {
+      title: `Speculation rules: мгновенные переходы`,
+      text: `
+      <t>Обычно весь путь DNS → соединение → запрос → разбор → отрисовка идёт</t><b>после</b><t>клика.</t><br>
+      <t>Идея: браузер заранее, в невидимой вкладке,</t><b>загружает и отрисовывает</b><t>страницу, на которую вероятно перейдут. При клике — просто показывает готовую</t><br><br>
+      <c><script type="speculationrules"></c><br>
+      <c>{</c><br>
+      <c>  "prerender": [{</c><br>
+      <c>    "where": { "href_matches": "/product/*" },</c><br>
+      <c>    "eagerness": "moderate"</c><br>
+      <c>  }]</c><br>
+      <c>}</c><br>
+      <c></script></c><br><br>
+      <b>prerender</b><t>— скачать и отрисовать (мгновенно, но дороже)</t><br>
+      <b>prefetch</b><t>— только скачать HTML (дешевле, выигрыш меньше)</t><br><br>
+      <t>Chromium-браузеры (Chrome, Edge, Яндекс). Остальные просто игнорируют блок — ничего не ломается</t>
+      `,
+      id: uuidv4(),
+      tags: "speculation rules prerender prefetch мгновенный переход",
+      link: "https://developer.chrome.com/docs/web-platform/prerender-pages"
+    },
+    {
+      title: `Speculation rules: eagerness и грабли`,
+      text: `
+      <t>Отрисовка заранее не бесплатна: трафик, процессор, батарея, нагрузка на сервер. Когда начинать:</t><br><br>
+      <c>immediate     сразу, как увидел правило</c><br>
+      <c>eager         чуть менее агрессивно</c><br>
+      <c>moderate      курсор задержался на ссылке ~200 мс</c><k>  // обычно лучший</k><br>
+      <c>conservative  только в момент нажатия / касания</c><br><br>
+      <b>Аналитика:</b><t>заранее отрисованная страница может засчитать просмотр. Проверять</t><c>document.prerendering</c><t>и считать по событию</t><c>prerenderingchange</c><br>
+      <b>Ссылки с действием</b><t>(/logout, /cart/add?id=5) исключать — иначе действие выполнится без клика</t>
+      `,
+      id: uuidv4(),
+      tags: "speculation rules eagerness moderate prerendering аналитика",
+      link: "https://developer.mozilla.org/en-US/docs/Web/API/Speculation_Rules_API"
     }
   ],
   Terminal: [
