@@ -689,6 +689,64 @@ var Materials = {
       link: "https://www.typescriptlang.org/docs/handbook/type-compatibility.html"
     }
   ],
+  Webpack: [
+    {
+      title: `Module Federation: Invalid hook call`,
+      text: `
+      <b>Симптом:</b><t>в удалённом модуле микрофронтенда падает «Invalid hook call»</t><br><br>
+      <b>Причина:</b><t>на странице</t><b>две копии React</b><t>— хоста и удалённого модуля</t><br><br>
+      <c>хост:    React #1  ← рендерит дерево</c><br>
+      <c>remote:  React #2  ← useState спрашивает его</c><br>
+      <c>         «кто сейчас рендерится?» → никто → ошибка</c><br><br>
+      <t>Хуки работают через внутреннее состояние</t><b>конкретного экземпляра</b><t>React: какой компонент сейчас рендерится. Чужой экземпляр об этом ничего не знает</t><br><br>
+      <b>Лечение</b><t>— одна копия на всех, в конфиге и хоста, и remote:</t><br>
+      <c>shared: {</c><br>
+      <c>  react: { singleton: true },</c><br>
+      <c>  'react-dom': { singleton: true }</c><br>
+      <c>}</c><br><br>
+      <t>Та же идея, что runtimeChunk: 'single' — один рантайм и одни экземпляры модулей на страницу</t>
+      `,
+      id: uuidv4(),
+      tags: "webpack module federation microfrontend shared singleton react invalid hook call",
+      link: "https://webpack.js.org/plugins/module-federation-plugin/#singleton"
+    },
+    {
+      title: `HMR: почему полная перезагрузка`,
+      text: `
+      <c>export const PAGE_SIZE = 20;</c><br>
+      <c>export default function Table() { /* ... */ }</c><br><br>
+      <b>Правка этого файла</b><t>→ полная перезагрузка страницы, а соседние компоненты обновляются на лету</t><br><br>
+      <b>Причина:</b><t>React Refresh считает модуль</t><b>границей обновления</b><t>, только если он экспортирует</t><b>одни компоненты</b><br><br>
+      <t>Компонент Refresh умеет подменить, сохранив состояние. Константа — произвольное значение: те, кто её импортировал, держат старую. Модуль не граница, и обновление всплывает вверх по импортёрам:</t><br>
+      <c>Table.jsx  ✗ не граница</c><br>
+      <c>   ↑ кто импортирует?</c><br>
+      <c>Page.jsx   ✗ …</c><br>
+      <c>   ↑</c><br>
+      <c>index.js   никто не принял → reload</c><br><br>
+      <b>Лечение:</b><t>константы в отдельный файл, в файле компонента — только компоненты</t>
+      `,
+      id: uuidv4(),
+      tags: "webpack hmr react refresh fast refresh reload граница обновления",
+      link: "https://github.com/pmmmwh/react-refresh-webpack-plugin"
+    },
+    {
+      title: `Загрузчики: pitch-фаза`,
+      text: `
+      <c>use: ['a-loader', 'b-loader', 'c-loader']</c><br><br>
+      <b>Цепочка проходится дважды:</b><br>
+      <c>pitch:    a → b → c</c><k>     # слева направо</k><br>
+      <c>файл:     читается с диска</c><br>
+      <c>обычная:  c → b → a</c><k>     # справа налево</k><br><br>
+      <b>Если pitch b что-то вернул</b><t>— c и чтение файла пропускаются, результат сразу идёт в обычную фазу a:</t><br>
+      <c>pitch:    a → b ✋ вернул результат</c><br>
+      <c>обычная:  a</c><br><br>
+      <b>Так работает style-loader:</b><t>его pitch возвращает код «импортируй результат css-loader и вставь в тег style», а не получает CSS строкой из цепочки</t>
+      `,
+      id: uuidv4(),
+      tags: "webpack loader pitch style-loader css-loader порядок загрузчиков",
+      link: "https://webpack.js.org/api/loaders/#pitching-loader"
+    }
+  ],
   "Event loop": [
     {
       title: `Один цикл event loop`,
