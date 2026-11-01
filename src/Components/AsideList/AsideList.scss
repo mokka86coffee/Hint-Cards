@@ -23,14 +23,16 @@
     z-index: 2;
     pointer-events: none;
   }
-  &::before {
-    top: 0;
-    background: linear-gradient(to bottom, rgba(8, 8, 8, 0.95), rgba(30, 30, 30, 0.6) 45%, rgba(48, 48, 48, 0));
-  }
-  &::after {
-    bottom: 0;
-    background: linear-gradient(to top, rgba(4, 4, 4, 0.98), rgba(25, 25, 25, 0.6) 45%, rgba(48, 48, 48, 0));
-  }
+  // временно убрано, надо переставитьна последнюю плашку иначе вертится вместе с прокруткой
+  //&::before {
+  //  top: 0;
+  //  background: linear-gradient(to bottom, rgba(8, 8, 8, 0.95), rgba(30, 30, 30, 0.6) 45%, rgba(48, 48, 48, 0));
+  //}
+  // временно убрано, надо переставитьна последнюю плашку иначе вертится вместе с прокруткой
+  //&::after {
+  //  bottom: 0;
+  //  background: linear-gradient(to top, rgba(4, 4, 4, 0.98), rgba(25, 25, 25, 0.6) 45%, rgba(48, 48, 48, 0));
+  //}
 
   ::-webkit-scrollbar-button {
     display: none;
@@ -72,10 +74,10 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: 5%;
+    height: max-content;
     width: calc(100% + 25px);
     margin-left: -4px;
-    padding: 400px 25px 150px 0;
+    padding: 60px 24px 60px 0;
     overflow-y: scroll;
     display: flex;
     align-items: center;

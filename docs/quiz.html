@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Квизы · Hint-Cards</title>
+<style>
+  :root {
+    --bg: #141414;
+    --card: #191919;
+    --card2: #202020;
+    --line: #2c2c2c;
+    --text: #b5b5b5;
+    --bright: #fff;
+    --code: #2196f3;
+    --kw: chocolate;
+    --name: #cddc39;
+    --value: indianred;
+    --comment: #9e9e9e;
+    --ret: tomato;
+    --ok: #4caf50;
+    --bad: #d62e07;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 24px 16px 80px; }
+  header { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  h1 { color: var(--bright); font-weight: 300; margin: 0 0 4px; font-size: 30px; }
+  header a { color: var(--text); text-decoration: none; font-size: 14px; }
+  header a:hover { color: var(--bright); }
+
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 8px; }
+  .tab {
+    background: var(--card); color: var(--text); border: 1px solid var(--line);
+    border-radius: 8px; padding: 8px 12px; cursor: pointer; font: inherit; font-size: 14px; text-align: left;
+  }
+  .tab small { display: block; color: #777; font-size: 12px; }
+  .tab:hover { border-color: #555; }
+  .tab.active { border-color: var(--code); color: var(--bright); }
+
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 12px;
+         position: sticky; top: 0; z-index: 2; background: var(--bg); padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .score { color: var(--bright); }
+  .score b { color: var(--ok); }
+  .btn { background: none; border: 1px solid var(--line); color: var(--text); border-radius: 6px;
+         padding: 6px 12px; cursor: pointer; font: inherit; font-size: 14px; }
+  .btn:hover { color: var(--bright); border-color: #555; }
+
+  .q { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 20px; margin-top: 18px; }
+  .q-num { color: #777; font-size: 13px; margin-bottom: 6px; }
+  .q-text { color: var(--bright); font-size: 18px; }
+  .q-text p, .explain p { margin: 0 0 8px; }
+
+  pre.code {
+    background: #111; border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px 14px; margin: 12px 0; overflow-x: auto;
+    font: 14px/1.6 ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--code);
+  }
+  code.inline {
+    font: 0.9em ui-monospace, "SF Mono", Menlo, Consolas, monospace; color: var(--code);
+    background: #111; border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px;
+  }
+  .t-kw { color: var(--kw); font-weight: bold; }
+  .t-name { color: var(--name); }
+  .t-val { color: var(--value); }
+  .t-com { color: var(--comment); font-style: italic; }
+  .t-ret { color: var(--ret); }
+
+  .opts { display: grid; gap: 8px; margin-top: 14px; }
+  .opt {
+    display: flex; gap: 10px; align-items: flex-start; text-align: left; width: 100%;
+    background: var(--card2); color: var(--text); border: 1px solid var(--line); border-radius: 8px;
+    padding: 10px 12px; cursor: pointer; font: inherit;
+  }
+  .opt:hover:not(:disabled) { border-color: #666; color: var(--bright); }
+  .opt:disabled { cursor: default; }
+  .opt .letter { color: #777; font-weight: bold; min-width: 18px; }
+  .opt.correct { border-color: var(--ok); background: rgba(76,175,80,.12); color: var(--bright); }
+  .opt.wrong { border-color: var(--bad); background: rgba(214,46,7,.14); }
+  .opt.dim { opacity: .5; }
+
+  .hint-btn { margin-top: 12px; }
+  .hint { margin-top: 10px; color: #d7c27a; font-size: 15px; }
+  .explain { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 12px; font-size: 15px; }
+  .verdict { font-weight: bold; margin-bottom: 4px; }
+  .verdict.ok { color: var(--ok); }
+  .verdict.bad { color: var(--bad); }
+  .explain b { color: var(--bright); }
+  .empty { margin-top: 40px; color: #777; }
+  .nav-icon {
+    position: fixed; right: 20px; bottom: 20px; z-index: 10;
+    width: 46px; height: 46px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: #191919; border: 1px solid #2c2c2c; color: #b5b5b5;
+    box-shadow: 0 0 17px #000;
+    transition: color .2s, border-color .2s;
+  }
+  .nav-icon:hover { color: #fff; border-color: #555; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Квизы</h1>
+      <div style="font-size:14px;color:#777">Вопросы лежат в <code class="inline">quiz/quizzes.json</code></div>
+    </div>
+  </header>
+  <div class="tabs" id="tabs"></div>
+  <div class="bar">
+    <div class="score" id="score"></div>
+    <button class="btn" id="reset">Пройти заново</button>
+  </div>
+  <div id="list"></div>
+</div>
+
+<a class="nav-icon" href="./" aria-label="Карточки">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+</a>
+<script>
+(function () {
+  var KW = new Set(("type interface extends infer as satisfies readonly const let var function async await if else for of in new class " +
+    "switch case default typeof keyof never any unknown string number boolean void null undefined true false import export from " +
+    "declare enum namespace this throw try catch implements private public protected static").split(" "));
+  var TOKEN = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|('(?:\\.|[^'\\\n])*'|"(?:\\.|[^"\\\n])*"|`(?:\\.|[^`\\])*`)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_$][\w$]*)/g;
+
+  function esc(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function highlight(code) {
+    var out = "", last = 0, m;
+    TOKEN.lastIndex = 0;
+    while ((m = TOKEN.exec(code))) {
+      out += esc(code.slice(last, m.index));
+      var t = esc(m[0]);
+      if (m[1]) out += '<span class="t-com">' + t + "</span>";
+      else if (m[2] || m[3]) out += '<span class="t-val">' + t + "</span>";
+      else if (m[0] === "return") out += '<span class="t-ret">' + t + "</span>";
+      else if (KW.has(m[0])) out += '<span class="t-kw">' + t + "</span>";
+      else out += '<span class="t-name">' + t + "</span>";
+      last = TOKEN.lastIndex;
+    }
+    return out + esc(code.slice(last));
+  }
+  // `inline code` и **жирный**, абзацы по пустой строке
+  function md(s) {
+    return String(s || "").split(/\n{2,}/).map(function (para) {
+      var parts = para.split(/(`[^`]+`)/g).map(function (p) {
+        if (/^`[^`]+`$/.test(p)) return '<code class="inline">' + highlight(p.slice(1, -1)) + "</code>";
+        return esc(p).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>").replace(/\n/g, "<br>");
+      });
+      return "<p>" + parts.join("") + "</p>";
+    }).join("");
+  }
+  function codeBlock(code) {
+    return code ? '<pre class="code">' + highlight(code) + "</pre>" : "";
+  }
+
+  var store = {
+    get: function (k) { try { return JSON.parse(localStorage.getItem(k)) || {}; } catch (e) { return {}; } },
+    set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  };
+
+  var quizzes = [], current = null, answers = {};
+  var $tabs = document.getElementById("tabs"), $list = document.getElementById("list"), $score = document.getElementById("score");
+
+  function key(q) { return "hint-cards-quiz:" + q.id; }
+
+  function renderTabs() {
+    $tabs.innerHTML = quizzes.map(function (q) {
+      var a = store.get(key(q)), done = Object.keys(a).length;
+      return '<button class="tab' + (q === current ? " active" : "") + '" data-id="' + esc(q.id) + '">' +
+        "<small>" + esc(q.topic || "") + "</small>" + esc(q.title) +
+        ' <small>' + done + " / " + q.questions.length + "</small></button>";
+    }).join("");
+  }
+
+  function renderScore() {
+    var total = current.questions.length, done = 0, ok = 0;
+    current.questions.forEach(function (q, i) {
+      if (answers[i] !== undefined) { done++; if (answers[i] === q.answer) ok++; }
+    });
+    $score.innerHTML = "Отвечено " + done + " из " + total + " · верно <b>" + ok + "</b>";
+  }
+
+  function renderQuestion(q, i) {
+    var picked = answers[i], answered = picked !== undefined;
+    var opts = q.options.map(function (o, j) {
+      var cls = "opt";
+      if (answered) {
+        if (j === q.answer) cls += " correct";
+        else if (j === picked) cls += " wrong";
+        else cls += " dim";
+      }
+      return '<button class="' + cls + '" data-q="' + i + '" data-o="' + j + '"' + (answered ? " disabled" : "") + ">" +
+        '<span class="letter">' + "ABCDEFGH"[j] + "</span><span>" + md(o).replace(/^<p>|<\/p>$/g, "") + "</span></button>";
+    }).join("");
+    var explain = answered
+      ? '<div class="explain"><div class="verdict ' + (picked === q.answer ? "ok\">Верно" : "bad\">Неверно") + "</div>" +
+        md(q.explain) + codeBlock(q.explainCode) + "</div>"
+      : "";
+    var hint = !answered && q.hint
+      ? '<button class="btn hint-btn" data-hint="' + i + '">Подсказка</button><div class="hint" id="hint-' + i + '" hidden>' + md(q.hint) + "</div>"
+      : "";
+    return '<div class="q" id="q' + i + '"><div class="q-num">Вопрос ' + (i + 1) + " из " + current.questions.length + "</div>" +
+      '<div class="q-text">' + md(q.q) + "</div>" + codeBlock(q.code) +
+      '<div class="opts">' + opts + "</div>" + hint + explain + "</div>";
+  }
+
+  function render() {
+    renderTabs();
+    $list.innerHTML = current.questions.map(renderQuestion).join("");
+    renderScore();
+  }
+
+  function open(id) {
+    current = quizzes.find(function (q) { return q.id === id; }) || quizzes[0];
+    answers = store.get(key(current));
+    try { history.replaceState(null, "", "#" + current.id); } catch (e) {}
+    render();
+  }
+
+  document.addEventListener("click", function (e) {
+    var tab = e.target.closest(".tab");
+    if (tab) { open(tab.dataset.id); window.scrollTo(0, 0); return; }
+    var opt = e.target.closest(".opt");
+    if (opt && !opt.disabled) {
+      var i = +opt.dataset.q;
+      answers[i] = +opt.dataset.o;
+      store.set(key(current), answers);
+      var el = document.getElementById("q" + i);
+      el.outerHTML = renderQuestion(current.questions[i], i);
+      renderScore(); renderTabs();
+      return;
+    }
+    var h = e.target.closest("[data-hint]");
+    if (h) { var box = document.getElementById("hint-" + h.dataset.hint); box.hidden = !box.hidden; return; }
+    if (e.target.id === "reset") { answers = {}; store.set(key(current), answers); render(); window.scrollTo(0, 0); }
+  });
+
+  fetch("quiz/quizzes.json", { cache: "no-cache" })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      quizzes = data.quizzes || [];
+      if (!quizzes.length) { $list.innerHTML = '<div class="empty">Квизов пока нет</div>'; return; }
+      open(location.hash.slice(1));
+    })
+    .catch(function (err) {
+      $list.innerHTML = '<div class="empty">Не удалось загрузить quiz/quizzes.json: ' + esc(String(err)) +
+        "<br>Открывайте через сервер (npm start или GitHub Pages), а не как файл.</div>";
+    });
+})();
+</script>
+</body>
+</html>

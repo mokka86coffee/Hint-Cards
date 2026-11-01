@@ -687,6 +687,89 @@ var Materials = {
       id: uuidv4(),
       tags: "typescript variance covariance array readonly",
       link: "https://www.typescriptlang.org/docs/handbook/type-compatibility.html"
+    },
+    {
+      title: `infer в шаблонных строках`,
+      text: `
+      <f>type</f><c> </c><n>Split</n><c><</c><n>S</n><c> </c><f>extends</f><c> </c><f>string</f><c>> =</c><br>
+      <c>  </c><n>S</n><c> </c><f>extends</f><c> </c><v>\`\${infer H}.\${infer T}\`</v><c> ? [</c><n>H</n><c>, ...</c><n>Split</n><c><</c><n>T</n><c>>] : [</c><n>S</n><c>];</c><br>
+      <f>type</f><c> </c><n>R</n><c> = </c><n>Split</n><c><</c><v>'a.b.c'</v><c>>;</c><br><br>
+      <b>Ответ:</b><c>['a', 'b', 'c']</c><br><br>
+      <t>infer H перед литералом</t><c>'.'</c><t>берёт</t><b>кратчайшее совпадение</b><t>— до первой точки: H =</t><c>'a'</c><t>, T =</t><c>'b.c'</c><t>. Дальше рекурсия, пока точки не кончатся. Так типизируют пути вида</t><c>'user.address.city'</c>
+      `,
+      id: uuidv4(),
+      tags: "typescript template literal infer recursive split",
+      link: "https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html"
+    },
+    {
+      title: `Метод против свойства-функции`,
+      text: `
+      <k>// strictFunctionTypes: true</k><br>
+      <f>interface</f><c> </c><n>Handler</n><c> {</c><br>
+      <c>  </c><n>m</n><c>(</c><n>x</n><c>: </c><f>string</f><c> | </c><f>number</f><c>): </c><f>void</f><c>;</c><br>
+      <c>  </c><n>f</n><c>: (</c><n>x</n><c>: </c><f>string</f><c> | </c><f>number</f><c>) => </c><f>void</f><c>;</c><br>
+      <c>}</c><br>
+      <f>const</f><c> </c><n>h</n><c>: </c><n>Handler</n><c> = {</c><br>
+      <c>  </c><n>m</n><c>(</c><n>x</n><c>: </c><f>string</f><c>) {},</c><br>
+      <c>  </c><n>f</n><c>: (</c><n>x</n><c>: </c><f>string</f><c>) => {},</c><br>
+      <c>};</c><br><br>
+      <b>Ответ:</b><t>ошибка</t><b>только в f</b><br><br>
+      <t>Параметры должны быть</t><b>контравариантны</b><t>: обработчик только для string нельзя дать туда, где придёт и number. strictFunctionTypes проверяет это для свойств-функций, а</t><b>методы намеренно бивариантны</b><t>— иначе сломались бы массивы и DOM-типы. Для коллбэков надёжнее синтаксис свойства:</t><c>f: (x) => void</c>
+      `,
+      id: uuidv4(),
+      tags: "typescript variance bivariance method strictFunctionTypes contravariance",
+      link: "https://www.typescriptlang.org/tsconfig/#strictFunctionTypes"
+    },
+    {
+      title: `NoInfer (TS 5.4)`,
+      text: `
+      <f>function</f><c> </c><n>pick</n><c><</c><n>T</n><c> </c><f>extends</f><c> </c><f>string</f><c>>(</c><n>options</n><c>: </c><n>T</n><c>[], </c><n>def</n><c>: </c><n>NoInfer</n><c><</c><n>T</n><c>>) {}</c><br>
+      <n>pick</n><c>([</c><v>'a'</v><c>, </c><v>'b'</v><c>], </c><v>'c'</v><c>);</c><br><br>
+      <b>Ответ:</b><t>ошибка:</t><c>'c'</c><t>не входит в</t><c>'a' | 'b'</c><br><br>
+      <t>Без NoInfer TS выводит T из обоих аргументов —</t><c>'a' | 'b' | 'c'</c><t>— и опечатка проходит молча.</t><c>NoInfer<T></c><t>говорит: «отсюда T не выводи, только проверяй». Типичный случай — значение по умолчанию из списка вариантов</t>
+      `,
+      id: uuidv4(),
+      tags: "typescript noinfer generic inference 5.4",
+      link: "https://www.typescriptlang.org/docs/handbook/utility-types.html#noinfertype"
+    },
+    {
+      title: `const-параметр типа (TS 5.0)`,
+      text: `
+      <f>function</f><c> </c><n>f</n><c><</c><f>const</f><c> </c><n>T</n><c>>(</c><n>x</n><c>: </c><n>T</n><c>): </c><n>T</n><c> { </c><y>return</y><c> </c><n>x</n><c>; }</c><br>
+      <f>const</f><c> </c><n>r</n><c> = </c><n>f</n><c>({ </c><n>a</n><c>: [</c><v>1</v><c>, </c><v>2</v><c>] });</c><br><br>
+      <b>Ответ:</b><c>{ readonly a: readonly [1, 2] }</c><br><br>
+      <t>T выводится так, будто вызывающий написал</t><c>as const</c><t>: литералы, readonly-кортежи, readonly-свойства. Без const было бы</t><c>{ a: number[] }</c><t>. Удобно для конфигов и роутов</t>
+      `,
+      id: uuidv4(),
+      tags: "typescript const type parameter as const generic 5.0",
+      link: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#const-type-parameters"
+    },
+    {
+      title: `keyof от объединения`,
+      text: `
+      <f>type</f><c> </c><n>K1</n><c> = </c><f>keyof</f><c> ({ </c><n>a</n><c>: </c><v>1</v><c>; </c><n>b</n><c>: </c><v>2</v><c> } | { </c><n>b</n><c>: </c><v>3</v><c>; </c><n>c</n><c>: </c><v>4</v><c> });</c><br>
+      <f>type</f><c> </c><n>K2</n><c> = </c><f>keyof</f><c> ({ </c><n>a</n><c>: </c><v>1</v><c>; </c><n>b</n><c>: </c><v>2</v><c> } & { </c><n>b</n><c>: </c><v>3</v><c>; </c><n>c</n><c>: </c><v>4</v><c> });</c><br><br>
+      <b>Ответ:</b><t>K1 =</t><c>'b'</c><t>, K2 =</t><c>'a' | 'b' | 'c'</c><br><br>
+      <t>Значение типа A | B — либо A, либо B. Гарантированно есть только</t><b>общие ключи</b><t>. У пересечения есть все ключи обоих. Union значений → пересечение ключей, и наоборот</t>
+      `,
+      id: uuidv4(),
+      tags: "typescript keyof union intersection",
+      link: "https://www.typescriptlang.org/docs/handbook/2/keyof-types.html"
+    },
+    {
+      title: `Перегрузки и union`,
+      text: `
+      <f>function</f><c> </c><n>f</n><c>(</c><n>x</n><c>: </c><f>string</f><c>): </c><f>string</f><c>;</c><br>
+      <f>function</f><c> </c><n>f</n><c>(</c><n>x</n><c>: </c><f>number</f><c>): </c><f>number</f><c>;</c><br>
+      <f>function</f><c> </c><n>f</n><c>(</c><n>x</n><c>: </c><f>any</f><c>) { </c><y>return</y><c> </c><n>x</n><c>; }</c><br>
+      <n>declare</n><c> </c><f>const</f><c> </c><n>v</n><c>: </c><f>string</f><c> | </c><f>number</f><c>;</c><br>
+      <n>f</n><c>(</c><n>v</n><c>);</c><br><br>
+      <b>Ответ:</b><t>ошибка:</t><b>ни одна перегрузка не подходит</b><br><br>
+      <t>Аргумент должен целиком подойти к одной перегрузке. string | number не подходит ни к string, ни к number. Сигнатура реализации (any) снаружи</t><b>невидима</b><t>. Лечение — третья перегрузка</t><c>f(x: string | number): string | number</c><t>или generic с условным типом</t>
+      `,
+      id: uuidv4(),
+      tags: "typescript overload union implementation signature",
+      link: "https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads"
     }
   ],
   Webpack: [
