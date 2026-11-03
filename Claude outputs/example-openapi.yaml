@@ -1,0 +1,272 @@
+openapi: "3.0.3"
+info:
+  title: "API"
+  version: "1.0.0"
+paths:
+  "/api/xcom/userauth/preLogin":
+    get:
+      summary: "Данные для экрана входа"
+      tags:
+        - "userauth"
+      operationId: "preLogin"
+      responses:
+        "200":
+          description: "Успешный ответ"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  languages:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        code:
+                          type: "string"
+                          description: "Код языка (ru, en)"
+                      required:
+                        - "code"
+                    description: "Языки интерфейса"
+                  state:
+                    type: "object"
+                    additionalProperties:
+                      description: "Значение"
+                  app:
+                    "$ref": "#/components/schemas/Component"
+                required:
+                  - "languages"
+                  - "state"
+                  - "app"
+  "/api/xcom/view/getSummary":
+    post:
+      summary: "Получение количества записей в картотеке"
+      tags:
+        - "view"
+      operationId: "getSummary"
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              type: "object"
+              properties:
+                state:
+                  allOf:
+                    -
+                      "$ref": "#/components/schemas/SummaryState"
+                  description: "Состояние (контекст) картотеки (чаще всего пустой)"
+                formId:
+                  type: "string"
+                  description: "Id формы"
+                controlId:
+                  type: "string"
+                  description: "Id контрола, для которого запрашивается (картотека)"
+              required:
+                - "formId"
+                - "controlId"
+      responses:
+        "200":
+          description: "Успешный ответ"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  summary:
+                    type: "string"
+                    description: "Текст о количестве записей в картотеке"
+                  interval:
+                    type: "integer"
+                    description: "Время до следующего пинга, сек"
+                  result:
+                    type: "array"
+                    items:
+                      "$ref": "#/components/schemas/ResultItem"
+                    description: "Массив результатов (при ошибке)"
+    get:
+      summary: "Получение количества записей в картотеке"
+      tags:
+        - "view"
+      operationId: "getSummary_get"
+      parameters:
+        -
+          name: "state"
+          in: "query"
+          required: false
+          description: "Состояние (контекст) картотеки (чаще всего пустой)"
+          schema:
+            "$ref": "#/components/schemas/SummaryState"
+        -
+          name: "formId"
+          in: "query"
+          required: true
+          description: "Id формы"
+          schema:
+            type: "string"
+        -
+          name: "controlId"
+          in: "query"
+          required: true
+          description: "Id контрола, для которого запрашивается (картотека)"
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "Успешный ответ"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  summary:
+                    type: "string"
+                    description: "Текст о количестве записей в картотеке"
+                  interval:
+                    type: "integer"
+                    description: "Время до следующего пинга, сек"
+                  result:
+                    type: "array"
+                    items:
+                      "$ref": "#/components/schemas/ResultItem"
+                    description: "Массив результатов (при ошибке)"
+  "/api/xcom/view/getHint":
+    post:
+      summary: "Получение подсказки (hint) для контрола формы"
+      tags:
+        - "view"
+      operationId: "getHint"
+      requestBody:
+        required: true
+        content:
+          "application/json":
+            schema:
+              type: "object"
+              properties:
+                formId:
+                  type: "string"
+                  description: "Id формы, например \"36\""
+                formName:
+                  type: "string"
+                  description: "Название формы"
+                controlId:
+                  type: "string"
+                  description: "Id контрола, для которого запрашивается подсказка"
+                action:
+                  type: "string"
+                  description: "Действие, по которому запрашивается подсказка"
+                  enum:
+                    - "onHint"
+                rowId:
+                  type: "string"
+                  description: "Id строки таблицы (передаётся, если контрол находится в таблице)"
+              required:
+                - "formId"
+                - "formName"
+                - "controlId"
+                - "action"
+      responses:
+        "200":
+          description: "Успешный ответ"
+          content:
+            "application/json":
+              schema:
+                type: "object"
+                properties:
+                  result:
+                    type: "array"
+                    items:
+                      type: "object"
+                      properties:
+                        resultAction:
+                          type: "object"
+                          properties:
+                            hint:
+                              type: "string"
+                              description: "Текст подсказки"
+                          required:
+                            - "hint"
+                          description: "Результат действия"
+                      required:
+                        - "resultAction"
+                    description: "Массив результатов"
+                required:
+                  - "result"
+components:
+  schemas:
+    ComponentState:
+      type: "object"
+      properties:
+        value:
+          description: "Значение"
+        hidden:
+          type: "boolean"
+        disabled:
+          type: "boolean"
+      description: "Состояние элемента формы"
+    SummaryState:
+      allOf:
+        -
+          "$ref": "#/components/schemas/ComponentState"
+        -
+          type: "object"
+          properties:
+            filterText:
+              type: "string"
+              description: "Текст фильтра"
+      description: "Состояние картотеки для getSummary"
+    Component:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          description: "Уникальное имя элемента на форме"
+        type:
+          type: "string"
+          enum:
+            - "frame"
+            - "group"
+            - "label"
+            - "string"
+            - "number"
+            - "button"
+            - "table"
+        caption:
+          type: "string"
+          nullable: true
+        elements:
+          type: "array"
+          items:
+            "$ref": "#/components/schemas/Component"
+          description: "Вложенные элементы"
+      required:
+        - "name"
+        - "type"
+      description: "Описание элемента формы (view)"
+    ResultItem:
+      oneOf:
+        -
+          "$ref": "#/components/schemas/CloseResult"
+      description: "Одна команда фронтенду в составе ответа\n\nВариант определяется полем resultAction.action."
+      x-discriminator:
+        path: "resultAction.action"
+        mapping:
+          close: "#/components/schemas/CloseResult"
+    CloseResult:
+      type: "object"
+      properties:
+        resultAction:
+          type: "object"
+          properties:
+            action:
+              type: "string"
+              enum:
+                - "close"
+            formId:
+              type: "string"
+          required:
+            - "action"
+            - "formId"
+      required:
+        - "resultAction"
+      description: "Закрыть форму"
