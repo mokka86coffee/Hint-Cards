@@ -223,10 +223,226 @@ var Materials = {
       id: uuidv4(),
       tags: "git bisect бинарный поиск сломанный коммит good bad run reset",
       link: "https://git-scm.com/docs/git-bisect"
+    },
+    {
+      title: `patch: diff в файл и обратно`,
+      text: `
+      <t>Патч — обычный текстовый diff: в каком файле, что убрать</t><b>(-)</b><t>и добавить</t><b>(+)</b><t>, плюс 3 строки контекста. По контексту гит находит место, даже если номера строк съехали</t><br><br>
+      <c>git diff > fix.patch</c><k>              # незакоммиченное</k><br>
+      <c>git diff main..feature > f.patch</c><k>  # разница веток</k><br><br>
+      <c>git apply --check fix.patch</c><k>  # ляжет ли — ничего не меняя</k><br>
+      <c>git apply fix.patch</c><k>          # в папку, без коммита</k><br>
+      <c>git apply --3way fix.patch</c><k>   # не ложится → конфликт-маркеры вместо отказа</k><br>
+      <c>git apply -R fix.patch</c><k>       # откатить</k><br><br>
+      <b>Зачем:</b><t>передать правку без доступа к репо, перенести между несвязанными репо (cherry-pick не умеет), отложить работу файлом — надёжнее stash</t>
+      `,
+      id: uuidv4(),
+      tags: "git patch diff apply check 3way reverse перенести правку",
+      link: "https://git-scm.com/docs/git-apply"
+    },
+    {
+      title: `format-patch и am: коммиты файлами`,
+      text: `
+      <b>apply</b><t>переносит изменения,</t><b>am</b><t>— коммиты: с автором, датой и сообщением</t><br><br>
+      <c>git format-patch -3</c><k>      # 3 последних коммита → 0001-...patch, 0002-..., 0003-...</k><br>
+      <c>git format-patch main</c><k>    # все коммиты ветки, которых нет в main</k><br>
+      <c>git format-patch -1 a1b2c3d</c><k>  # один конкретный</k><br><br>
+      <c>git am 0001-*.patch</c><k>     # применить как коммиты</k><br>
+      <c>git am --3way *.patch</c><k>   # с трёхсторонним слиянием</k><br>
+      <c>git am --continue / --skip / --abort</c><k>  # как в rebase</k><br><br>
+      <t>Так до сих пор присылают правки в ядро Linux — патчами по почте</t>
+      `,
+      id: uuidv4(),
+      tags: "git format-patch am коммиты файлами почта авторство",
+      link: "https://git-scm.com/docs/git-format-patch"
+    },
+    {
+      title: `add -p: коммит по кусочкам`,
+      text: `
+      <t>Наваял всё сразу → разложить на аккуратные коммиты. Гит показывает файл кусками</t><b>(hunk)</b><t>и спрашивает про каждый:</t><br><br>
+      <c>git add -p</c><br>
+      <c>y</c><k>  # в корзину</k><br>
+      <c>n</c><k>  # пропустить</k><br>
+      <c>s</c><k>  # разбить кусок на мелкие</k><br>
+      <c>e</c><k>  # отредактировать кусок руками</k><br>
+      <c>q</c><k>  # хватит</k><br><br>
+      <b>То же для отката и stash:</b><br>
+      <c>git restore -p</c><k>      # выкинуть из папки только выбранные куски</k><br>
+      <c>git stash push -p</c><k>   # убрать в ящик только выбранные куски</k><br><br>
+      <t>Проверить, что в корзине:</t><c>git diff --staged</c>
+      `,
+      id: uuidv4(),
+      tags: "git add patch hunk по кусочкам restore stash interactive staged",
+      link: "https://git-scm.com/docs/git-add#Documentation/git-add.txt--p"
+    },
+    {
+      title: `fixup: поправка к старому коммиту`,
+      text: `
+      <t>Нашёл ошибку в коммите три шага назад — не нужен отдельный «fix typo»</t><br><br>
+      <c>git add -p</c><k>                          # только сама поправка</k><br>
+      <c>git commit --fixup a1b2c3d</c><k>          # → коммит «fixup! &lt;сообщение a1b2c3d&gt;»</k><br>
+      <c>git rebase -i --autosquash main</c><k>     # сам встанет под a1b2c3d и склеится</k><br><br>
+      <t>Чтобы не писать флаг каждый раз:</t><br>
+      <c>git config rebase.autoSquash true</c><br><br>
+      <b>Переписывает историю</b><t>— после push только</t><c>--force-with-lease</c><t>и только в своей ветке</t>
+      `,
+      id: uuidv4(),
+      tags: "git commit fixup autosquash rebase поправка старый коммит",
+      link: "https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---fixupamendrewordltcommitgt"
+    },
+    {
+      title: `worktree: две ветки в двух папках`,
+      text: `
+      <t>Срочный hotfix, а текущая ветка в разгаре — не stash, а вторая папка на том же репо:</t><br><br>
+      <c>git worktree add ../hotfix main</c><k>        # папка ../hotfix на ветке main</k><br>
+      <c>git worktree add -b fix-123 ../fix main</c><k> # новая ветка fix-123 от main</k><br>
+      <c>git worktree list</c><br>
+      <c>git worktree remove ../hotfix</c><br><br>
+      <t>История и .git общие: коммит в одной папке сразу виден в другой. Одну ветку нельзя открыть в двух worktree одновременно</t><br>
+      <t>node_modules в новой папке свой — ставить заново</t>
+      `,
+      id: uuidv4(),
+      tags: "git worktree hotfix две ветки папка параллельно",
+      link: "https://git-scm.com/docs/git-worktree"
+    },
+    {
+      title: `Археология: кто и когда это добавил`,
+      text: `
+      <b>Кирка</b><t>— коммиты, где строка появилась или исчезла (даже если код потом переехал):</t><br>
+      <c>git log -S 'updatedDisableOnEdit' --oneline</c><br>
+      <c>git log -G 'disable.*Edit' --oneline</c><k>  # то же по регулярке</k><br><br>
+      <b>История куска файла:</b><br>
+      <c>git log -L 40,80:src/App.jsx</c><k>       # строки 40–80</k><br>
+      <c>git log -L :handleFocus:src/App.jsx</c><k> # одна функция</k><br><br>
+      <b>blame после рефакторинга:</b><br>
+      <c>git blame -w -C -C file.ts</c><k>  # -w без пробелов, -C ищет перенос кода из других файлов</k><br><br>
+      <t>Скрыть массовое форматирование из blame — хеши в файл .git-blame-ignore-revs:</t><br>
+      <c>git config blame.ignoreRevsFile .git-blame-ignore-revs</c>
+      `,
+      id: uuidv4(),
+      tags: "git log pickaxe -S -G -L blame -w -C ignore-revs кто добавил история строки",
+      link: "https://git-scm.com/docs/git-log#Documentation/git-log.txt--Sltstringgt"
+    },
+    {
+      title: `range-diff: что изменил rebase`,
+      text: `
+      <t>После rebase хеши новые — обычный diff веток покажет весь main. range-diff сравнивает</t><b>коммит с коммитом</b><t>: старую версию ветки с новой</t><br><br>
+      <c>git range-diff main feature@{1} feature</c><k>  # feature@{1} — ветка до rebase (из reflog)</k><br><br>
+      <c>1:  a1b2c3d = 1:  d4e5f6a  кнопка</c><k>      # не изменился</k><br>
+      <c>2:  b2c3d4e ! 2:  e5f6a7b  стили</c><k>      # изменился — ниже diff диффов</k><br>
+      <c>3:  c3d4e5f &lt; -:  -------  мусор</c><k>      # пропал</k><br><br>
+      <t>Полезно перед</t><c>push --force-with-lease</c><t>: убедиться, что конфликты разрешены как надо</t>
+      `,
+      id: uuidv4(),
+      tags: "git range-diff rebase сравнить версии ветки reflog",
+      link: "https://git-scm.com/docs/git-range-diff"
     }
+
 
   ],
   "React hooks": [
+    {
+      title: `Удалить много веток разом`,
+      text: `
+      <b>Схема: сначала посмотреть список, потом отдать его на удаление</b><br><br>
+      <b>Локальные по шаблону:</b><br>
+      <c>git branch --list 'TXWEB*'                          # посмотреть</c><br>
+      <c>git branch --list 'TXWEB*' | xargs git branch -d    # удалить</c><br>
+      <c>-d</c><t>— только влитые, на остальных ругается.</t><c>-D</c><t>— всё подряд</t><br><br>
+      <b>Только влитые в ветку:</b><br>
+      <c>git branch --merged dev-10.5.3 | grep -v -E '^\\*|dev|master|main'</c><br>
+      <c>  ... | xargs git branch -d</c><br>
+      <t>grep -v выкидывает текущую (*) и основные ветки</t><br><br>
+      <b>Удалённые — несколько одной командой:</b><br>
+      <c>git push origin --delete TXWEB3354 TXWEB3455</c><br>
+      <b>По шаблону:</b><br>
+      <c>git branch -r --list 'origin/TXWEB*'                 # посмотреть</c><br>
+      <c>git branch -r --list 'origin/TXWEB*' | sed 's|origin/||' | xargs git push origin --delete</c><br>
+      <t>sed отрезает origin/ — push --delete ждёт просто имя. Remote называть явно (origin / upstream): удаляет для всех, не только у тебя</t><br><br>
+      <b>Чужие удалённые висят у тебя как origin/...:</b><c>git fetch --prune</c>
+      `,
+      id: uuidv4(),
+      tags: "git удалить ветки branch delete -d -D push --delete prune merged xargs массово",
+      link: "https://git-scm.com/docs/git-branch"
+    },
+    {
+      title: `Паутина веток в терминале: git tree`,
+      text: `
+      <c>git log --graph --oneline --all --decorate</c><br><br>
+      <b>Алиас</b><t>— граф ровный, длинная тема обрезается до 70 символов, не ломает линии:</t><br>
+      <c>git config --global alias.tree "log --graph --all --decorate --color --format='%C(yellow)%h%C(auto)%d %<(70,trunc)%s'"</c><br>
+      <c>git tree</c><br><br>
+      <b>Вместо обрезки — не переносить строки вообще</b><t>(листать вбок стрелками в less; затронет и diff):</t><br>
+      <c>git config --global core.pager "less -FRXS"</c><br><br>
+      <b>Интерактивно:</b><c>brew install lazygit</c><t>— граф, diff, stage кусками, rebase клавишами, прямо в терминале.</t><b>Окном:</b><c>brew install --cask fork</c>
+      `,
+      id: uuidv4(),
+      tags: "git log graph граф ветки alias tree pager less lazygit fork перенос строк",
+      link: "https://git-scm.com/docs/git-log#_pretty_formats"
+    },
+    {
+      title: `Git изнутри: blob, tree, commit`,
+      text: `
+      <b>Git — хранилище, где имя объекта = хеш (SHA-1) его байтов.</b><t>Одинаковое содержимое — одно имя — хранится один раз</t><br>
+      <c>blob    содержимое файла (без имени!)</c><br>
+      <c>tree    папка: «права, тип, хеш, имя» для каждого файла и подпапки</c><br>
+      <c>commit  хеш корневого tree + хеш родителя + автор + сообщение</c><br><br>
+      <c>git cat-file -p HEAD           # коммит — несколько строк текста</c><br>
+      <c>git cat-file -p HEAD^{tree}    # корень проекта: 100644 blob … / 040000 tree …</c><br>
+      <c>git cat-file -p 64da2707       # любой объект по началу хеша</c><br><br>
+      <b>Где лежит:</b><c>.git/objects/64/da2707…</c><t>— первые 2 символа папка, остальное имя файла, внутри сжатое содержимое. Хеш — имя для поиска, а не сам файл. Старые объекты упакованы в .git/objects/pack</t><br><br>
+      <b>Поменял одну строку глубоко в app/</b><t>— новый blob → новый tree папки → … → новый корневой tree → новый коммит. Нетронутые папки сохраняют хеши и просто переиспользуются</t><br>
+      <b>Rebase меняет хеши</b><t>— в коммите записан родитель, сменился родитель → другие байты → другой хеш</t><br><br>
+      <b>author ≠ committer</b><t>(Unix-время + пояс): author — когда написано, committer — когда коммит пересобран (amend, rebase, cherry-pick)</t><br><br>
+      <b>-p в git:</b><c>cat-file -p</c><t>— pretty-print, показать читаемо;</t><c>log -p / show -p / stash show -p</c><t>— patch, показать сам diff</t>
+      `,
+      id: uuidv4(),
+      tags: "git internals blob tree commit sha-1 хеш cat-file objects pack author committer rebase -p patch",
+      link: "https://git-scm.com/book/ru/v2/Git-изнутри-Объекты-Git"
+    },
+    {
+      title: `Висящие объекты: спасти потерянное`,
+      text: `
+      <c>правишь файл   → git не знает ничего (удалил — пропало навсегда)</c><br>
+      <c>git add        → blob УЖЕ записан в .git/objects + строка в .git/index</c><br>
+      <c>git commit     → tree + commit, ветка двигается</c><br><br>
+      <b>dangling</b><t>— объект есть, но на него не указывает ни ветка, ни тег, ни reflog: старые версии после amend/rebase, удалённые stash, reset</t><br>
+      <c>git fsck --lost-found</c><br>
+      <c>git fsck --lost-found 2>/dev/null | awk '/dangling commit/ {print $3}' | xargs git log --no-walk --oneline</c><br>
+      <t>Удалённые stash узнаются по «WIP on ветка» и автору</t><c>git stash <git@stash></c><br><br>
+      <b>Stash — коммит с двумя родителями:</b><t>где стоял + состояние индекса. Смотреть и вернуть по хешу:</t><br>
+      <c>git stash show -p 2003708e</c><br>
+      <c>git stash apply 2003708e</c><br><br>
+      <b>Маркеры</b><c><<<<<<< ======= >>>>>>></c><b>внутри stash</b><t>— это застеганный конфликт от неудачного stash pop. Берёшь нужный блок, маркеры выбрасываешь</t><br>
+      <b>diff — сравнение двух blob:</b><c>index 8c4c8071e..49f9049a5</c><t>— хеши файла до и после, оба открываются cat-file -p</t><br><br>
+      <b>Сколько живут:</b><t>пока не сработает git gc (сам — только когда накопилось много объектов). Видел stash полугодовой давности</t>
+      `,
+      id: uuidv4(),
+      tags: "git fsck lost-found dangling stash спасти восстановить потерянное add index gc конфликт маркеры",
+      link: "https://git-scm.com/docs/git-fsck"
+    },
+    {
+      title: `Почта и имя машины в коммитах`,
+      text: `
+      <b>user.email не задан</b><t>— git собирает сам:</t><c>пользователь@hostname</c><t>, и это навсегда вшито в коммит</t><br><br>
+      <b>Не --global, если репо рабочие и личные на одной машине</b><t>(NDA!):</t><br>
+      <c>git config user.email "рабочая@почта"     # только этот репозиторий</c><br>
+      <t>Автоматически по папкам, в ~/.gitconfig:</t><br>
+      <c>[includeIf "gitdir:~/Work/consist/"]</c><br>
+      <c>    path = ~/.gitconfig-work</c><br><br>
+      <b>Уровни:</b><t>system → global (~/.gitconfig) → local (.git/config), последний побеждает</t><br>
+      <c>git config --get-all --show-origin user.email   # все значения и откуда</c><br>
+      <c>git config --list --show-origin                 # вообще всё</c><br>
+      <c>git config --global --unset user.email          # стереть (--unset-all, если их несколько)</c><br><br>
+      <b>Чужое имя машины</b><t>— на маке HostName не задан → с VPN hostname берётся из DNS компании по выданному IP (было NGUSEVA.cbg.local — устаревшая запись). Закрепить своё:</t><br>
+      <c>scutil --get HostName</c><br>
+      <c>sudo scutil --set HostName evgenmac</c><br>
+      <t>Имя сотрудника в DNS — зацепка для социальной инженерии, мелочей нет</t>
+      `,
+      id: uuidv4(),
+      tags: "git config email global local includeif show-origin unset hostname scutil vpn dns nda",
+      link: "https://git-scm.com/docs/git-config#_conditional_includes"
+    },
     {
       title: `useEffectEvent · React 19.2`,
       text: `
@@ -1141,6 +1357,57 @@ var Materials = {
       id: uuidv4(),
       tags: "соединение запрос пакет звонок",
       link: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview"
+    },
+    {
+      title: `TCP изнутри: номера и ACK`,
+      text: `
+      <b>Каждый байт пронумерован.</b><t>В пакете — номер его первого байта (seq)</t><br>
+      <c>[seq 0    | 1460 Б]  →  принят</c><br>
+      <c>[seq 1460 | 1460 Б]  ×  потерялся</c><br>
+      <c>[seq 2920 | 1460 Б]  →  принят, но дыра</c><br>
+      <c>         ← ACK 1460   «всё есть до 1460, жду 1460»</c><br><br>
+      <b>Порядок</b><t>— раскладывает по номерам.</t><b>Потеря</b><t>— повторный ACK или таймаут → переотправить кусок.</t><b>Дубль</b><t>— номер уже есть → выбросить</t><br><br>
+      <b>Рукопожатие</b><t>— договориться о стартовых номерах. Они случайные, чтобы чужой не угадал и не вклинился:</t><br>
+      <c>SYN seq=x → SYN-ACK seq=y ack=x+1 → ACK ack=y+1</c><br>
+      <t>Цена — 1 круг (RTT) до первого байта, TLS 1.3 — ещё 1. Приложение ничего этого не видит: для него TCP — ровная труба байтов</t>
+      `,
+      id: uuidv4(),
+      tags: "tcp seq ack sequence number рукопожатие syn rtt потеря пакетов",
+      link: "https://hpbn.co/building-blocks-of-tcp/"
+    },
+    {
+      title: `Каждый запрос — новое соединение? Нет`,
+      text: `
+      <b>HTTP/1.1:</b><t>keep-alive — соединение остаётся открытым, запросы идут по нему друг за другом. До ~6 соединений на сайт, 7-й ждёт</t><br>
+      <b>HTTP/2:</b><t>обычно одно соединение на сайт, все запросы по нему одновременно</t><br><br>
+      <b>Новое соединение — только если:</b><br>
+      <c>другой источник   домен, порт или http/https</c><br>
+      <c>старое закрылось  таймаут простоя</c><br>
+      <c>HTTP/1.1          все 6 заняты</c><br><br>
+      <b>Проверить:</b><t>DevTools → Network → ПКМ по заголовкам → Connection ID. Одинаковый ID — общее соединение. «Initial connection» и «SSL» во вкладке Timing есть только у того, кто соединение открыл</t>
+      `,
+      id: uuidv4(),
+      tags: "keep-alive соединение переиспользование connection id devtools http1 http2 6 соединений",
+      link: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Connection_management_in_HTTP_1.x"
+    },
+    {
+      title: `Long polling и SSE`,
+      text: `
+      <b>Long polling:</b><t>сервер держит запрос, пока нет события или таймаута. Ответил — клиент сразу шлёт следующий (по тому же keep-alive соединению)</t><br>
+      <b>SSE</b><c>EventSource</c><t>— сервер держит один ответ открытым и дописывает в него события, браузер сам переподключается</t><br><br>
+      <b>Главный вопрос к бэку — что делает сервер, пока запрос висит:</b><br>
+      <c>держит поток (worker)   1000 вкладок = 1000 спящих потоков → новым запросам некому ответить</c><br>
+      <c>откладывает асинхронно  висящий запрос почти бесплатен</c><br><br>
+      <b>Фронт:</b><br>
+      <t>HTTP/1.1 — висящий запрос занимает одно из ~6 соединений к домену, общих для всех вкладок. Решения: держать только в видимой вкладке (visibilitychange) или одна ведущая вкладка раздаёт события через</t><c>BroadcastChannel</c><br>
+      <t>HTTP/2 — висящий запрос всего лишь поток внутри общего соединения</t><br><br>
+      <b>Один канал на все серверные события</b><t>(logout, уведомления, обновления) — один порядок, гонки между каналами исчезают</t><br>
+      <b>Щель между ответом и новым запросом</b><t>— событие можно пропустить. Закрывают курсором: «последнее, что я видел — версия 42»</t><br>
+      <b>Долгий простой</b><t>— Linux сбрасывает TCP-окно к ~14 КБ (tcp_slow_start_after_idle), большой ответ снова пойдёт со slow start</t>
+      `,
+      id: uuidv4(),
+      tags: "long polling sse eventsource push уведомления logout поток worker broadcastchannel visibilitychange курсор гонки",
+      link: "https://javascript.info/long-polling"
     },
     {
       title: `Slow start и первые 14 КБ`,
@@ -2405,6 +2672,15 @@ var Materials = {
       <c>4 бита  = 1 hex-цифра (ниббл)     F  = 1111</c><br>
       <c>8 бит   = байт = 2 hex-цифры       FF = 1111 1111</c><br>
       <c>байт: 0–255 (256 значений)        00 — минимум, FF — максимум</c><br><br>
+      <b>Почему 2 hex-символа = 1 байт:</b><t>hex-цифр 16 (0–F), и 4 бита дают ровно 16 вариантов. 4 + 4 = 8 бит — каждый байт пишется ровно двумя символами, без остатка</t><br><br>
+      <b>256 — количество, FF — максимум.</b><t>Счёт с нуля, поэтому самое большое значение на одно меньше (как последний индекс массива из 4 — это 3)</t><br>
+      <c>десятичная:  97, 98, 99, 100</c><br>
+      <c>hex:         FD, FE, FF, 100   ← 100 = 256, третья цифра → уже не влезает в байт</c><br><br>
+      <b>Три записи — три роли:</b><br>
+      <c>двоичная    1111 1111   что лежит в машине</c><br>
+      <c>hex         FF          как записать человеку (4 бита на символ)</c><br>
+      <c>десятичная  255         сколько это</c><br>
+      <t>Машина ничего не переводит — у неё только биты. Переводим мы, глядя с разных сторон</t><br><br>
       <b>Договорённость, а не закон природы.</b><t>В 1950-х байт бывал 6, 7, 9 бит. Восемь закрепила IBM System/360 (1964):</t><br>
       <t>1. 256 значений — латиница в двух регистрах, цифры, знаки (6 бит дают только 64)</t><br>
       <t>2. Две десятичные цифры по 4 бита — для банков</t><br>
@@ -2498,6 +2774,29 @@ var Materials = {
       id: uuidv4(),
       tags: "биты интерпретация договорённость формат content-type кодировка смысл данных"
       ,link: "https://ru.wikipedia.org/wiki/Информатика"
+    },
+    {
+      title: `Строка в разных языках и на границе`,
+      text: `
+      <b>Внутри у каждого языка своё устройство строки, по сети — только байты (обычно UTF-8)</b><br>
+      <c>язык         хранит                         "Ж" в памяти   длина "Ж"</c><br>
+      <c>C            байты + 00 в конце, длины нет  D0 96 00       2</c><br>
+      <c>C++, Go      байты + длина                  D0 96          2</c><br>
+      <c>Rust         байты + длина, только UTF-8    D0 96          2</c><br>
+      <c>Java, C#, JS 16-битные единицы (UTF-16)     04 16          1</c><br>
+      <c>Python       1, 2 или 4 байта на символ     04 16          1</c><br><br>
+      <b>Пустая строка — 0, 1 или 2 байта:</b><br>
+      <c>C     ""  → 00        кавычки — синтаксис, их съел компилятор</c><br>
+      <c>Go    ""  → ничего    длина 0 хранится рядом</c><br>
+      <c>JSON  ""  → 22 22     кавычки — это данные (в UTF-8)</c><br><br>
+      <b>Баг на 3 часа:</b><t>строку библиотека шлёт как есть, без JSON. Объект — сама делает stringify и ставит Content-Type json</t><br>
+      <c>post(url, '')                  → 0 байт, payload нет</c><br>
+      <c>post(url, JSON.stringify(''))  → 22 22, бэк читает ""</c><br><br>
+      <b>Правило:</b><t>одна и та же запись в разных языках — разные байты. С бэком договариваться о байтах на границе (Swagger), а не о значениях в своём языке</t>
+      `,
+      id: uuidv4(),
+      tags: "строка string пустая кавычки байты json stringify payload post axios utf-16 utf-8 len length c go java python rust",
+      link: "https://www.rfc-editor.org/rfc/rfc8259#section-8.1"
     }
 
   ],
@@ -2567,6 +2866,30 @@ var Materials = {
       id: uuidv4(),
       tags: "go vscode gopls gofmt версия инструменты редактор",
       link: "https://go.dev/doc/editors"
+    },
+    {
+      title: `SSE-сервер на Go: ответ, который не кончается`,
+      text: `
+      <b>Три правила сервера:</b><t>заголовок text/event-stream, событие = «data: текст» + пустая строка, и Flush после каждого — иначе всё копится в буфере до конца ответа, а конца нет</t><br>
+      <c>func events(w http.ResponseWriter, r *http.Request) {</c><br>
+      <c>    w.Header().Set("Content-Type", "text/event-stream")</c><br>
+      <c>    flusher := w.(http.Flusher)</c><br>
+      <c>    for i := 1; ; i++ {</c><br>
+      <c>        _, err := fmt.Fprintf(w, "data: событие %d\\n\\n", i)</c><br>
+      <c>        if err != nil { return }   // клиент ушёл</c><br>
+      <c>        flusher.Flush()            // отправить сейчас</c><br>
+      <c>        time.Sleep(2 * time.Second)</c><br>
+      <c>    }</c><br>
+      <c>}</c><br><br>
+      <b>Посмотреть поток без браузера:</b><c>curl -N localhost:8090/events</c><t>(-N — без буфера у curl)</t><br>
+      <b>В браузере:</b><c>new EventSource('/events').onmessage = e => console.log(e.data)</c><br><br>
+      <b>Ctrl+C в curl</b><t>— закрылось соединение → следующий Fprintf вернул ошибку → вышел обработчик этого клиента. Сервер дальше слушает порт</t><br>
+      <b>Каждое соединение — своя горутина:</b><t>два curl — два независимых счётчика. Висящий запрос в Go почти бесплатен</t><br><br>
+      <b>Грабли:</b><t>go run . собирает ВСЕ .go в папке — новый сервер в отдельную папку. Сервер молча закрылся — проглочена ошибка ListenAndServe (часто порт занят). curl получил html от nginx — порт занят другим</t>
+      `,
+      id: uuidv4(),
+      tags: "sse eventsource go сервер flush text/event-stream curl горутина net/http",
+      link: "https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events"
     }
   ],
   Troubles: [
