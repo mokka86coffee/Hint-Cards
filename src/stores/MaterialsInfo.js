@@ -229,6 +229,8 @@ var Materials = {
       text: `
       <t>Патч — обычный текстовый diff: в каком файле, что убрать</t><b>(-)</b><t>и добавить</t><b>(+)</b><t>, плюс 3 строки контекста. По контексту гит находит место, даже если номера строк съехали</t><br><br>
       <c>git diff > fix.patch</c><k>              # незакоммиченное</k><br>
+      <c>git diff --staged > s.patch</c><k>       # только то, что в git add</k><br>
+      <c>git diff --binary > b.patch</c><k>       # с картинками и другими бинарниками</k><br>
       <c>git diff main..feature > f.patch</c><k>  # разница веток</k><br><br>
       <c>git apply --check fix.patch</c><k>  # ляжет ли — ничего не меняя</k><br>
       <c>git apply fix.patch</c><k>          # в папку, без коммита</k><br>
@@ -246,7 +248,8 @@ var Materials = {
       <b>apply</b><t>переносит изменения,</t><b>am</b><t>— коммиты: с автором, датой и сообщением</t><br><br>
       <c>git format-patch -3</c><k>      # 3 последних коммита → 0001-...patch, 0002-..., 0003-...</k><br>
       <c>git format-patch main</c><k>    # все коммиты ветки, которых нет в main</k><br>
-      <c>git format-patch -1 a1b2c3d</c><k>  # один конкретный</k><br><br>
+      <c>git format-patch -1 a1b2c3d</c><k>  # один конкретный</k><br>
+      <c>git format-patch -3 --stdout > all.patch</c><k>  # все в один файл</k><br><br>
       <c>git am 0001-*.patch</c><k>     # применить как коммиты</k><br>
       <c>git am --3way *.patch</c><k>   # с трёхсторонним слиянием</k><br>
       <c>git am --continue / --skip / --abort</c><k>  # как в rebase</k><br><br>
@@ -336,11 +339,7 @@ var Materials = {
       id: uuidv4(),
       tags: "git range-diff rebase сравнить версии ветки reflog",
       link: "https://git-scm.com/docs/git-range-diff"
-    }
-
-
-  ],
-  "React hooks": [
+    },
     {
       title: `Удалить много веток разом`,
       text: `
@@ -442,7 +441,9 @@ var Materials = {
       id: uuidv4(),
       tags: "git config email global local includeif show-origin unset hostname scutil vpn dns nda",
       link: "https://git-scm.com/docs/git-config#_conditional_includes"
-    },
+    }
+  ],
+  "React hooks": [
     {
       title: `useEffectEvent · React 19.2`,
       text: `
@@ -647,7 +648,29 @@ var Materials = {
       tags: "",
       link:
         "https://stackoverflow.com/questions/6313126/how-to-remove-a-directory-from-git-repository"
-    }
+    },
+    {
+      title: `Починка после падения ОС`,
+      text: `
+      <b>Суть:</b><t>при падении файлы, которые git писал в этот момент, остаются нужного размера, но внутри нули/мусор. Лечение — найти битые, выбросить и взять правильные копии с сервера</t><br><br>
+      <b>1. Объекты</b><t>(.git/objects) — «object file … is empty», «loose object … is corrupt»</t><br>
+      <n>git</n><c> </c><n>fsck</n><c> </c><f>--full</f><k>  # найти битые объекты</k><br>
+      <t>удалить битые файлы объектов, затем</t><br>
+      <n>git</n><c> </c><n>fetch</n><k>  # скачать те же объекты с сервера заново</k><br><br>
+      <b>2. Указатель ветки</b><t>(.git/refs/heads/…) — «не на ветке», «bad object refs/heads/…». Хэш берём из журнала HEAD:</t><br>
+      <n>tail</n><c> </c><f>-5</f><c> </c><v>.git/logs/HEAD</v><k>  # последний коммит</k><br>
+      <n>git</n><c> </c><n>cat-file</n><c> </c><f>-t</f><c> </c><v>7d96955</v><k>  # «commit» — цел</k><br>
+      <n>echo</n><c> </c><v>полный_хэш</v><c> > </c><v>.git/refs/heads/имя-ветки</v><k>  # checkout -B битый файл не перезапишет</k><br>
+      <n>git</n><c> </c><n>checkout</n><c> </c><v>имя-ветки</v><br><br>
+      <b>3. Индекс</b><t>(.git/index) — все файлы «новые». Удалить .git/index, затем</t><br>
+      <n>git</n><c> </c><n>reset</n><k>  # пересобрать индекс из HEAD, файлы не трогает</k><br><br>
+      <b>4. index.lock</b><t>— «Another git process seems to be running» → удалить .git/index.lock</t><br><br>
+      <b>Почему это работает:</b><t>в git всё адресуется хэшем содержимого — копия объекта с сервера бит в бит та же. Пропадает только то, что было лишь локально и побилось. Клонировать заново не нужно</t>
+      `,
+      id: uuidv4(),
+      tags: "fsck corrupt empty object bad object refs reflog logs HEAD index lock падение восстановить",
+      link: "https://git-scm.com/docs/git-fsck"
+    },
   ],
   Lodash: [
     {
@@ -2319,6 +2342,52 @@ var Materials = {
       id: uuidv4(),
       tags: "lsof порт pid xargs kill",
       link: "https://ss64.com/mac/lsof.html"
+    }
+  ],
+  Zip: [
+    {
+      title: `zip: упаковать`,
+      text: `
+      <c>zip a.zip file1 file2</c><k>          # файлы</k><br>
+      <c>zip -r a.zip folder/</c><k>           # папку целиком (-r — рекурсивно)</k><br>
+      <c>zip -r a.zip src/ -x "*.DS_Store" "*/node_modules/*"</c><k>  # без мусора</k><br>
+      <c>zip -j a.zip path/a.exe other/README.md</c><k>  # без путей: всё в корень архива</k><br><br>
+      <b>Готовый архив:</b><br>
+      <c>zip a.zip new.txt</c><k>              # добавить или заменить файл</k><br>
+      <c>zip -d a.zip old.txt</c><k>           # удалить файл из архива</k><br>
+      <c>unzip -l a.zip</c><k>                 # что внутри</k><br><br>
+      <c>zip -er secret.zip folder/</c><k>     # с паролем (спросит)</k>
+      `,
+      id: uuidv4(),
+      tags: "zip архив упаковать сжать папку -r -x -j исключить пароль",
+      link: "https://ss64.com/mac/zip.html"
+    },
+    {
+      title: `unzip: распаковать`,
+      text: `
+      <c>unzip a.zip</c><k>                    # в текущую папку</k><br>
+      <c>unzip a.zip -d target/</c><k>         # в указанную папку</k><br>
+      <c>unzip -o a.zip</c><k>                 # перезаписать без вопросов</k><br>
+      <c>unzip a.zip README.md</c><k>          # достать один файл</k><br>
+      <c>unzip -l a.zip</c><k>                 # только посмотреть список</k><br><br>
+      <b>Битый архив?</b><c>unzip -t a.zip</c><t>— проверить целостность, ничего не распаковывая</t>
+      `,
+      id: uuidv4(),
+      tags: "unzip распаковать извлечь архив -d -o -l -t",
+      link: "https://ss64.com/mac/unzip.html"
+    },
+    {
+      title: `zip на маке: мусор и сетевые папки`,
+      text: `
+      <b>Finder → «Сжать»</b><t>кладёт в архив</t><b>__MACOSX</b><t>и</t><b>.DS_Store</b><t>— на Windows это видно как мусор</t><br><br>
+      <c>zip -r a.zip folder/ -x "*.DS_Store" "__MACOSX/*"</c><k>  # собрать чисто</k><br>
+      <c>zip -d a.zip "__MACOSX/*" "*.DS_Store"</c><k>          # почистить готовый</k><br><br>
+      <b>Не упаковывать прямо в сетевую папку:</b><t>zip пишет во временный файл и падает с «Operation not permitted». Собрать локально, потом</t><c>cp</c><br><br>
+      <c>cd /tmp && zip -r a.zip ~/proj/dist && cp a.zip /Volumes/share/</c>
+      `,
+      id: uuidv4(),
+      tags: "zip mac finder __MACOSX DS_Store windows сетевая папка operation not permitted",
+      link: "https://ss64.com/mac/zip.html"
     }
   ],
   Vim: [
